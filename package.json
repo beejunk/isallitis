@@ -1,0 +1,10 @@
+{
+  "name": "isallitdoes",
+  "author": "Brian David (https://hachyderm.io/@bcdavid)",
+  "license": "GPL-3.0-only",
+  "description": "A collection of focused web apps.",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ]
+}
