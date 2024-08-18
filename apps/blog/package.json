@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "node src/server.js"
+    "dev": "node src/server/server.js",
+    "start": "NODE_ENV=production node src/server.js"
   },
-  "description": "Engineering blog for isallitdoes.com"
+  "description": "Engineering blog for isallitdoes.com",
+  "dependencies": {
+    "fastify": "4.28.1"
+  }
 }
