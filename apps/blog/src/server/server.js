@@ -1,15 +1,48 @@
 import Fastify from "fastify";
-import { homeTemplate } from "../templates/home.js";
+import { catalogue } from "../blog/catalogue.js";
+import { createHTMLMap } from "../blog/html-map.js";
+import { getBlogPath } from "../blog/utils.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
+
+const htmlMap = createHTMLMap(catalogue);
 
 const server = Fastify({
   logger: true,
 });
 
-server.get("/", (_request, reply) => {
-  reply.type("text/html").send(homeTemplate());
-});
+/**
+ * @typedef {Object} BlogParams
+ * @property {number} year
+ * @property {number} month
+ * @property {number} day
+ * @property {number} hour
+ * @property {number} minute
+ */
+
+server.get(
+  "/:year/:month/:day/:hour/:minute",
+  {
+    schema: {
+      params: {
+        par1: { type: "number", minimum: 2024, maximum: 2100 },
+        par2: { type: "number", minimum: 1, maximum: 12 },
+        par3: { type: "number", minimum: 0, maximum: 23 },
+        par4: { type: "number", minimum: 0, maximum: 59 },
+      },
+    },
+  },
+  /**
+   * @param {import("fastify").FastifyRequest<{ Params: BlogParams }>} request
+   * @param {import("fastify").FastifyReply} reply
+   */
+  (request, reply) => {
+    const { year, month, day, hour, minute } = request.params;
+    const path = getBlogPath(year, month, day, hour, minute);
+    const html = htmlMap.get(path);
+    reply.type("text/html").send(html);
+  },
+);
 
 try {
   await server.listen({ port: PORT });
