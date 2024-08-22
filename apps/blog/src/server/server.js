@@ -44,7 +44,7 @@ server.get(
 );
 
 server.get("/", (request, reply) => {
-  const html = htmlMap.get("/");
+  const html = htmlMap.get("/index");
 
   reply.type("text/html").send(html);
 });

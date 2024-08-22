@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "build":"node src/scripts/build.js",
     "dev": "node src/server/server.js",
     "start": "NODE_ENV=production node src/server.js",
     "types:check": "tsc"
