@@ -1,17 +1,19 @@
 /**
- * @param {Object} data
- * @param {string} data.body
+ * @param {Object} props
+ * @param {string} props.title
+ * @param {string} props.content
  * @return {string}
  */
-export function layoutTemplate(data) {
-  const { body } = data;
+export function layout(props) {
+  const { content, title } = props;
 
   return `
     <body>
       <main>
         <!-- TODO header -->
         <!-- TODO nav -->
-        ${body}
+        <h1>${title}</h1>
+        ${content}
       </main>
     </body>
   `;

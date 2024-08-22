@@ -20,14 +20,14 @@ const server = Fastify({
  */
 
 server.get(
-  "/:year/:month/:day/:slug",
+  "/years/:year/months/:month/days/:day/entries/:slug",
   {
     schema: {
       params: {
         par1: { type: "number", minimum: 2024, maximum: 2100 },
         par2: { type: "number", minimum: 1, maximum: 12 },
         par3: { type: "number", minimum: 0, maximum: 23 },
-        par4: { type: "string", minimum: 0, maximum: 59 },
+        par4: { type: "string" },
       },
     },
   },
@@ -36,12 +36,18 @@ server.get(
    * @param {import("fastify").FastifyReply} reply
    */
   (request, reply) => {
-    const { year, month, day, slug } = request.params;
-    const path = getBlogPath(year, month, day, slug);
+    const path = getBlogPath(request.params);
     const html = htmlMap.get(path);
+
     reply.type("text/html").send(html);
   },
 );
+
+server.get("/", (request, reply) => {
+  const html = htmlMap.get("/");
+
+  reply.type("text/html").send(html);
+});
 
 try {
   await server.listen({ port: PORT });

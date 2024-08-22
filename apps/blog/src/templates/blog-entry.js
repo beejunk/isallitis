@@ -1,16 +1,28 @@
-import { baseTemplate } from "./base.js";
+import { basePage } from "./base-page.js";
 
 /**
- * @param {Object} data
- * @param {string} data.body
- * @param {string} data.title
+ * @param {Object} props
+ * @param {string} props.body
+ * @param {string} props.title
  * @return {string}
  */
-export function blogEntryTemplate(data) {
-  const body = `
-    <h1>${data.title}</h1>
-    ${data.body}
-  `;
+function blogContent(props) {
+  const { body, title } = props;
 
-  return baseTemplate({ title: data.title, body });
+  return `
+    <h2>${title}</h2>
+    ${body}
+  `;
+}
+
+/**
+ * @param {Object} props
+ * @param {string} props.body
+ * @param {string} props.title
+ * @return {string}
+ */
+export function blogEntry(props) {
+  const { title } = props;
+
+  return basePage({ title, content: blogContent(props) });
 }

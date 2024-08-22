@@ -1,10 +1,9 @@
-export const SEP = "/";
-
-/** @typedef {import("./blog.js").BlogPathParams} BlogParams */
+/** @typedef {import("./blog.js").BlogPathParams} BlogPathParams */
 
 /**
- * @param {BlogParams} blogParams - Date params with entry slug.
+ * @param {BlogPathParams} blogPathParams - Date params with entry slug.
  */
-export function getBlogPath(...blogParams) {
-  return blogParams.join(SEP);
+export function getBlogPath(blogPathParams) {
+  const { year, month, day, slug } = blogPathParams;
+  return `/years/${year}/months/${month}/days/${day}/entries/${slug}`;
 }

@@ -1,4 +1,4 @@
-import { year2024 } from "./2024/year2024.js";
+import { years } from "./years/years.js";
 
 /**
  * @typedef {Object} BlogEntry
@@ -10,36 +10,56 @@ import { year2024 } from "./2024/year2024.js";
  */
 
 /**
+ * @typedef {Record<string, BlogEntry>} BlogEntries
+ */
+
+/**
  * @typedef {Object} BlogDay
  * @property {number} day
- * @property {Record<string, BlogEntry>} entries
+ * @property {BlogEntries} entries
+ */
+
+/**
+ * @typedef {Record<string, BlogDay>} BlogDays
  */
 
 /**
  * @typedef {Object} BlogMonth
  * @property {number} month
- * @property {Record<string, BlogDay>} days
+ * @property {BlogDays} days
+ */
+
+/**
+ * @typedef {Record<string, BlogMonth>} BlogMonths
  */
 
 /**
  * @typedef {Object} BlogYear
  * @property {number} year
- * @property {Record<string, BlogMonth>} months
+ * @property {BlogMonths} months
  */
 
 /**
- * @typedef {Object} BlogCatalogue
- * @property {string} title
- * @property {Record<string, BlogYear>} years
+ * @typedef {Record<string, BlogYear>} BlogYears
  */
 
-/** @typedef {[number, number, number, string]} BlogPathParams */
+/**
+ * @typedef {Object} Blog
+ * @property {string} title
+ * @property {BlogYears} years
+ */
 
-/** @type {BlogCatalogue} */
+/**
+ * @typedef {Object} BlogPathParams
+ * @property {number} year
+ * @property {number} month
+ * @property {number} day
+ * @property {string} slug
+ */
+
+/** @type {Blog} */
 export const blog = {
   title: "A Blog Is All It Is",
 
-  years: {
-    [year2024.year]: year2024,
-  },
+  years,
 };
