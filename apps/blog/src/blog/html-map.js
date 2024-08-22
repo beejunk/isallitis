@@ -2,17 +2,17 @@ import { getBlogPath } from "./utils.js";
 import { blogEntryTemplate } from "../templates/blog-entry.js";
 
 /**
- * @param {import("./catalogue.js").BlogCatalogue} catalogue
+ * @param {import("./blog.js").BlogCatalogue} catalogue
  * @return {Map<string, string>}
  */
 export function createHTMLMap(catalogue) {
   const htmlMap = new Map();
 
-  catalogue.years.forEach(({ year, months }) => {
-    months.forEach(({ month, days }) => {
-      days.forEach(({ day, entries }) => {
-        entries.forEach(({ hour, minute, body, title }) => {
-          const path = getBlogPath(year, month, day, hour, minute);
+  Object.values(catalogue.years).forEach(({ year, months }) => {
+    Object.values(months).forEach(({ month, days }) => {
+      Object.values(days).forEach(({ day, entries }) => {
+        Object.values(entries).forEach(({ body, slug, title }) => {
+          const path = getBlogPath(year, month, day, slug);
           htmlMap.set(path, blogEntryTemplate({ body, title }));
         });
       });

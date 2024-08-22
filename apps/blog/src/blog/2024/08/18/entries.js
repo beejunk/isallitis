@@ -1,6 +1,6 @@
-import { entry1152 } from "./entries/entry1152.js";
+import { aBlogIsAllItDoes } from "./entries/a-blog-is-all-it-is.js";
 
-/** @typedef {import("../../../catalogue.js").BlogEntry} BlogEntry */
+/** @typedef {import("../../../blog.js").BlogEntry} BlogEntry */
 
 /** @type {Array<BlogEntry>} */
-export const entries = [entry1152];
+export const entries = [aBlogIsAllItDoes];

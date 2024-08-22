@@ -1,11 +1,11 @@
 import Fastify from "fastify";
-import { catalogue } from "../blog/catalogue.js";
+import { blog } from "../blog/blog.js";
 import { createHTMLMap } from "../blog/html-map.js";
 import { getBlogPath } from "../blog/utils.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
 
-const htmlMap = createHTMLMap(catalogue);
+const htmlMap = createHTMLMap(blog);
 
 const server = Fastify({
   logger: true,
@@ -16,19 +16,18 @@ const server = Fastify({
  * @property {number} year
  * @property {number} month
  * @property {number} day
- * @property {number} hour
- * @property {number} minute
+ * @property {string} slug
  */
 
 server.get(
-  "/:year/:month/:day/:hour/:minute",
+  "/:year/:month/:day/:slug",
   {
     schema: {
       params: {
         par1: { type: "number", minimum: 2024, maximum: 2100 },
         par2: { type: "number", minimum: 1, maximum: 12 },
         par3: { type: "number", minimum: 0, maximum: 23 },
-        par4: { type: "number", minimum: 0, maximum: 59 },
+        par4: { type: "string", minimum: 0, maximum: 59 },
       },
     },
   },
@@ -37,8 +36,8 @@ server.get(
    * @param {import("fastify").FastifyReply} reply
    */
   (request, reply) => {
-    const { year, month, day, hour, minute } = request.params;
-    const path = getBlogPath(year, month, day, hour, minute);
+    const { year, month, day, slug } = request.params;
+    const path = getBlogPath(year, month, day, slug);
     const html = htmlMap.get(path);
     reply.type("text/html").send(html);
   },
