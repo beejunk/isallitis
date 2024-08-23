@@ -1,4 +1,4 @@
-import { getBlogPath } from "./utils.js";
+import { condenseWhitespace, getBlogPath } from "./utils.js";
 import { blogEntry } from "../templates/blog-entry.js";
 import { index } from "../templates/index.js";
 
@@ -16,7 +16,8 @@ export function createHTMLMap(blog) {
       Object.values(days).forEach(({ day, entries }) => {
         Object.values(entries).forEach(({ body, slug, title }) => {
           const path = getBlogPath({ year, month, day, slug });
-          htmlMap.set(path, blogEntry({ body, title }).trim());
+          const html = condenseWhitespace(blogEntry({ body, title }));
+          htmlMap.set(path, html);
         });
       });
     });

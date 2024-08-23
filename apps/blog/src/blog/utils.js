@@ -27,7 +27,7 @@ function createSegmentMapper(children) {
    * @param idx {number}
    */
   function segmentToString(text, idx) {
-    const child = children[idx];
+    const child = children[idx] ?? "";
     const childStr = Array.isArray(child) ? child.join("") : child;
 
     return `${text}${childStr}`;
@@ -38,10 +38,10 @@ function createSegmentMapper(children) {
 
 /**
  * @param {TemplateStringsArray} strings
- * @param {HTMLChildren} [children = []]
+ * @param {HTMLChildren} children
  * @return {string}
  */
-export function html(strings, children = []) {
+export function html(strings, ...children) {
   const segmentToString = createSegmentMapper(children);
   return strings.map(segmentToString).join("");
 }
@@ -51,5 +51,5 @@ export function html(strings, children = []) {
  * @return {string}
  */
 export function condenseWhitespace(html) {
-  return html.replaceAll(HTML_WHITESPACE_RE, " ");
+  return html.trim().replaceAll(HTML_WHITESPACE_RE, " ");
 }
