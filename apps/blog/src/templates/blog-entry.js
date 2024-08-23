@@ -1,4 +1,5 @@
 import { basePage } from "./base-page.js";
+import { html } from "../blog/utils.js";
 
 /**
  * @param {Object} props
@@ -9,7 +10,7 @@ import { basePage } from "./base-page.js";
 function blogContent(props) {
   const { body, title } = props;
 
-  return `
+  return html`
     <h2>${title}</h2>
     ${body}
   `;
@@ -22,7 +23,9 @@ function blogContent(props) {
  * @return {string}
  */
 export function blogEntry(props) {
-  const { title } = props;
+  const { body, title } = props;
+  const content = html` <h2>${title}</h2>
+    ${body}`;
 
-  return basePage({ title, content: blogContent(props) });
+  return basePage({ title, content });
 }

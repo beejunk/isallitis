@@ -1,5 +1,5 @@
 import { basePage } from "./base-page.js";
-import { getBlogPath } from "../blog/utils.js";
+import { getBlogPath, html } from "../blog/utils.js";
 
 /**
  * @param {Object} props
@@ -14,7 +14,7 @@ function entryListItem(props) {
   const { year, month, day, slug, title } = props;
   const path = getBlogPath({ year, month, day, slug });
 
-  return `<li><a href="${path}">${year}-${month}-${day}: ${title}</a></li>`;
+  return html`<li><a href="${path}">${year}-${month}-${day}: ${title}</a></li>`;
 }
 
 /**
@@ -38,8 +38,10 @@ function entryList(props) {
     });
   });
 
-  return `
-    <ul>${entryListItems}</ul>
+  return html`
+    <ul>
+      ${entryListItems.join("")}
+    </ul>
   `;
 }
 

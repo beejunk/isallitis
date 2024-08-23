@@ -1,3 +1,5 @@
+import { html } from "../blog/utils.js";
+
 /**
  * @param {Object} props
  * @param {string} props.title
@@ -7,7 +9,7 @@
 export function layout(props) {
   const { content, title } = props;
 
-  return `
+  return html`
     <body>
       <main>
         <!-- TODO header -->
