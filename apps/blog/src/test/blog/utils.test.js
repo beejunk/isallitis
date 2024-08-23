@@ -19,7 +19,10 @@ describe("getBlogPath()", () => {
   });
 
   test("html", () => {
-    const expected = "<p>Test Paragraph 1</p> <p>Test Paragraph 2</p>";
+    const expected = `
+      <p>Test Paragraph 1</p>
+      <p>Test Paragraph 2</p>
+    `;
 
     const actual = html`
       <p>Test Paragraph 1</p>
