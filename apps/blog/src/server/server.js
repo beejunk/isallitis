@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import Fastify from "fastify";
 import { blog } from "../blog/blog.js";
 import { createHTMLMap } from "../blog/html-map.js";
@@ -7,8 +8,16 @@ const PORT = Number(process.env.PORT ?? 3000);
 
 const htmlMap = createHTMLMap(blog);
 
+const stylesPath = new URL("../styles/styles.css", import.meta.url);
+
+const styles = fs.readFileSync(stylesPath, "utf8");
+
 const server = Fastify({
   logger: true,
+});
+
+server.get("/styles.css", (request, reply) => {
+  reply.type("text/css").send(styles);
 });
 
 /**

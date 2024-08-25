@@ -5,11 +5,28 @@ import { createHTMLMap } from "../blog/html-map.js";
 
 const startTime = Date.now();
 
-const htmlMap = createHTMLMap(blog);
+const htmlMap = createHTMLMap(blog, { fingerprint: startTime.toString() });
 const distPath = "../../build";
 const distURL = new URL(distPath, import.meta.url);
+const cssSrcURL = new URL("../styles/styles.css", import.meta.url);
+const cssBuildURL = new URL(
+  path.join(distPath, `styles-${startTime}.css`),
+  import.meta.url,
+);
 
-await fs.rm(distURL, { recursive: true, force: true });
+try {
+  await fs.rm(distURL, { recursive: true, force: true });
+} catch (err) {
+  console.error(`Error deleting "dist" directory: ${err}`);
+  process.exit(1);
+}
+
+try {
+  await fs.cp(cssSrcURL, cssBuildURL);
+} catch (err) {
+  console.error(`Error building CSS: ${err}`);
+  process.exit(1);
+}
 
 /** @type {Array<Promise<void>>} */
 const buildPromises = [];
@@ -36,7 +53,12 @@ htmlMap.forEach((html, entryPath) => {
   );
 });
 
-await Promise.all(buildPromises);
+try {
+  await Promise.all(buildPromises);
+} catch (err) {
+  console.error(`Error building HTML: ${err}`);
+  process.exit(1);
+}
 
 const endTime = Date.now();
 const deltaTime = endTime - startTime;

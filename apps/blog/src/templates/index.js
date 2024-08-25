@@ -46,14 +46,18 @@ function entryList(props) {
 }
 
 /**
- * @param {import("../blog/blog.js").Blog} blog
+ * @param {Object} props
+ * @param {import("../blog/blog.js").Blog} props.blog
+ * @param {string} [props.fingerprint]
  * @return {string}
  */
-export function index(blog) {
+export function index(props) {
+  const { blog, fingerprint } = props;
   const { title, years } = blog;
 
   return basePage({
     content: entryList({ years }),
+    fingerprint,
     title,
   });
 }
