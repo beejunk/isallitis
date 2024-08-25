@@ -1,10 +1,11 @@
 {
-  "name": "isallitdoes",
+  "name": "isallitis",
   "author": "Brian David (https://hachyderm.io/@bcdavid)",
   "license": "GPL-3.0-only",
   "description": "A collection of focused web apps.",
   "private": true,
   "scripts": {
+    "healthcheck:blog": "npm run format:check && npm run healthcheck -w @isallitis/blog",
     "format:check": "prettier -c .",
     "format:write": "prettier -w ."
   },

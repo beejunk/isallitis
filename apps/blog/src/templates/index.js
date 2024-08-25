@@ -40,7 +40,7 @@ function entryList(props) {
 
   return html`
     <ul>
-      ${entryListItems.join("")}
+      ${entryListItems}
     </ul>
   `;
 }
