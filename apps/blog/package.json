@@ -10,7 +10,7 @@
     "test": "node --test",
     "types:check": "tsc"
   },
-  "description": "Engineering blog for isallitdoes.com",
+  "description": "Engineering blog.",
   "dependencies": {
     "fastify": "4.28.1"
   }
