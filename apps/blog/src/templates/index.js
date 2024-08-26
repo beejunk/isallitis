@@ -39,6 +39,7 @@ function entryList(props) {
   });
 
   return html`
+    <h1>Recent Entries</h1>
     <ul>
       ${entryListItems}
     </ul>

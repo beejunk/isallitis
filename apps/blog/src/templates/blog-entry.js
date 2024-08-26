@@ -10,7 +10,7 @@ import { html } from "../blog/utils.js";
  */
 export function blogEntry(props) {
   const { body, fingerprint, title } = props;
-  const content = html` <h2>${title}</h2>
+  const content = html`<h1>${title}</h1>
     ${body}`;
 
   return basePage({ fingerprint, title, content });

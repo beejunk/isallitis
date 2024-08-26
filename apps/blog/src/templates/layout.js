@@ -3,6 +3,18 @@ import { html } from "../blog/utils.js";
 /**
  * @param {Object} props
  * @param {string} props.title
+ */
+function header(props) {
+  const { title } = props;
+
+  return html`<header class="banner">
+    <p class="site-title">${title}</p>
+  </header>`;
+}
+
+/**
+ * @param {Object} props
+ * @param {string} props.title
  * @param {string} props.content
  * @return {string}
  */
@@ -12,9 +24,8 @@ export function layout(props) {
   return html`
     <body>
       <main>
-        <!-- TODO header -->
+        ${header({ title })}
         <!-- TODO nav -->
-        <h1>${title}</h1>
         ${content}
       </main>
     </body>
