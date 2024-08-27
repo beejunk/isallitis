@@ -1,5 +1,5 @@
 import { basePage } from "./base-page.js";
-import { getBlogPath, html } from "../blog/utils.js";
+import { getBlogPath, html } from "../utils/html-utils.js";
 
 /**
  * @param {Object} props

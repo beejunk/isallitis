@@ -1,7 +1,7 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { createHTMLMap } from "../../blog/html-map.js";
-import { getBlogPath } from "../../blog/utils.js";
+import { getBlogPath } from "../../utils/html-utils.js";
 
 /** @type {import("../../blog/blog.js").Blog} */
 const blog = {
@@ -32,9 +32,9 @@ const blog = {
   },
 };
 
-const htmlMap = createHTMLMap(blog);
-
 describe("createHTMLMap", () => {
+  const htmlMap = createHTMLMap(blog);
+
   test("it should return an entry for the provided path", () => {
     const params = {
       year: 2024,

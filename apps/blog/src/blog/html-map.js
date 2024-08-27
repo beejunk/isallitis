@@ -1,4 +1,4 @@
-import { condenseWhitespace, getBlogPath } from "./utils.js";
+import { condenseWhitespace, getBlogPath } from "../utils/html-utils.js";
 import { blogEntry } from "../templates/blog-entry.js";
 import { index } from "../templates/index.js";
 

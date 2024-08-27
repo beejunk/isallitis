@@ -1,6 +1,6 @@
 import { blog } from "../blog/blog.js";
 import { layout } from "./layout.js";
-import { html } from "../blog/utils.js";
+import { html } from "../utils/html-utils.js";
 
 /**
  * @param {Object} props

@@ -14,8 +14,11 @@
   ],
   "packageManager": "npm@10.8.2+sha512.c7f0088c520a46596b85c6f8f1da943400199748a0f7ea8cb8df75469668dc26f6fb3ba26df87e2884a5ebe91557292d0f3db7d0929cdb4f14910c3032ac81fb",
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
     "@tsconfig/node20": "^20.1.4",
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^22.4.0",
+    "jsdom": "^25.0.0",
     "prettier": "^3.3.3",
     "typescript": "^5.5.4"
   }

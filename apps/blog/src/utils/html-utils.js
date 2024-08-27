@@ -1,4 +1,4 @@
-/** @typedef {import("./blog.js").BlogPathParams} BlogPathParams */
+/** @typedef {import("../blog/blog.js").BlogPathParams} BlogPathParams */
 
 const HTML_WHITESPACE_RE = new RegExp(/\n\s*|\s\s+/, "g");
 

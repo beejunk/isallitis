@@ -2,7 +2,7 @@ import fs from "node:fs";
 import Fastify from "fastify";
 import { blog } from "../blog/blog.js";
 import { createHTMLMap } from "../blog/html-map.js";
-import { getBlogPath } from "../blog/utils.js";
+import { getBlogPath } from "../utils/html-utils.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
 

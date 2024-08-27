@@ -1,6 +1,10 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { condenseWhitespace, getBlogPath, html } from "../../blog/utils.js";
+import {
+  condenseWhitespace,
+  getBlogPath,
+  html,
+} from "../../utils/html-utils.js";
 
 describe("getBlogPath()", () => {
   test("should return the expected path", () => {
@@ -19,7 +23,7 @@ describe("getBlogPath()", () => {
   });
 });
 
-describe("html", () => {
+describe("html()", () => {
   test("should handle text with no embedded expressions", () => {
     const expected = `
       <p>Test Paragraph 1</p>
