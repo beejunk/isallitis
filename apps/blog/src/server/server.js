@@ -1,12 +1,12 @@
 import fs from "node:fs";
 import Fastify from "fastify";
 import { blog } from "../blog/blog.js";
-import { createHTMLMap } from "../blog/html-map.js";
+import { createRouteMap } from "../routes/routes.js";
 import { getBlogPath } from "../utils/html-utils.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
 
-const htmlMap = createHTMLMap(blog);
+const routeMap = createRouteMap(blog);
 
 const stylesPath = new URL("../styles/styles.css", import.meta.url);
 
@@ -16,7 +16,7 @@ const server = Fastify({
   logger: true,
 });
 
-server.get("/styles.css", (request, reply) => {
+server.get("/styles.css", (_request, reply) => {
   reply.type("text/css").send(styles);
 });
 
@@ -46,14 +46,14 @@ server.get(
    */
   (request, reply) => {
     const path = getBlogPath(request.params);
-    const html = htmlMap.get(path);
+    const html = routeMap.get(path);
 
     reply.type("text/html").send(html);
   },
 );
 
 server.get("/", (request, reply) => {
-  const html = htmlMap.get("/index");
+  const html = routeMap.get("/index");
 
   reply.type("text/html").send(html);
 });

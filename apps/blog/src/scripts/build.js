@@ -1,11 +1,11 @@
 import path from "node:path";
 import fs from "node:fs/promises";
 import { blog } from "../blog/blog.js";
-import { createHTMLMap } from "../blog/html-map.js";
+import { createRouteMap } from "../routes/routes.js";
 
 const startTime = Date.now();
 
-const htmlMap = createHTMLMap(blog, { fingerprint: startTime.toString() });
+const htmlMap = createRouteMap(blog, { fingerprint: startTime.toString() });
 const distPath = "../../build";
 const distURL = new URL(distPath, import.meta.url);
 const cssSrcURL = new URL("../styles/styles.css", import.meta.url);
