@@ -4,11 +4,11 @@ import {
   condenseWhitespace,
   getBlogPath,
   html,
-} from "../../utils/html-utils.js";
+} from "../../../src/utils/html-utils.js";
 
 describe("getBlogPath()", () => {
   test("should return the expected path", () => {
-    /** @type {import("../../blog/blog.js").BlogPathParams} */
+    /** @type {import("../../../src/blog/blog.js").BlogPathParams} */
     const params = {
       year: 2024,
       month: 8,

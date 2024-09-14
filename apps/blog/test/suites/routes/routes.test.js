@@ -1,8 +1,8 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { createRouteMap } from "../../routes/routes.js";
-import { getBlogPath } from "../../utils/html-utils.js";
-import { mockBlog } from "../../mock-data/mock-blog.js";
+import { createRouteMap } from "../../../src/routes/routes.js";
+import { getBlogPath } from "../../../src/utils/html-utils.js";
+import { mockBlog } from "../../fixtures/mock-blog.js";
 
 describe("createRouteMap()", () => {
   test("it should return an entry for the provided path", () => {

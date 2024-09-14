@@ -1,4 +1,4 @@
-/** @type {import("../blog/blog.js").Blog} */
+/** @type {import("../../src/blog/blog.js").Blog} */
 export const mockBlog = {
   title: "Test Blog",
   years: {
