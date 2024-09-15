@@ -3,6 +3,8 @@
  * @property {number} year
  * @property {number} month
  * @property {number} day
+ * @property {number} hour
+ * @property {number} minute
  * @property {string} slug
  * @property {string} body
  * @property {string} title
@@ -19,10 +21,10 @@ function withDateInfo(dateInfo) {
    * @param {Array<EntryData>} entryDataArr
    * @param {import("../blog/blog.js").BlogEntry} entry
    */
-  return function reduceEntry(entryDataArr, entry) {
-    const { body, slug, title } = entry;
+  return function mergeEntry(entryDataArr, entry) {
+    const { body, slug, title, hour, minute } = entry;
 
-    return [...entryDataArr, { ...dateInfo, body, slug, title }];
+    return [...entryDataArr, { ...dateInfo, body, slug, title, hour, minute }];
   };
 }
 

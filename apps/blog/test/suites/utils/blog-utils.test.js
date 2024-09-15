@@ -15,6 +15,8 @@ describe("reduceToEntryData()", () => {
       year: 2024,
       month: 8,
       day: 18,
+      hour: 18,
+      minute: 20,
       slug: "a-test-is-all-it-is",
       title: "A Test Is All It Is",
       body: "<p>A test is all it is</p>",
