@@ -1,9 +1,9 @@
 import { channel } from "./templates/channel.js";
-import { getBlogPath } from "../utils/html-utils.js";
+import { getBlogPath } from "../blog/html-utils.js";
 
 /** @typedef {import("./templates/channel.js").RSSChannelProps} RSSChannelProps */
 /** @typedef {import("./templates/item.js").RSSItemProps} RSSItemProps */
-/** @typedef {import("../utils/blog-utils.js").EntryData} EntryData
+/** @typedef {import("../blog/blog-utils.js").EntryData} EntryData
 
 /**
  * @param {RSSChannelProps} props

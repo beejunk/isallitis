@@ -4,7 +4,7 @@ import {
   condenseWhitespace,
   getBlogPath,
   html,
-} from "../../../src/utils/html-utils.js";
+} from "../../../src/blog/html-utils.js";
 
 describe("getBlogPath()", () => {
   test("should return the expected path", () => {

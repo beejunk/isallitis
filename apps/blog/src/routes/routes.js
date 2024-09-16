@@ -1,17 +1,31 @@
-import { condenseWhitespace, getBlogPath } from "../utils/html-utils.js";
-import { blogEntry } from "../templates/blog-entry.js";
-import { index } from "../templates/index.js";
-import { reduceToEntryData } from "../utils/blog-utils.js";
+import { condenseWhitespace, getBlogPath } from "../blog/html-utils.js";
+import { blogEntry } from "../blog/templates/blog-entry.js";
+import { index } from "../blog/templates/index.js";
+import { reduceToEntryData } from "../blog/blog-utils.js";
 import { rss, toRSSItem } from "../rss/rss.js";
 
-/** @typedef {import("../utils/blog-utils.js").EntryData} EntryData */
+const HTML_EXT = "html";
+const HTML_MIME = "text/html";
+const RSS_EXT = "xml";
+const RSS_MIME = "application/rss+xml";
+
+/** @typedef {import("../blog/blog-utils.js").EntryData} EntryData */
+
+/**
+ * @typedef {Object} RouteData
+ * @prop {string} content
+ * @prop {string} ext
+ * @prop {string} mime
+ * @prop {string} slug
+ */
 
 /**
  * @param {Array<EntryData>} entryData
  * @param {string} [fingerprint]
- * @return {Map<string, string>}
+ * @return {Map<string, RouteData>}
  */
 function mapEntryDataToRoutes(entryData, fingerprint) {
+  /** @type {Map<string, RouteData>} */
   const routeMap = new Map();
 
   entryData.forEach((entry) => {
@@ -19,7 +33,12 @@ function mapEntryDataToRoutes(entryData, fingerprint) {
     const path = getBlogPath({ year, month, day, slug });
     const html = condenseWhitespace(blogEntry({ body, fingerprint, title }));
 
-    routeMap.set(path, html);
+    routeMap.set(path, {
+      content: html,
+      ext: HTML_EXT,
+      mime: HTML_MIME,
+      slug,
+    });
   });
 
   return routeMap;
@@ -33,27 +52,33 @@ function mapEntryDataToRoutes(entryData, fingerprint) {
  * @param {Object} options
  * @param {string} options.hostname
  * @param {string} [options.fingerprint]
- * @return {Map<string, string>}
+ * @return {Map<string, RouteData>}
  */
 export function createRouteMap(blog, options) {
   const { fingerprint, hostname } = options;
 
   const entryData = reduceToEntryData(blog);
-  const routeMap = mapEntryDataToRoutes(entryData, fingerprint);
   const rssItems = entryData.map(toRSSItem(hostname));
+  const routeMap = mapEntryDataToRoutes(entryData, fingerprint);
 
-  // TODO: Indicate extension in route definition
-  routeMap.set("/index", condenseWhitespace(index({ blog, fingerprint })));
+  routeMap.set("/index", {
+    content: condenseWhitespace(index({ blog, fingerprint })),
+    ext: HTML_EXT,
+    mime: HTML_MIME,
+    slug: "index",
+  });
 
-  routeMap.set(
-    "/rss-feed",
-    rss({
+  routeMap.set("/rss-feed", {
+    content: rss({
       title: blog.title,
       link: new URL(hostname),
       description: blog.description,
       items: rssItems,
     }),
-  );
+    ext: RSS_EXT,
+    mime: RSS_MIME,
+    slug: "rss-feed",
+  });
 
   return routeMap;
 }

@@ -1,8 +1,8 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { toDate } from "../../../src/utils/date-utils.js";
+import { toDate } from "../../../src/rss/date-utils.js";
 
-/** @typedef {import("../../../src/utils/blog-utils.js").EntryData} EntryData */
+/** @typedef {import("../../../src/blog/blog-utils.js").EntryData} EntryData */
 
 describe("toDate()", () => {
   /** @type {EntryData} */

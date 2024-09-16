@@ -3,18 +3,18 @@ import fs from "node:fs/promises";
 import { blog } from "../blog/blog.js";
 import { createRouteMap } from "../routes/routes.js";
 
-// TODO: Move to env variable
+// TODO: Move to config file
 const HOSTNAME = "https://isallitis.onrender.com";
 
 const startTime = Date.now();
 
-const htmlMap = createRouteMap(blog, {
+const routes = createRouteMap(blog, {
   fingerprint: startTime.toString(),
   hostname: HOSTNAME,
 });
 const distPath = "../../build";
 const distURL = new URL(distPath, import.meta.url);
-const cssSrcURL = new URL("../styles/styles.css", import.meta.url);
+const cssSrcURL = new URL("../blog/styles/styles.css", import.meta.url);
 const cssBuildURL = new URL(
   path.join(distPath, `styles-${startTime}.css`),
   import.meta.url,
@@ -37,24 +37,19 @@ try {
 /** @type {Array<Promise<void>>} */
 const buildPromises = [];
 
-htmlMap.forEach((html, entryPath) => {
-  const pathSegments = entryPath.split("/");
-  const slug = pathSegments.pop();
-
-  pathSegments.shift();
-
+routes.forEach((routeData, entryPath) => {
+  const pathSegments = entryPath.split("/").slice(0, -1);
   const entryFolderPath = path.join(distPath, pathSegments.join("/"));
   const entryFolderURL = new URL(entryFolderPath, import.meta.url);
-  const entryExt = slug === "rss-feed" ? "xml" : "html";
   const entryFileURL = new URL(
-    path.join(entryFolderPath, `${slug}.${entryExt}`),
+    path.join(entryFolderPath, `${routeData.slug}.${routeData.ext}`),
     import.meta.url,
   );
 
   buildPromises.push(
     new Promise(async (resolve) => {
       await fs.mkdir(entryFolderURL, { recursive: true });
-      await fs.writeFile(entryFileURL, html);
+      await fs.writeFile(entryFileURL, routeData.content);
       resolve();
     }),
   );

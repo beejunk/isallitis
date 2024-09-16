@@ -15,7 +15,7 @@ function pad(dateElement) {
  * Converts the blog entry time to a `Date` object in GMT with
  * the appropriate CST offset.
  *
- * @param {import("./blog-utils.js").EntryData} entryData
+ * @param {import("../blog/blog-utils.js").EntryData} entryData
  * @returns {Date}
  */
 export function toDate(entryData) {

@@ -1,4 +1,4 @@
-import { html } from "../../../../../../../../utils/html-utils.js";
+import { html } from "../../../../../../../html-utils.js";
 
 const title = "An Intro Is All It Is";
 

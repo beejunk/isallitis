@@ -1,7 +1,7 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { createRouteMap } from "../../../src/routes/routes.js";
-import { getBlogPath } from "../../../src/utils/html-utils.js";
+import { getBlogPath } from "../../../src/blog/html-utils.js";
 import { mockBlog } from "../../fixtures/mock-blog.js";
 
 describe("createRouteMap()", () => {

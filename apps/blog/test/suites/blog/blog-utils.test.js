@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import { mockBlog } from "../../fixtures/mock-blog.js";
-import { reduceToEntryData } from "../../../src/utils/blog-utils.js";
+import { reduceToEntryData } from "../../../src/blog/blog-utils.js";
 
 describe("reduceToEntryData()", () => {
   test("should create an array with an element for each blog entry", () => {

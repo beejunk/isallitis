@@ -19,7 +19,7 @@
 function withDateInfo(dateInfo) {
   /**
    * @param {Array<EntryData>} entryDataArr
-   * @param {import("../blog/blog.js").BlogEntry} entry
+   * @param {import("./blog.js").BlogEntry} entry
    */
   return function mergeEntry(entryDataArr, entry) {
     const { body, slug, title, hour, minute } = entry;
@@ -34,7 +34,7 @@ function withDateInfo(dateInfo) {
 function withYearAndMonth(yearAndMonth) {
   /**
    * @param {Array<EntryData>} entryDataArr
-   * @param {import("../blog/blog.js").BlogDay} blogDay
+   * @param {import("./blog.js").BlogDay} blogDay
    */
   return function mergeDay(entryDataArr, blogDay) {
     const { day, entries } = blogDay;
@@ -50,7 +50,7 @@ function withYearAndMonth(yearAndMonth) {
 function withYear(year) {
   /**
    * @param {Array<EntryData>} entryDataArr
-   * @param {import("../blog/blog.js").BlogMonth} blogMonth
+   * @param {import("./blog.js").BlogMonth} blogMonth
    */
   return function mergeMonth(entryDataArr, blogMonth) {
     const { month, days } = blogMonth;
@@ -62,7 +62,7 @@ function withYear(year) {
 
 /**
  * @param {Array<EntryData>} entryDataArr
- * @param {import("../blog/blog.js").BlogYear} blogYear
+ * @param {import("./blog.js").BlogYear} blogYear
  */
 function toFlattenedEntryData(entryDataArr, blogYear) {
   const { year, months } = blogYear;
@@ -72,7 +72,7 @@ function toFlattenedEntryData(entryDataArr, blogYear) {
 }
 
 /**
- * @param {import("../blog/blog.js").Blog} blog
+ * @param {import("./blog.js").Blog} blog
  * @return {Array<EntryData>}
  */
 export function reduceToEntryData(blog) {
