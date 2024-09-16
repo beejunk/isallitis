@@ -6,7 +6,7 @@ import { getBlogPath } from "../utils/html-utils.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
 
-const routeMap = createRouteMap(blog);
+const routeMap = createRouteMap(blog, { hostname: `http://localhost:${PORT}` });
 
 const stylesPath = new URL("../styles/styles.css", import.meta.url);
 
@@ -56,6 +56,12 @@ server.get("/", (request, reply) => {
   const html = routeMap.get("/index");
 
   reply.type("text/html").send(html);
+});
+
+server.get("/rss-feed.xml", (_request, reply) => {
+  const xml = routeMap.get("/rss-feed.xml");
+
+  reply.type("application/rss+xml").send(xml);
 });
 
 try {

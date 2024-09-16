@@ -1,6 +1,7 @@
 /** @type {import("../../src/blog/blog.js").Blog} */
 export const mockBlog = {
   title: "Test Blog",
+  description: "Test Blog",
   years: {
     2024: {
       year: 2024,

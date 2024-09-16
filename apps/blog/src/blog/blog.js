@@ -46,6 +46,7 @@ import { years } from "./years/years.js";
 /**
  * @typedef {Object} Blog
  * @property {string} title
+ * @property {string} description
  * @property {BlogYears} years
  */
 
@@ -60,6 +61,8 @@ import { years } from "./years/years.js";
 /** @type {Blog} */
 export const blog = {
   title: "A Blog Is All It Is",
+
+  description: "Brian David's web development blog.",
 
   years,
 };

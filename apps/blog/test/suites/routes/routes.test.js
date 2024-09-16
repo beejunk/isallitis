@@ -6,7 +6,9 @@ import { mockBlog } from "../../fixtures/mock-blog.js";
 
 describe("createRouteMap()", () => {
   test("it should return an entry for the provided path", () => {
-    const routeMap = createRouteMap(mockBlog);
+    const routeMap = createRouteMap(mockBlog, {
+      hostname: "https://test.blog.com",
+    });
 
     const params = {
       year: 2024,

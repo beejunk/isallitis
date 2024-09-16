@@ -27,11 +27,16 @@ function description(feedDescription) {
 }
 
 /**
- * @param {Object} props
- * @param {string} props.title
- * @param {URL} props.link
- * @param {string} props.description
- * @param {Array<RSSItemProps>} [props.items = []]
+ * @typedef {Object} RSSChannelProps
+ * @prop {string} title
+ * @prop {URL} link
+ * @prop {string} description
+ * @prop {Array<RSSItemProps>} [items = []]
+ */
+
+/**
+ * @param {RSSChannelProps} props
+ * @returns {string}
  */
 export function channel(props) {
   const items = props.items ?? [];

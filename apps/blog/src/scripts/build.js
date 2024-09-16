@@ -3,9 +3,15 @@ import fs from "node:fs/promises";
 import { blog } from "../blog/blog.js";
 import { createRouteMap } from "../routes/routes.js";
 
+// TODO: Move to env variable
+const HOSTNAME = "https://isallitis.onrender.com";
+
 const startTime = Date.now();
 
-const htmlMap = createRouteMap(blog, { fingerprint: startTime.toString() });
+const htmlMap = createRouteMap(blog, {
+  fingerprint: startTime.toString(),
+  hostname: HOSTNAME,
+});
 const distPath = "../../build";
 const distURL = new URL(distPath, import.meta.url);
 const cssSrcURL = new URL("../styles/styles.css", import.meta.url);
@@ -39,8 +45,9 @@ htmlMap.forEach((html, entryPath) => {
 
   const entryFolderPath = path.join(distPath, pathSegments.join("/"));
   const entryFolderURL = new URL(entryFolderPath, import.meta.url);
+  const entryExt = slug === "rss-feed" ? "xml" : "html";
   const entryFileURL = new URL(
-    path.join(entryFolderPath, `${slug}.html`),
+    path.join(entryFolderPath, `${slug}.${entryExt}`),
     import.meta.url,
   );
 
