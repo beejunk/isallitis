@@ -1,14 +1,37 @@
 import { html } from "../html-utils.js";
+import { rssIcon } from "./rss-icon.js";
+
+function connectLinks() {
+  return html`
+    <ul class="connect-links">
+      <li><a href="/rss-feed.xml">${rssIcon()}</a></li>
+    </ul>
+  `;
+}
 
 /**
  * @param {Object} props
  * @param {string} props.title
+ * @param {boolean} props.titleLink
+ */
+function pageTitle(props) {
+  const { title, titleLink } = props;
+
+  if (titleLink) {
+    return html`<a class="site-title" href="/index.html">${title}</a>`;
+  }
+
+  return html`<p class="site-title">${title}</p>`;
+}
+
+/**
+ * @param {Object} props
+ * @param {string} props.title
+ * @param {boolean} props.titleLink
  */
 function header(props) {
-  const { title } = props;
-
-  return html`<header class="banner">
-    <p class="site-title">${title}</p>
+  return html` <header class="banner">
+    ${pageTitle(props)} ${connectLinks()}
   </header>`;
 }
 
@@ -16,18 +39,21 @@ function header(props) {
  * @param {Object} props
  * @param {string} props.title
  * @param {string} props.content
+ * @param {boolean} [props.titleLink = false]
  * @return {string}
  */
 export function layout(props) {
-  const { content, title } = props;
+  const { content, title, titleLink = false } = props;
 
   return html`
     <body>
-      <main>
-        ${header({ title })}
+      <div class="main-container">
+        ${header({ title, titleLink })}
+
         <!-- TODO nav -->
-        ${content}
-      </main>
+
+        <main>${content}</main>
+      </div>
     </body>
   `;
 }

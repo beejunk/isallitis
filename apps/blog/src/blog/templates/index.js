@@ -1,5 +1,6 @@
 import { basePage } from "./base-page.js";
 import { getBlogPath, html } from "../html-utils.js";
+import { layout } from "./layout.js";
 
 /**
  * @param {Object} props
@@ -59,8 +60,11 @@ export function index(props) {
   const { title, years } = blog;
 
   return basePage({
-    content: entryList({ years }),
-    fingerprint,
     title,
+    fingerprint,
+    content: layout({
+      title,
+      content: entryList({ years }),
+    }),
   });
 }

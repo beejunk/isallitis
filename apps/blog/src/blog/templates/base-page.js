@@ -1,5 +1,3 @@
-import { blog } from "../blog.js";
-import { layout } from "./layout.js";
 import { html } from "../html-utils.js";
 
 /**
@@ -35,7 +33,7 @@ export function basePage(props) {
   return html`
     <!doctype html>
     <html lang="en">
-      ${head({ fingerprint, title })} ${layout({ content, title: blog.title })}
+      ${head({ fingerprint, title })} ${content}
     </html>
   `;
 }
