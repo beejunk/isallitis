@@ -16,6 +16,12 @@ function head(props) {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>${title}</title>
       <link rel="stylesheet" href="${stylePath}" />
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title="A Blog Is All It Is"
+        href="/rss-feed.xml"
+      />
     </head>
   `;
 }
