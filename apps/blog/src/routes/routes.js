@@ -1,7 +1,10 @@
-import { condenseWhitespace, getBlogPath } from "../blog/html-utils.js";
 import { blogEntry } from "../blog/templates/blog-entry.js";
 import { index } from "../blog/templates/index.js";
-import { reduceToEntryData } from "../blog/blog-utils.js";
+import {
+  condenseWhitespace,
+  getBlogPath,
+  reduceBlogToEntryData,
+} from "../blog/blog-utils.js";
 import { rss, toRSSItem } from "../rss/rss.js";
 
 const HTML_EXT = "html";
@@ -9,7 +12,17 @@ const HTML_MIME = "text/html";
 const RSS_EXT = "xml";
 const RSS_MIME = "application/rss+xml";
 
-/** @typedef {import("../blog/blog-utils.js").EntryData} EntryData */
+/**
+ * @typedef {Object} EntryData
+ * @property {number} year
+ * @property {number} month
+ * @property {number} day
+ * @property {number} hour
+ * @property {number} minute
+ * @property {string} slug
+ * @property {string} body
+ * @property {string} title
+ */
 
 /**
  * @typedef {Object} RouteData
@@ -57,7 +70,7 @@ function mapEntryDataToRoutes(entryData, fingerprint) {
 export function createRouteMap(blog, options) {
   const { fingerprint, hostname } = options;
 
-  const entryData = reduceToEntryData(blog);
+  const entryData = reduceBlogToEntryData(blog);
   const rssItems = entryData.map(toRSSItem(hostname));
   const routeMap = mapEntryDataToRoutes(entryData, fingerprint);
 

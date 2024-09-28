@@ -1,8 +1,8 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { blogEntry } from "../../../../src/blog/templates/blog-entry.js";
-import { html } from "../../../../src/blog/html-utils.js";
 import { getScreen } from "../../../test-utils.js";
+import { html } from "../../../../src/blog/blog-utils.js";
 
 describe("blogEntry()", () => {
   const title = "Entry Title";

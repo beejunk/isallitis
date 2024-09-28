@@ -1,5 +1,5 @@
-import { html } from "../html-utils.js";
 import { rssIcon } from "./rss-icon.js";
+import { html } from "../blog-utils.js";
 
 function connectLinks() {
   return html`

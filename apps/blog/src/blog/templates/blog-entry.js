@@ -1,7 +1,7 @@
 import { basePage } from "./base-page.js";
-import { html } from "../html-utils.js";
 import { layout } from "./layout.js";
 import { blog } from "../blog.js";
+import { html } from "../blog-utils.js";
 
 /**
  * @param {Object} props

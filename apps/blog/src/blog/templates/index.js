@@ -1,6 +1,6 @@
 import { basePage } from "./base-page.js";
-import { getBlogPath, html } from "../html-utils.js";
 import { layout } from "./layout.js";
+import { getBlogPath, html } from "../blog-utils.js";
 
 /**
  * @param {Object} props
