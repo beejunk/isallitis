@@ -46,13 +46,12 @@ routes.forEach((routeData, entryPath) => {
     import.meta.url,
   );
 
-  buildPromises.push(
-    new Promise(async (resolve) => {
-      await fs.mkdir(entryFolderURL, { recursive: true });
-      await fs.writeFile(entryFileURL, routeData.content);
-      resolve();
-    }),
-  );
+  const writeEntry = async () => {
+    await fs.mkdir(entryFolderURL, { recursive: true });
+    await fs.writeFile(entryFileURL, routeData.content);
+  };
+
+  buildPromises.push(writeEntry());
 });
 
 try {

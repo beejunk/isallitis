@@ -5,7 +5,8 @@
   "scripts": {
     "build": "node src/scripts/build.js",
     "dev": "nodemon -e js,css src/server/server.js",
-    "healthcheck": "npm run types:check && npm run test",
+    "healthcheck": "npm run types:check && npm run lint && npm run test",
+    "lint": "eslint",
     "start": "NODE_ENV=production node src/server.js",
     "test": "node --test test/suites",
     "types:check": "tsc"
