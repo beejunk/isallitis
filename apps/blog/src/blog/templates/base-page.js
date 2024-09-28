@@ -15,6 +15,8 @@ function head(props) {
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>${title}</title>
+
+      <link rel="stylesheet" href="/vendors/prism/prism.css" />
       <link rel="stylesheet" href="${stylePath}" />
       <link
         rel="alternate"

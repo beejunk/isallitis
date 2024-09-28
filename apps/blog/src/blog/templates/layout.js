@@ -54,6 +54,8 @@ export function layout(props) {
 
         <main>${content}</main>
       </div>
+
+      <script src="/vendors/prism/prism.js" async></script>
     </body>
   `;
 }

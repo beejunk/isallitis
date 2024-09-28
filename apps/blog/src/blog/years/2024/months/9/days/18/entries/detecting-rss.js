@@ -31,7 +31,7 @@ const body = html`
   </p>
 
   <pre>
-    <code>&lt;link rel="alternate" type="application/rss+xml" title="A Blog Is All It Is" href="/rss-feed.xml"&gt;</code>
+    <code class="language-markup">&lt;link rel="alternate" type="application/rss+xml" title="A Blog Is All It Is" href="/rss-feed.xml"&gt;</code>
   </pre>
 
   <p>

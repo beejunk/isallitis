@@ -19,6 +19,14 @@ const cssBuildURL = new URL(
   path.join(distPath, `styles-${startTime}.css`),
   import.meta.url,
 );
+const vendorsSrcUrl = new URL(
+  path.join("..", "..", "vendors"),
+  import.meta.url,
+);
+const vendorsBuildUrl = new URL(
+  path.join(distPath, "vendors"),
+  import.meta.url,
+);
 
 try {
   await fs.rm(distURL, { recursive: true, force: true });
@@ -29,6 +37,13 @@ try {
 
 try {
   await fs.cp(cssSrcURL, cssBuildURL);
+} catch (err) {
+  console.error(`Error building CSS: ${err}`);
+  process.exit(1);
+}
+
+try {
+  await fs.cp(vendorsSrcUrl, vendorsBuildUrl, { recursive: true });
 } catch (err) {
   console.error(`Error building CSS: ${err}`);
   process.exit(1);
