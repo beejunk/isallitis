@@ -1,5 +1,5 @@
 /** @typedef {import("../routes/routes.js").EntryData} EntryData */
-/** @typedef {import("./blog.js").BlogPathParams} BlogPathParams */
+/** @typedef {import("../routes/routes.js").RouteParams} RoutePathParams */
 /** @typedef {import("./blog.js").BlogEntry} BlogEntry */
 /** @typedef {import("./blog.js").BlogDay} BlogDay */
 /** @typedef {import("./blog.js").BlogMonth} BlogMonth */
@@ -67,14 +67,6 @@ const reduceYear = (entryDataArr, blogYear) => {
  */
 export function reduceBlogToEntryData(blog) {
   return Object.values(blog.years).reduce(reduceYear, []);
-}
-
-/**
- * @param {BlogPathParams} blogPathParams - Date params with entry slug.
- */
-export function getBlogPath(blogPathParams) {
-  const { year, month, day, slug } = blogPathParams;
-  return `/years/${year}/months/${month}/days/${day}/entries/${slug}`;
 }
 
 /**

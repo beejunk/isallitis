@@ -3,7 +3,6 @@ import { describe, test } from "node:test";
 import { mockBlog } from "../../fixtures/mock-blog.js";
 import {
   condenseWhitespace,
-  getBlogPath,
   html,
   reduceBlogToEntryData,
 } from "../../../src/blog/blog-utils.js";
@@ -30,23 +29,6 @@ describe("reduceToEntryData()", () => {
     const [actual] = reduceBlogToEntryData(mockBlog);
 
     assert.deepEqual(actual, expected);
-  });
-});
-
-describe("getBlogPath()", () => {
-  test("should return the expected path", () => {
-    /** @type {import("../../../src/blog/blog.js").BlogPathParams} */
-    const params = {
-      year: 2024,
-      month: 8,
-      day: 21,
-      slug: "entry-slug",
-    };
-    const expected = "/years/2024/months/8/days/21/entries/entry-slug";
-
-    const actual = getBlogPath(params);
-
-    assert.equal(actual, expected);
   });
 });
 

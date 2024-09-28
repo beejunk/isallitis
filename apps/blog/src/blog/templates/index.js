@@ -1,6 +1,7 @@
 import { basePage } from "./base-page.js";
 import { layout } from "./layout.js";
-import { getBlogPath, html } from "../blog-utils.js";
+import { html } from "../blog-utils.js";
+import { getBlogRoute } from "../../routes/routes.js";
 
 /**
  * @param {Object} props
@@ -13,7 +14,7 @@ import { getBlogPath, html } from "../blog-utils.js";
  */
 function entryListItem(props) {
   const { year, month, day, slug, title } = props;
-  const path = getBlogPath({ year, month, day, slug });
+  const path = getBlogRoute({ year, month, day, slug });
 
   return html`<li>
     <a href="${path}.html">${year}-${month}-${day}: ${title}</a>

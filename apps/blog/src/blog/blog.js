@@ -50,14 +50,6 @@ import { years } from "./years/years.js";
  * @property {BlogYears} years
  */
 
-/**
- * @typedef {Object} BlogPathParams
- * @property {number} year
- * @property {number} month
- * @property {number} day
- * @property {string} slug
- */
-
 /** @type {Blog} */
 export const blog = {
   title: "A Blog Is All It Is",

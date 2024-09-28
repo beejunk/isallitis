@@ -2,7 +2,6 @@ import { blogEntry } from "../blog/templates/blog-entry.js";
 import { index } from "../blog/templates/index.js";
 import {
   condenseWhitespace,
-  getBlogPath,
   reduceBlogToEntryData,
 } from "../blog/blog-utils.js";
 import { rss, toRSSItem } from "../rss/rss.js";
@@ -11,6 +10,14 @@ const HTML_EXT = "html";
 const HTML_MIME = "text/html";
 const RSS_EXT = "xml";
 const RSS_MIME = "application/rss+xml";
+
+/**
+ * @typedef {Object} RouteParams
+ * @property {number} year
+ * @property {number} month
+ * @property {number} day
+ * @property {string} slug
+ */
 
 /**
  * @typedef {Object} EntryData
@@ -33,6 +40,14 @@ const RSS_MIME = "application/rss+xml";
  */
 
 /**
+ * @param {RouteParams} routeParams
+ */
+export function getBlogRoute(routeParams) {
+  const { year, month, day, slug } = routeParams;
+  return `/years/${year}/months/${month}/days/${day}/entries/${slug}`;
+}
+
+/**
  * @param {Array<EntryData>} entryData
  * @param {string} [fingerprint]
  * @return {Map<string, RouteData>}
@@ -43,7 +58,7 @@ function mapEntryDataToRoutes(entryData, fingerprint) {
 
   entryData.forEach((entry) => {
     const { year, month, day, slug, body, title } = entry;
-    const path = getBlogPath({ year, month, day, slug });
+    const path = getBlogRoute({ year, month, day, slug });
     const html = condenseWhitespace(blogEntry({ body, fingerprint, title }));
 
     routeMap.set(path, {
