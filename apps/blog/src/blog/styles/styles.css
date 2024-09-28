@@ -4,11 +4,11 @@
   --base-font-size: 8px;
   --font-weight-bold: 700;
 
-  --heading-1: 3em;
-  --heading-2: 2.5em;
-  --heading-3: 2em;
-  --body-copy: 2em;
-  --site-title: 4em;
+  --heading-1: 3rem;
+  --heading-2: 2.5rem;
+  --heading-3: 2rem;
+  --body-copy: 2rem;
+  --site-title: 4rem;
 
   font-size: var(--base-font-size);
 }
@@ -23,13 +23,32 @@ h1 {
 }
 
 p,
-li {
+li,
+code,
+blockquote {
   font-size: var(--body-copy);
 }
 
 p {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  line-height: 1.5em;
+}
+
+blockquote {
+  line-height: 1.5em;
+  border-left: 3px solid #000;
+  padding-left: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+}
+
+pre:has(code) {
+  overflow: scroll;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: #efefef;
 }
 
 /* Layout */
