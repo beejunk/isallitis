@@ -40,14 +40,6 @@ const RSS_MIME = "application/rss+xml";
  */
 
 /**
- * @param {RouteParams} routeParams
- */
-export function getBlogRoute(routeParams) {
-  const { year, month, day, slug } = routeParams;
-  return `/years/${year}/months/${month}/days/${day}/entries/${slug}`;
-}
-
-/**
  * @param {Array<EntryData>} entryData
  * @param {string} [fingerprint]
  * @return {Map<string, RouteData>}
@@ -70,6 +62,14 @@ function mapEntryDataToRoutes(entryData, fingerprint) {
   });
 
   return routeMap;
+}
+
+/**
+ * @param {RouteParams} routeParams
+ */
+export function getBlogRoute(routeParams) {
+  const { year, month, day, slug } = routeParams;
+  return `/year/${year}/month/${month}/day/${day}/entry/${slug}`;
 }
 
 /**

@@ -31,7 +31,7 @@ describe("getBlogRoute()", () => {
       day: 21,
       slug: "entry-slug",
     };
-    const expected = "/years/2024/months/8/days/21/entries/entry-slug";
+    const expected = "/year/2024/month/8/day/21/entry/entry-slug";
 
     const actual = getBlogRoute(params);
 
