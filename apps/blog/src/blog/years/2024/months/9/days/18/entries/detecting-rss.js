@@ -1,4 +1,4 @@
-import { html } from "../../../../../../../blog-utils.js";
+import { html } from "htm/preact";
 
 const title = "Detecting RSS";
 
@@ -16,7 +16,7 @@ const links = {
   vivaldi: "https://www.vivaldi.com",
 };
 
-const body = html`
+const body = () => html`
   <p>
     Setting up a bare-bones RSS feed for this blog ended up not being too
     tedious, and I'll probably write in more detail about that later. One thing
@@ -45,7 +45,7 @@ const body = html`
 
   <p>
     Perhaps unsurprisingly,
-    <a href="${links.redditComment}">a Reddit comment</a>
+    <a href="${links.redditComment}"> a Reddit comment </a>
     was where I found this recommendation:
   </p>
 

@@ -1,3 +1,5 @@
+import { html } from "htm/preact";
+
 /** @type {import("../../src/blog/blog.js").Blog} */
 export const mockBlog = {
   title: "Test Blog",
@@ -15,7 +17,7 @@ export const mockBlog = {
                 "a-test-is-all-it-is": {
                   slug: "a-test-is-all-it-is",
                   title: "A Test Is All It Is",
-                  body: "<p>A test is all it is</p>",
+                  body: () => html`<p>A test is all it is</p>`,
                   hour: 18,
                   minute: 20,
                 },
@@ -27,7 +29,7 @@ export const mockBlog = {
                 "a-test-is-all-it-is-part-2": {
                   slug: "a-test-is-all-it-is-part-2",
                   title: "A Test Is All It Is pt. 2",
-                  body: "<p>A test is all it is pt. 2</p>",
+                  body: () => html`<p>A test is all it is pt. 2</p>`,
                   hour: 18,
                   minute: 20,
                 },

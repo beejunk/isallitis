@@ -2,7 +2,7 @@ import { years } from "./years/years.js";
 
 /**
  * @typedef {Object} BlogEntry
- * @property {string} body
+ * @property {import("preact").FunctionComponent} body
  * @property {number} hour
  * @property {number} minute
  * @property {string} slug

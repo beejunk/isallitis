@@ -1,15 +1,23 @@
-import { blogEntry } from "../blog/templates/blog-entry.js";
-import { index } from "../blog/templates/index.js";
-import {
-  condenseWhitespace,
-  reduceBlogToEntryData,
-} from "../blog/blog-utils.js";
+import { renderToString } from "preact-render-to-string";
+import { html } from "htm/preact";
+import { BlogEntry } from "../blog/components/blog-entry.js";
+import { Index } from "../blog/components/index.js";
+import { reduceBlogToEntryData } from "../blog/blog-utils.js";
 import { rss, toRSSItem } from "../rss/rss.js";
 
 const HTML_EXT = "html";
 const HTML_MIME = "text/html";
 const RSS_EXT = "xml";
 const RSS_MIME = "application/rss+xml";
+const DOCTYPE = "<!DOCTYPE html>";
+
+/**
+ * @param {string} html
+ * @returns {string}
+ */
+function withDoctype(html) {
+  return `${DOCTYPE}${html}`;
+}
 
 /**
  * @typedef {Object} RouteParams
@@ -51,10 +59,16 @@ function mapEntryDataToRoutes(entryData, fingerprint) {
   entryData.forEach((entry) => {
     const { year, month, day, slug, body, title } = entry;
     const path = getBlogRoute({ year, month, day, slug });
-    const html = condenseWhitespace(blogEntry({ body, fingerprint, title }));
+    const content = withDoctype(
+      renderToString(html`
+        <${BlogEntry} fingerprint=${fingerprint} title=${title}>
+          <${body} />
+        </BlogEntry>
+      `),
+    );
 
     routeMap.set(path, {
-      content: html,
+      content,
       ext: HTML_EXT,
       mime: HTML_MIME,
       slug,
@@ -90,7 +104,9 @@ export function createRouteMap(blog, options) {
   const routeMap = mapEntryDataToRoutes(entryData, fingerprint);
 
   routeMap.set("/index", {
-    content: condenseWhitespace(index({ blog, fingerprint })),
+    content: withDoctype(
+      renderToString(html`<${Index} fingerprint=${fingerprint} />`),
+    ),
     ext: HTML_EXT,
     mime: HTML_MIME,
     slug: "index",

@@ -70,31 +70,6 @@ export function reduceBlogToEntryData(blog) {
 }
 
 /**
- * @param {HTMLChildren} children
- * @returns {function(string, number): string}
- */
-const joinWithChild = (children) => (text, idx) => {
-  const child = children[idx] ?? "";
-  const childStr = Array.isArray(child) ? child.join("") : child;
-
-  return `${text}${childStr}`;
-};
-
-/**
- * Tagged template for HTML. All it does is join the literal into a single string.
- * I use this mostly because having an `html` tagged template will trigger IDE
- * syntax highlighting and Prettier formatting. It does provide some type constraints
- * for what expressions can be used for HTML, too.
- *
- * @param {TemplateStringsArray} strings
- * @param {HTMLChildren} children
- * @return {string}
- */
-export function html(strings, ...children) {
-  return strings.map(joinWithChild(children)).join("");
-}
-
-/**
  * @param {string} html
  * @return {string}
  */

@@ -1,6 +1,6 @@
-import { html } from "../blog-utils.js";
+import { html } from "htm/preact";
 
-export function rssIcon() {
+export function RSSIcon() {
   return html`
     <svg
       xmlns="http://www.w3.org/2000/svg"

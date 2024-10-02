@@ -1,12 +1,12 @@
-import { html } from "../blog-utils.js";
+import { html } from "htm/preact";
+import { blogData } from "./signals.js";
 
 /**
  * @param {Object} props
  * @param {string} [props.fingerprint]
  * @param {string} props.title
- * @return {string}
  */
-function head(props) {
+function Head(props) {
   const { fingerprint, title } = props;
   const stylePath = fingerprint ? `/styles-${fingerprint}.css` : `/styles.css`;
 
@@ -30,18 +30,16 @@ function head(props) {
 
 /**
  * @param {Object} props
- * @param {string} props.content
+ * @param {import("preact").ComponentChildren} props.children
  * @param {string} [props.fingerprint]
- * @param {string} props.title
- * @return {string}
  */
-export function basePage(props) {
-  const { content, fingerprint, title } = props;
+export function BasePage(props) {
+  const { children, fingerprint } = props;
 
   return html`
-    <!doctype html>
     <html lang="en">
-      ${head({ fingerprint, title })} ${content}
+      <${Head} fingerprint=${fingerprint} title=${blogData.value.blogTitle} />
+      ${children}
     </html>
   `;
 }
