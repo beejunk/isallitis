@@ -18,10 +18,12 @@ export function Code(props) {
 
   if (inline) {
     return html`
+      ${" "}
       <code
         class="language-${language}"
         dangerouslySetInnerHTML=${{ __html: he.encode(withBackTicks(src)) }}
       />
+      ${" "}
     `;
   }
 

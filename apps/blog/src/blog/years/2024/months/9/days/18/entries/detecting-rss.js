@@ -1,5 +1,6 @@
 import { html } from "htm/preact";
 import { Code } from "../../../../../../../components/code.js";
+import { BlogLink } from "../../../../../../../components/blog-link.js";
 
 const title = "Detecting RSS";
 
@@ -10,7 +11,8 @@ const hour = 12;
 const minute = 45;
 
 const links = {
-  mdnRelLink:
+  emmet: "https://docs.emmet.io",
+  mdnRelAttr:
     "https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel",
   mdnLinkEl: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link",
   redditComment:
@@ -28,8 +30,8 @@ const body = () => html`
   </p>
 
   <p>
-    As it turns out, you can use${" "}
-    <a href="${links.mdnLinkEl}"><${Code} inline src="<link>" /> tags</a> to do
+    As it turns out, you can use
+    <${BlogLink} href="${links.mdnLinkEl}"><${Code} inline src="<link>" />tags</${BlogLink}> to do
     this, like so:
   </p>
 
@@ -41,7 +43,7 @@ const body = () => html`
   <p>
     The key here is setting the <${Code} inline src="rel" /> attribute to
     <${Code} inline src="alternative" />, which has the following description on
-    ${" "} <a href="${links.mdnRelLink}">MDN</a>:
+    <${BlogLink} href="${links.mdnRelAttr}">MDN</${BlogLink}>:
   </p>
 
   <blockquote>Alternate representations of the current document.</blockquote>
@@ -50,7 +52,7 @@ const body = () => html`
 
   <p>
     Perhaps unsurprisingly,
-    <a href="${links.redditComment}"> a Reddit comment </a>
+    <${BlogLink} href="${links.redditComment}"> a Reddit comment </${BlogLink}>
     was where I found this recommendation:
   </p>
 
@@ -63,11 +65,15 @@ const body = () => html`
       />
     </p>
   </blockquote>
+    
   <p>
-    It's sad that Reddit is where I found this, because it seems like using
-    <${Code} inline src="<link>" /> tags in this way is standard. When I type in
-    <${Code} inline src="link" /> into WebStorm a bunch of auto-completes (drive
-    by Emmet, I think) pop up, including for RSS and Atom.
+    I'm not sure what it says about the state of search engines that Reddit is where
+    I found this. It seems like using <${Code} inline src="<link>" /> tags in this
+    way is standard. When I type in <${Code} inline src="link" /> into WebStorm a
+    bunch of auto-completes (driven by <${BlogLink} href=${links.emmet}>Emmet</${BlogLink}>,
+    I think) pop up, including for RSS and Atom. And at the very least
+    you'd think the MDN docs I linked above would appear prominently in the search
+    result.
   </p>
 `;
 

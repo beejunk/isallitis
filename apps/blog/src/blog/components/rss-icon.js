@@ -3,6 +3,8 @@ import { html } from "htm/preact";
 export function RSSIcon() {
   return html`
     <svg
+      height="24"
+      width="24"
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"

@@ -11,5 +11,5 @@ import { html } from "htm/preact";
  */
 export function BlogLink(props) {
   const { href, children } = props;
-  return html`<a href="${href}">${children}</a>`;
+  return html`${" "}<a href="${href}">${children}</a>${" "}`;
 }
