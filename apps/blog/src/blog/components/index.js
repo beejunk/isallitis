@@ -1,7 +1,7 @@
 import { html } from "htm/preact";
 import { BasePage } from "./base-page.js";
 import { Layout } from "./layout.js";
-import { getBlogRoute } from "../../routes/routes.js";
+import { getBlogEntryRoute } from "../../routes/routes.js";
 import { blogData } from "./signals.js";
 
 /**
@@ -14,7 +14,7 @@ import { blogData } from "./signals.js";
  */
 function EntryListItem(props) {
   const { year, month, day, slug, title } = props;
-  const path = getBlogRoute({ year, month, day, slug });
+  const path = getBlogEntryRoute({ year, month, day, slug });
 
   return html`<li>
     <a href="${path}.html">${year}-${month}-${day}: ${title}</a>

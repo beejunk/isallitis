@@ -1,11 +1,14 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { createRouteMap, getBlogRoute } from "../../../src/routes/routes.js";
+import {
+  compileRouteMap,
+  getBlogEntryRoute,
+} from "../../../src/routes/routes.js";
 import { mockBlog } from "../../fixtures/mock-blog.js";
 
 describe("createRouteMap()", () => {
   test("it should return an entry for the provided path", () => {
-    const routeMap = createRouteMap(mockBlog, {
+    const routeMap = compileRouteMap(mockBlog, {
       hostname: "https://test.blog.com",
     });
 
@@ -15,7 +18,7 @@ describe("createRouteMap()", () => {
       day: 18,
       slug: "a-test-is-all-it-is",
     };
-    const path = getBlogRoute(params);
+    const path = getBlogEntryRoute(params);
     const entry = routeMap.get(path);
 
     assert.ok(entry);
@@ -33,7 +36,7 @@ describe("getBlogRoute()", () => {
     };
     const expected = "/year/2024/month/8/day/21/entry/entry-slug";
 
-    const actual = getBlogRoute(params);
+    const actual = getBlogEntryRoute(params);
 
     assert.equal(actual, expected);
   });

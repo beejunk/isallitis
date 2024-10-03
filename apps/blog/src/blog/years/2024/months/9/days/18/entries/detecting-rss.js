@@ -1,4 +1,5 @@
 import { html } from "htm/preact";
+import { Code } from "../../../../../../../components/code.js";
 
 const title = "Detecting RSS";
 
@@ -9,7 +10,8 @@ const hour = 12;
 const minute = 45;
 
 const links = {
-  mdn: "https://developer.mozilla.org/",
+  mdnRelLink:
+    "https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel",
   mdnLinkEl: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link",
   redditComment:
     "https://www.reddit.com/r/vivaldibrowser/comments/rdap53/comment/hnztrx4/",
@@ -26,17 +28,20 @@ const body = () => html`
   </p>
 
   <p>
-    As it turns out, you can use
-    <a href="${links.mdnLinkEl}">&lt;link&gt; tags</a> to do this, like so:
+    As it turns out, you can use${" "}
+    <a href="${links.mdnLinkEl}"><${Code} inline src="<link>" /> tags</a> to do
+    this, like so:
   </p>
 
-  <pre>
-    <code class="language-markup">&lt;link rel="alternate" type="application/rss+xml" title="A Blog Is All It Is" href="/rss-feed.xml"&gt;</code>
-  </pre>
+  <${Code}
+    language="markup"
+    src=${`<link rel="alternate" type="application/rss+xml" title="A Blog Is All It Is" href="/rss-feed.xml">`}
+  />
 
   <p>
-    The key here is the \`rel\` attribute, which has the following description
-    on <a href="${links.mdn}">MDN</a>:
+    The key here is setting the <${Code} inline src="rel" /> attribute to
+    <${Code} inline src="alternative" />, which has the following description on
+    ${" "} <a href="${links.mdnRelLink}">MDN</a>:
   </p>
 
   <blockquote>Alternate representations of the current document.</blockquote>
@@ -50,13 +55,20 @@ const body = () => html`
   </p>
 
   <blockquote>
-    <p>See if this works in the &lt;head&gt;&lt;/head&gt>:</p>
+    <p>See if this works in the <${Code} inline src="<head></head>" /></p>
 
     <p>
-      &lt;link rel="alternate" type="application/rss+xml" title="Title of Feed"
-      href="url-to-feed" /&gt;
+      <${Code}
+        src=${`<link rel="alternate" type="application/rss+xml" title="Title of Feed" href="url-to-feed"`}
+      />
     </p>
   </blockquote>
+  <p>
+    It's sad that Reddit is where I found this, because it seems like using
+    <${Code} inline src="<link>" /> tags in this way is standard. When I type in
+    <${Code} inline src="link" /> into WebStorm a bunch of auto-completes (drive
+    by Emmet, I think) pop up, including for RSS and Atom.
+  </p>
 `;
 
 /** @type {import("../../../../../../../blog.js").BlogEntry} */

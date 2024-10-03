@@ -1,14 +1,14 @@
 import path from "node:path";
 import fs from "node:fs/promises";
 import { blog } from "../blog/blog.js";
-import { createRouteMap } from "../routes/routes.js";
+import { compileRouteMap } from "../routes/routes.js";
 
 // TODO: Move to config file
 const HOSTNAME = "https://isallitis.onrender.com";
 
 const startTime = Date.now();
 
-const routes = createRouteMap(blog, {
+const routes = compileRouteMap(blog, {
   fingerprint: startTime.toString(),
   hostname: HOSTNAME,
 });

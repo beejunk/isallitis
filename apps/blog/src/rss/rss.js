@@ -1,6 +1,8 @@
+import { renderToString } from "preact-render-to-string";
+import { html } from "htm/preact";
 import { channel } from "./templates/channel.js";
 
-import { getBlogRoute } from "../routes/routes.js";
+import { getBlogEntryRoute } from "../routes/routes.js";
 
 /** @typedef {import("./templates/channel.js").RSSChannelProps} RSSChannelProps */
 /** @typedef {import("./templates/item.js").RSSItemProps} RSSItemProps */
@@ -23,11 +25,11 @@ export function toRSSItem(hostname) {
    */
   return function withHostname(entry) {
     const { year, month, day, slug, title, body } = entry;
-    const path = getBlogRoute({ year, month, day, slug });
+    const path = getBlogEntryRoute({ year, month, day, slug });
 
     return {
       title,
-      description: body,
+      description: renderToString(html`<${body}></${body}>`),
       link: new URL(path, hostname),
     };
   };

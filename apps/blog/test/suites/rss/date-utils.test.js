@@ -1,3 +1,4 @@
+import { html } from "htm/preact";
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { toDate } from "../../../src/rss/date-utils.js";
@@ -14,7 +15,7 @@ describe("toDate()", () => {
     minute: 25,
     title: "Test Title",
     slug: "test-title",
-    body: "<p>Test Body</p>",
+    body: () => html`<p>Test Body</p>`,
   };
 
   test("should create a date object in GMT with CST offset", () => {
