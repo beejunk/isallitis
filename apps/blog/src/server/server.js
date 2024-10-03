@@ -37,6 +37,16 @@ routeMap.forEach((routeData, path) => {
   server.get(`${path}.${routeData.ext}`, (_request, reply) => {
     reply.type(routeData.mime).send(routeData.content);
   });
+
+  if (path === "/index") {
+    server.get("/", (_request, reply) => {
+      reply.type(routeData.mime).send(routeData.content);
+    });
+  } else {
+    server.get(path, (_request, reply) => {
+      reply.type(routeData.mime).send(routeData.content);
+    });
+  }
 });
 
 try {

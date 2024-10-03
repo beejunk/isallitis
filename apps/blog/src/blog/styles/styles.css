@@ -82,10 +82,6 @@ blockquote {
   padding: 0;
 }
 
-.connect-links svg {
-  height: 3rem;
-}
-
 .connect-links li {
   list-style: none;
 }
