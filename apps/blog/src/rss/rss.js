@@ -1,6 +1,6 @@
 import { renderToString } from "preact-render-to-string";
 import { html } from "htm/preact";
-import { channel } from "./templates/channel.js";
+import { Channel } from "./templates/channel.js";
 
 import { getBlogEntryRoute } from "../routes/routes.js";
 
@@ -10,10 +10,9 @@ import { getBlogEntryRoute } from "../routes/routes.js";
 
 /**
  * @param {RSSChannelProps} props
- * @returns {string}
  */
-export function rss(props) {
-  return `<rss version="2.0">${channel(props)}</rss>`;
+export function RSS(props) {
+  return html`<rss version="2.0"><${Channel} ...${props} /></rss>`;
 }
 
 /**

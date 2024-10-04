@@ -1,3 +1,5 @@
+import { html } from "htm/preact";
+
 class RSSItemError extends Error {
   /**
    * @param {string} msg
@@ -13,29 +15,43 @@ class RSSItemError extends Error {
 /** @typedef {function(string | URL): string} SubElementTemplate */
 
 /**
- * @param {SubElementTemplate} template
+ * @param {Object} props
+ * @param {string} [props.children]
  */
-function maybeContent(template) {
-  /**
-   * @param {OptionalElementContent} content
-   */
-  return function templateWrapper(content) {
-    if (!content) {
-      return "";
-    }
+function Title({ children }) {
+  if (children) {
+    return html`<title>${children}</title>`;
+  }
 
-    return template(content);
-  };
+  return null;
 }
 
-const title = maybeContent((itemTitle) => `<title>${itemTitle}</title>`);
+/**
+ * @param {Object} props
+ * @param {string} [props.children]
+ */
+function Description({ children }) {
+  if (children) {
+    const description = `<![CDATA[${children}]]>`;
+    return html`<description
+      dangerouslySetInnerHTML=${{ __html: description }}
+    />`;
+  }
 
-const description = maybeContent(
-  (itemDescription) =>
-    `<description><![CDATA[${itemDescription}]]></description>`,
-);
+  return null;
+}
 
-const link = maybeContent((itemLink) => `<link>${itemLink}</link>`);
+/**
+ * @param {Object} props
+ * @param {URL} [props.children]
+ */
+function Link({ children }) {
+  if (children) {
+    return html`<link>${children.toString()}</link>`;
+  }
+
+  return null;
+}
 
 /**
  * @typedef {Object} RSSItemProps
@@ -46,9 +62,8 @@ const link = maybeContent((itemLink) => `<link>${itemLink}</link>`);
 
 /**
  * @param {RSSItemProps} props
- * @returns {string}
  */
-export function item(props) {
+export function Item(props) {
   const {
     description: itemDescription,
     link: itemLink,
@@ -59,5 +74,11 @@ export function item(props) {
     throw new RSSItemError("One of `title` or `description` must be provided.");
   }
 
-  return `<item>${title(itemTitle)}${description(itemDescription)}${link(itemLink)}</item>`;
+  return html`
+    <item>
+      <${Title}>${itemTitle}</${Title}>
+      <${Description}>${itemDescription}</${Description}>
+      <${Link}>${itemLink}</${Link}>
+    </item>
+  `;
 }

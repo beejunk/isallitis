@@ -1,29 +1,30 @@
-import { item } from "./item.js";
+import { html } from "htm/preact";
+import { Item } from "./item.js";
 
 /** @typedef {import("./item.js").RSSItemProps} RSSItemProps */
 
 /**
- * @param {string} feedTitle
- * @returns {string}
+ * @param {Object} props
+ * @param {string} [props.children]
  */
-function title(feedTitle) {
-  return `<title>${feedTitle}</title>`;
+function Title({ children }) {
+  return html`<title>${children}</title>`;
 }
 
 /**
- * @param {URL} feedURL
- * @returns {string}
+ * @param {Object} props
+ * @param {URL} props.children
  */
-function link(feedURL) {
-  return `<link>${feedURL}</link>`;
+function Link({ children }) {
+  return html`<link>${children.toString()}</link>`;
 }
 
 /**
- * @param {string} feedDescription
- * @returns {string}
+ * @param {Object} props
+ * @param {string} [props.children]
  */
-function description(feedDescription) {
-  return `<description>${feedDescription}</description>`;
+function Description({ children }) {
+  return html`<description>${children}</description>`;
 }
 
 /**
@@ -36,11 +37,16 @@ function description(feedDescription) {
 
 /**
  * @param {RSSChannelProps} props
- * @returns {string}
  */
-export function channel(props) {
+export function Channel(props) {
   const items = props.items ?? [];
-  const itemStr = items.map(item).join("");
 
-  return `<channel>${title(props.title)}${link(props.link)}${description(props.description)}${itemStr}</channel>`;
+  return html`
+    <channel>
+      <${Title}>${props.title}</${Title}>
+      <${Link}>${props.link}</${Link}>
+      <${Description}>${props.description}</${Description}>
+      ${items.map((item) => html`<${Item} ...${item} />`)}
+    </channel>
+  `;
 }

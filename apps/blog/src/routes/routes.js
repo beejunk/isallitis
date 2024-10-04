@@ -3,7 +3,7 @@ import { html } from "htm/preact";
 import { BlogEntry } from "../blog/components/blog-entry.js";
 import { Index } from "../blog/components/index.js";
 import { reduceBlogToEntryData } from "../blog/blog-utils.js";
-import { rss, toRSSItem } from "../rss/rss.js";
+import { RSS, toRSSItem } from "../rss/rss.js";
 
 /** @typedef {import("preact").FunctionComponent} FunctionComponent */
 
@@ -78,7 +78,7 @@ function entryDataToRouteMap(entryData, fingerprint) {
       renderToString(html`
         <${BlogEntry} fingerprint=${fingerprint} title=${title}>
           <${body} />
-        </BlogEntry>
+        </${BlogEntry}>
       `),
     );
 
@@ -130,12 +130,14 @@ export function compileRouteMap(blog, options) {
   });
 
   routeMap.set("/rss-feed", {
-    content: rss({
-      title: blog.title,
-      link: new URL(hostname),
-      description: blog.description,
-      items: rssItems,
-    }),
+    content: renderToString(html`
+      <${RSS}
+        title=${blog.title}
+        link=${new URL(hostname)}
+        description=${blog.description}
+        items=${rssItems}
+      />
+    `),
     ext: RSS_EXT,
     mime: RSS_MIME,
     slug: "rss-feed",

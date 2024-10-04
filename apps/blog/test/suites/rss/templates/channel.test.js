@@ -1,6 +1,8 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { channel } from "../../../../src/rss/templates/channel.js";
+import { renderToString } from "preact-render-to-string";
+import { html } from "htm/preact";
+import { Channel } from "../../../../src/rss/templates/channel.js";
 
 describe("channel()", () => {
   test("should return a channel element with required sub-elements", () => {
@@ -9,11 +11,13 @@ describe("channel()", () => {
     const feedDescription = "Test blog description.";
     const expected = `<channel><title>${feedTitle}</title><link>${feedURL}</link><description>${feedDescription}</description></channel>`;
 
-    const actual = channel({
-      title: feedTitle,
-      link: feedURL,
-      description: feedDescription,
-    });
+    const actual = renderToString(html`
+      <${Channel}
+        title=${feedTitle}
+        link=${feedURL}
+        description=${feedDescription}
+      />
+    `);
 
     assert.equal(actual, expected);
   });
@@ -27,16 +31,18 @@ describe("channel()", () => {
     const feedDescription = "Test blog description.";
     const expected = `<channel><title>${feedTitle}</title><link>${feedURL}</link><description>${feedDescription}</description>${expectedItem}</channel>`;
 
-    const actual = channel({
-      title: feedTitle,
-      link: feedURL,
-      description: feedDescription,
-      items: [
-        {
-          title: itemTitle,
-        },
-      ],
-    });
+    const actual = renderToString(html`
+      <${Channel}
+        title=${feedTitle}
+        link=${feedURL}
+        description=${feedDescription}
+        items=${[
+          {
+            title: itemTitle,
+          },
+        ]}
+      />
+    `);
 
     assert.equal(actual, expected);
   });
