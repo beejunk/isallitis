@@ -1,6 +1,6 @@
 import { html } from "htm/preact";
 import { RSSIcon } from "./rss-icon.js";
-import { blogData } from "./signals.js";
+import { blogData } from "../signals/signals.js";
 
 function ConnectLinks() {
   return html`

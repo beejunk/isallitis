@@ -28,11 +28,19 @@ export function Code(props) {
   }
 
   return html`
-    <pre>
-      <code
-        class="language-${language}"
-        dangerouslySetInnerHTML=${{ __html: he.encode(src) }}
-      />
-    </pre>
+    <figure class="code">
+      <figcaption class="visually-hidden">Code Snippet</figcaption>
+
+      <pre aria-hidden>
+        <code
+          class="language-${language}"
+          dangerouslySetInnerHTML=${{ __html: he.encode(src) }}
+        />
+      </pre>
+
+      <pre class="visually-hidden">
+        <code dangerouslySetInnerHTML=${{ __html: he.encode(src) }} />
+      </pre>
+    </figure>
   `;
 }

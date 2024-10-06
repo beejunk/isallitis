@@ -1,9 +1,12 @@
 import { renderToString } from "preact-render-to-string";
 import { html } from "htm/preact";
-import { BlogEntry } from "../blog/components/blog-entry.js";
-import { Index } from "../blog/components/index.js";
+import { BlogEntry } from "../blog/pages/blog-entry.js";
+import { Index } from "../blog/pages/index.js";
 import { reduceBlogToEntryData } from "../blog/blog-utils.js";
 import { RSS, toRSSItem } from "../rss/rss.js";
+import { YearList } from "../blog/pages/year-list.js";
+import { MonthList } from "../blog/pages/month-list.js";
+import { DayList } from "../blog/pages/day-list.js";
 
 /** @typedef {import("preact").FunctionComponent} FunctionComponent */
 
@@ -72,14 +75,12 @@ function entryDataToRouteMap(entryData, fingerprint) {
   const routeMap = new Map();
 
   entryData.forEach((entry) => {
-    const { year, month, day, slug, body, title } = entry;
+    const { year, month, day, slug } = entry;
     const path = getBlogEntryRoute({ year, month, day, slug });
     const content = withDoctype(
-      renderToString(html`
-        <${BlogEntry} fingerprint=${fingerprint} title=${title}>
-          <${body} />
-        </${BlogEntry}>
-      `),
+      renderToString(
+        html`<${BlogEntry} fingerprint=${fingerprint} entry=${entry} />`,
+      ),
     );
 
     routeMap.set(path, {
@@ -88,6 +89,54 @@ function entryDataToRouteMap(entryData, fingerprint) {
       mime: HTML_MIME,
       slug,
     });
+
+    const yearRoute = `/year/${year}`;
+
+    if (!routeMap.get(yearRoute)) {
+      routeMap.set(yearRoute, {
+        content: renderToString(
+          html`<${YearList} fingerprint=${fingerprint} year=${year} />`,
+        ),
+        ext: HTML_EXT,
+        mime: HTML_MIME,
+        slug: year.toString(),
+      });
+    }
+
+    const monthRoute = `/year/${year}/month/${month}`;
+
+    if (!routeMap.get(monthRoute)) {
+      routeMap.set(monthRoute, {
+        content: renderToString(html`
+          <${MonthList}
+            fingerprint=${fingerprint}
+            month=${month}
+            year=${year}
+          />
+        `),
+        ext: HTML_EXT,
+        mime: HTML_MIME,
+        slug: month.toString(),
+      });
+    }
+
+    const dayRoute = `/year/${year}/month/${month}/day/${day}`;
+
+    if (!routeMap.get(dayRoute)) {
+      routeMap.set(dayRoute, {
+        content: renderToString(html`
+          <${DayList}
+            fingerprint=${fingerprint}
+            month=${month}
+            year=${year}
+            day=${day}
+          />
+        `),
+        ext: HTML_EXT,
+        mime: HTML_MIME,
+        slug: day.toString(),
+      });
+    }
   });
 
   return routeMap;
@@ -100,7 +149,7 @@ function entryDataToRouteMap(entryData, fingerprint) {
  */
 export function getBlogEntryRoute(routeParams) {
   const { year, month, day, slug } = routeParams;
-  return `/year/${year}/month/${month}/day/${day}/entry/${slug}`;
+  return `/year/${year}/month/${month}/day/${day}/${slug}`;
 }
 
 /**

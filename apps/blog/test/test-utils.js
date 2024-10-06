@@ -6,6 +6,10 @@ import { within } from "@testing-library/dom";
  */
 export function getScreen(html) {
   const dom = new JSDOM(html);
+  const screen = within(dom.window.document.body);
 
-  return within(dom.window.document.body);
+  return {
+    document: dom.window.document,
+    screen,
+  };
 }

@@ -6,6 +6,19 @@ import { compileRouteMap } from "../routes/routes.js";
 // TODO: Move to config file
 const HOSTNAME = "https://isallitis.onrender.com";
 
+/**
+ * @param {function(): Promise<void | void[]>} fn
+ * @returns {Promise<void>}
+ */
+async function tryStep(fn) {
+  try {
+    await fn();
+  } catch (err) {
+    console.error(`${err}`);
+    process.exit(1);
+  }
+}
+
 const startTime = Date.now();
 
 const routes = compileRouteMap(blog, {
@@ -28,53 +41,43 @@ const vendorsBuildUrl = new URL(
   import.meta.url,
 );
 
-try {
-  await fs.rm(distURL, { recursive: true, force: true });
-} catch (err) {
-  console.error(`Error deleting "dist" directory: ${err}`);
-  process.exit(1);
-}
+console.info("Removing `dist` directory ...");
 
-try {
-  await fs.cp(cssSrcURL, cssBuildURL);
-} catch (err) {
-  console.error(`Error building CSS: ${err}`);
-  process.exit(1);
-}
+await tryStep(() => fs.rm(distURL, { recursive: true, force: true }));
 
-try {
-  await fs.cp(vendorsSrcUrl, vendorsBuildUrl, { recursive: true });
-} catch (err) {
-  console.error(`Error building CSS: ${err}`);
-  process.exit(1);
-}
+console.info("Copying CSS ...");
+
+await tryStep(() => fs.cp(cssSrcURL, cssBuildURL));
+
+console.info("Copying vendor assets ...");
+
+await tryStep(() => fs.cp(vendorsSrcUrl, vendorsBuildUrl, { recursive: true }));
+
+console.info("Writing HTML ...");
 
 /** @type {Array<Promise<void>>} */
 const buildPromises = [];
 
 routes.forEach((routeData, entryPath) => {
   const pathSegments = entryPath.split("/").slice(0, -1);
-  const entryFolderPath = path.join(distPath, pathSegments.join("/"));
-  const entryFolderURL = new URL(entryFolderPath, import.meta.url);
+  const entryFolderURL = new URL(
+    path.join(distPath, ...pathSegments),
+    import.meta.url,
+  );
   const entryFileURL = new URL(
-    path.join(entryFolderPath, `${routeData.slug}.${routeData.ext}`),
+    path.join(distPath, `${entryPath}.${routeData.ext}`),
     import.meta.url,
   );
 
-  const writeEntry = async () => {
+  async function writeEntry() {
     await fs.mkdir(entryFolderURL, { recursive: true });
     await fs.writeFile(entryFileURL, routeData.content);
-  };
+  }
 
   buildPromises.push(writeEntry());
 });
 
-try {
-  await Promise.all(buildPromises);
-} catch (err) {
-  console.error(`Error building HTML: ${err}`);
-  process.exit(1);
-}
+await tryStep(() => Promise.all(buildPromises));
 
 const endTime = Date.now();
 const deltaTime = endTime - startTime;

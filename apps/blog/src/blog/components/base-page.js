@@ -1,5 +1,5 @@
 import { html } from "htm/preact";
-import { blogData } from "./signals.js";
+import { blogData } from "../signals/signals.js";
 
 /**
  * @param {Object} props
@@ -30,15 +30,18 @@ function Head(props) {
 
 /**
  * @param {Object} props
+ * @param {string} [props.pageTitle]
  * @param {import("preact").ComponentChildren} props.children
  * @param {string} [props.fingerprint]
  */
 export function BasePage(props) {
-  const { children, fingerprint } = props;
+  const { children, fingerprint, pageTitle } = props;
+  const { blogTitle } = blogData.value;
+  const title = pageTitle ? `${blogTitle} - ${pageTitle}` : blogTitle;
 
   return html`
     <html lang="en">
-      <${Head} fingerprint=${fingerprint} title=${blogData.value.blogTitle} />
+      <${Head} fingerprint=${fingerprint} title=${title} />
       ${children}
     </html>
   `;

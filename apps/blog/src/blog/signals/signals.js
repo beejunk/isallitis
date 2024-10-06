@@ -21,7 +21,18 @@ export const blogData = computed(() => {
 
   return {
     blogTitle: blogSignal.value.title,
-    slugs,
     entriesBySlug,
+    slugs,
+    sortedEntries: entryData,
   };
 });
+
+export function getFirstEntry() {
+  const firstEntry = blogData.value.sortedEntries[0];
+
+  if (!firstEntry) {
+    throw new Error("Unable to find first blog entry.");
+  }
+
+  return firstEntry;
+}
