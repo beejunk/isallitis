@@ -11,9 +11,7 @@ describe("createRouteMap()", () => {
   blogSignal.value = mockBlog;
 
   test("it should return an entry for the provided path", () => {
-    const routeMap = compileRouteMap(mockBlog, {
-      hostname: "https://test.blog.com",
-    });
+    const routeMap = compileRouteMap();
 
     const params = {
       year: 2024,
@@ -28,9 +26,7 @@ describe("createRouteMap()", () => {
   });
 
   test("it should create routes for each year with entries", () => {
-    const routeMap = compileRouteMap(mockBlog, {
-      hostname: "https://test.blog.com",
-    });
+    const routeMap = compileRouteMap();
 
     blogData.value.sortedEntries.forEach((entry) => {
       const route = routeMap.get(`/year/${entry.year}`);
@@ -39,9 +35,7 @@ describe("createRouteMap()", () => {
   });
 
   test("it should create routes for each month with entries", () => {
-    const routeMap = compileRouteMap(mockBlog, {
-      hostname: "https://test.blog.com",
-    });
+    const routeMap = compileRouteMap();
 
     blogData.value.sortedEntries.forEach((entry) => {
       const route = routeMap.get(`/year/${entry.year}/month/${entry.month}`);
@@ -50,9 +44,7 @@ describe("createRouteMap()", () => {
   });
 
   test("it should create routes for each day with entries", () => {
-    const routeMap = compileRouteMap(mockBlog, {
-      hostname: "https://test.blog.com",
-    });
+    const routeMap = compileRouteMap();
 
     blogData.value.sortedEntries.forEach((entry) => {
       const route = routeMap.get(

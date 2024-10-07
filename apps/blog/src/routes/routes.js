@@ -2,11 +2,11 @@ import { renderToString } from "preact-render-to-string";
 import { html } from "htm/preact";
 import { BlogEntry } from "../blog/pages/blog-entry.js";
 import { Index } from "../blog/pages/index.js";
-import { reduceBlogToEntryData } from "../blog/blog-utils.js";
-import { RSS, toRSSItem } from "../rss/rss.js";
 import { YearList } from "../blog/pages/year-list.js";
 import { MonthList } from "../blog/pages/month-list.js";
 import { DayList } from "../blog/pages/day-list.js";
+import { blogData } from "../blog/signals/signals.js";
+import { RSS } from "../rss/components/rss.js";
 
 /** @typedef {import("preact").FunctionComponent} FunctionComponent */
 
@@ -66,15 +66,14 @@ function withDoctype(html) {
  */
 
 /**
- * @param {Array<EntryData>} entryData
  * @param {string} [fingerprint]
  * @return {Map<string, RouteData>}
  */
-function entryDataToRouteMap(entryData, fingerprint) {
+function createEntryRouteMap(fingerprint) {
   /** @type {Map<string, RouteData>} */
   const routeMap = new Map();
 
-  entryData.forEach((entry) => {
+  blogData.value.sortedEntries.forEach((entry) => {
     const { year, month, day, slug } = entry;
     const path = getBlogEntryRoute({ year, month, day, slug });
     const content = withDoctype(
@@ -156,18 +155,14 @@ export function getBlogEntryRoute(routeParams) {
  * Creates a `Map` where the keys are blog routes and the values are `RouteData`
  * objects containing the content and meta-data for that route.
  *
- * @param {import("../blog/blog.js").Blog} blog
- * @param {Object} options
- * @param {string} options.hostname
+ * @param {Object} [options]
  * @param {string} [options.fingerprint]
  * @return {Map<string, RouteData>}
  */
-export function compileRouteMap(blog, options) {
-  const { fingerprint, hostname } = options;
+export function compileRouteMap(options) {
+  const { fingerprint } = options ?? {};
 
-  const entryData = reduceBlogToEntryData(blog);
-  const rssItems = entryData.map(toRSSItem(hostname));
-  const routeMap = entryDataToRouteMap(entryData, fingerprint);
+  const routeMap = createEntryRouteMap(fingerprint);
 
   routeMap.set("/index", {
     content: withDoctype(
@@ -179,14 +174,7 @@ export function compileRouteMap(blog, options) {
   });
 
   routeMap.set("/rss-feed", {
-    content: renderToString(html`
-      <${RSS}
-        title=${blog.title}
-        link=${new URL(hostname)}
-        description=${blog.description}
-        items=${rssItems}
-      />
-    `),
+    content: renderToString(html`<${RSS} />`),
     ext: RSS_EXT,
     mime: RSS_MIME,
     slug: "rss-feed",

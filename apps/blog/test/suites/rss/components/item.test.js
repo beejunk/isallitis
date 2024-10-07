@@ -2,7 +2,7 @@ import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { renderToString } from "preact-render-to-string";
 import { html } from "htm/preact";
-import { Item } from "../../../../src/rss/templates/item.js";
+import { Item } from "../../../../src/rss/components/item.js";
 
 const TITLE = "Test Item Title";
 

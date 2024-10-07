@@ -1,10 +1,6 @@
 import path from "node:path";
 import fs from "node:fs/promises";
-import { blog } from "../blog/blog.js";
 import { compileRouteMap } from "../routes/routes.js";
-
-// TODO: Move to config file
-const HOSTNAME = "https://isallitis.onrender.com";
 
 /**
  * @param {function(): Promise<void | void[]>} fn
@@ -21,9 +17,8 @@ async function tryStep(fn) {
 
 const startTime = Date.now();
 
-const routes = compileRouteMap(blog, {
+const routes = compileRouteMap({
   fingerprint: startTime.toString(),
-  hostname: HOSTNAME,
 });
 const distPath = "../../build";
 const distURL = new URL(distPath, import.meta.url);

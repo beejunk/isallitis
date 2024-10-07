@@ -1,5 +1,8 @@
 import { html } from "htm/preact";
 import { Item } from "./item.js";
+import { blogData, blogSignal } from "../../blog/signals/signals.js";
+import { toRSSItem } from "../rss-utils.js";
+import { HOST_NAME } from "../../constants.js";
 
 /** @typedef {import("./item.js").RSSItemProps} RSSItemProps */
 
@@ -27,25 +30,16 @@ function Description({ children }) {
   return html`<description>${children}</description>`;
 }
 
-/**
- * @typedef {Object} RSSChannelProps
- * @prop {string} title
- * @prop {URL} link
- * @prop {string} description
- * @prop {Array<RSSItemProps>} [items = []]
- */
-
-/**
- * @param {RSSChannelProps} props
- */
-export function Channel(props) {
-  const items = props.items ?? [];
+export function Channel() {
+  const items = blogData.value.sortedEntries.map(toRSSItem(HOST_NAME));
+  const link = new URL(HOST_NAME);
+  const { title, description } = blogSignal.value;
 
   return html`
     <channel>
-      <${Title}>${props.title}</${Title}>
-      <${Link}>${props.link}</${Link}>
-      <${Description}>${props.description}</${Description}>
+      <${Title}>${title}</${Title}>
+      <${Link}>${link}</${Link}>
+      <${Description}>${description}</${Description}>
       ${items.map((item) => html`<${Item} ...${item} />`)}
     </channel>
   `;

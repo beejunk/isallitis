@@ -1,19 +1,9 @@
 import { renderToString } from "preact-render-to-string";
 import { html } from "htm/preact";
-import { Channel } from "./templates/channel.js";
 
 import { getBlogEntryRoute } from "../routes/routes.js";
 
-/** @typedef {import("./templates/channel.js").RSSChannelProps} RSSChannelProps */
-/** @typedef {import("./templates/item.js").RSSItemProps} RSSItemProps */
-/** @typedef {import("../blog/blog-utils.js").EntryData} EntryData
-
-/**
- * @param {RSSChannelProps} props
- */
-export function RSS(props) {
-  return html`<rss version="2.0"><${Channel} ...${props} /></rss>`;
-}
+/** @typedef {import("../blog/blog-utils.js").EntryData} EntryData */
 
 /**
  * @param {string} hostname
