@@ -2,7 +2,7 @@ import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { html } from "htm/preact";
 import { YearList } from "../../../../src/blog/pages/year-list.js";
-import { getScreen } from "../../../test-utils.js";
+import { renderStatic } from "../../../test-utils.js";
 import { renderToString } from "preact-render-to-string";
 import { blogData, blogSignal } from "../../../../src/blog/signals/signals.js";
 import { mockBlog } from "../../../fixtures/mock-blog.js";
@@ -12,7 +12,7 @@ const TEST_YEAR = 2024;
 function yearListFixture() {
   blogSignal.value = mockBlog;
 
-  return getScreen(renderToString(html`<${YearList} year=${TEST_YEAR} />`));
+  return renderStatic(html`<${YearList} year=${TEST_YEAR} />`);
 }
 
 describe("<YearList>", () => {
