@@ -1,5 +1,4 @@
 import { html } from "htm/preact";
-import { Code } from "../../../../../../../components/code.js";
 import { BlogLink } from "../../../../../../../components/blog-link.js";
 
 const title = "The Free Net";
@@ -36,7 +35,8 @@ const links = [
 const body = () => html`
   <p>
     Molly White recently gave <${BlogLink} href=${links[0].url}>a talk
-    called "Fighting For Our Web"</${BlogLink}>, where she asked:
+    called "Fighting For Our Web"</${BlogLink}>. It's inspiring stuff all around,
+    but this question stood out:
   </p>
   
   <blockquote>
@@ -44,13 +44,13 @@ const body = () => html`
   </blockquote>
   
   <p>
-    I found the talk to be inspiring, and this question in particular
-    brought about a bunch of warm fuzzy memories. The first time I really got to
-    use the web was when I was in middle school and my friends and I bussed over
-    to the public computer lab at the University of Texas at El Paso where you could
-    sign up for time to use the Internet. I immediately loaded up
-    <${BlogLink} href=${links[1].url}>WebCrawler</${BlogLink}> (which was the
-    fashion at the time) to search the web, and was hit with that magical feeling
+    While I did have a friend whose family were early adopters and
+    would connect to things like bulletin board systems, the first time I really
+    got to use the web - browser and all - was when I was in middle school. A
+    group of us bussed over to the public computer lab at the University of
+    Texas at El Paso, where you could sign up for time to use the Internet. I
+    loaded up <${BlogLink} href=${links[1].url}>WebCrawler</${BlogLink}> (which
+    was the fashion at the time), and was hit with that magical feeling
     when I realized that I could look up any guitar tab I wanted. For free. No
     strings attached (well, with the exception that the tab was probably wildly
     inaccurate).
@@ -65,9 +65,9 @@ const body = () => html`
   </p>
   
   <p>
-    But that's not the important part. The important part is this: there was a modem.
-    And I was able to use this modem to connect to the Internet. For free. No
-    strings attached.
+    But that's not the important part. The important part is that the computer
+    had a modem. And I was able to use this modem to connect to the Internet.
+    For free. No strings attached.
   </p>
   
   <p>
@@ -101,9 +101,9 @@ const body = () => html`
   <p>
     This sense that the Internet was for everyone and that computers were for
     everyone - it was a nice feeling. It was different. It wasn't the type of thing
-    I ran into a lot as a poor kid. It wasn't something that you had to walk into
-    a store and look at from a distance, maybe take for a test run, but never really
-    get to use.
+    I ran into a lot. It wasn't something that you had to walk into a store and
+    look at longingly while someone behind a counter squinted at you; maybe take
+    for a test run, but never really get to use.
   </p>
   
   <p>
@@ -115,16 +115,16 @@ const body = () => html`
   <p>
     The info I posted above about the Rio Grande Free Net was
     found in <${BlogLink} href=${links[3].url}>a Reddit comment</${BlogLink}>,
-    which in this case is the likeliest place to find such a thing. As it turns
-    out, the modem that came with our computer got zapped by a thunder storm one day and
+    which in this case is the likeliest place to find such a thing. In an odd twist 
+    of fate, the modem that came with our computer got zapped by a storm one day and
     had to be replaced. I wonder if it was one of the storms described in the
     comment.
   </p>
   
   <p>
-    Anyway, in a possibly vain attempt at keeping this history from dying of link rot, I
-    present the full Reddit post from
-    <${BlogLink} href=${links[4].url}>u/Distribution Radiant</${BlogLink}>.
+    Anyway, in a possibly vain attempt at keeping this history from dying of link rot,
+    here is the full Reddit post from user
+    <${BlogLink} href=${links[4].url}>Distribution-Radiant</${BlogLink}>.
     It's a nice post that's worth preserving.
   </p>
 

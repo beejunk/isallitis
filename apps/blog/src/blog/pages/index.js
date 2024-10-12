@@ -7,7 +7,7 @@ import { EntryListItem } from "../components/entry-list-item.js";
 function RecentEntryList() {
   return html`
     <ul>
-      ${blogData.value.slugs.map((slug) => {
+      ${blogData.value.slugs.reverse().map((slug) => {
         const { year, month, day, title } = blogData.value.entriesBySlug[slug];
 
         return html`
