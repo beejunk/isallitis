@@ -1,16 +1,16 @@
 import { html } from "htm/preact";
-import { Code } from "../../../../../../../components/code.js";
-import { BlogLink } from "../../../../../../../components/blog-link.js";
+import { Code } from "../components/code.js";
+import { BlogLink } from "../components/blog-link.js";
 
-const title = "Detecting RSS";
+export const title = "Detecting RSS";
 
-const slug = "detecting-rss";
+export const slug = "detecting-rss";
 
-const hour = 12;
+export const hour = 12;
 
-const minute = 45;
+export const minute = 45;
 
-const links = {
+export const links = {
   emmet: "https://docs.emmet.io",
   mdnRelAttr:
     "https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel",
@@ -20,7 +20,7 @@ const links = {
   vivaldi: "https://www.vivaldi.com",
 };
 
-const body = () => html`
+export const body = () => html`
   <p>
     Setting up a bare-bones RSS feed for this blog ended up not being too
     tedious, and I'll probably write in more detail about that later. One thing
@@ -76,12 +76,3 @@ const body = () => html`
     result.
   </p>
 `;
-
-/** @type {import("../../../../../../../blog.js").BlogEntry} */
-export const detectingRSS = {
-  body,
-  hour,
-  minute,
-  slug,
-  title,
-};

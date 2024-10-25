@@ -1,21 +1,30 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { blogEntryFixture } from "../../../fixtures/blog-entry-fixture.js";
-import { getFirstEntry } from "../../../../src/blog/signals/signals.js";
+import { mockBlog } from "../../../fixtures/mock-blog.js";
+import { getEntryPageView } from "../../../../src/views/views.js";
+import path from "node:path";
 
-describe("<BlogEntry>", () => {
-  const entry = getFirstEntry();
+describe("<BlogEntry>", async () => {
+  const entriesBaseURL = new URL(
+    path.join("..", "..", "..", "fixtures", "entries"),
+    import.meta.url,
+  );
+  const entry = await getEntryPageView(mockBlog, {
+    entriesBaseURL,
+    slug: "test-entry-1",
+  });
 
   test("should display entry title", () => {
     const { screen } = blogEntryFixture(entry);
-    assert.ok(screen.getByText(entry.title));
+    assert.ok(screen.getByText(entry.pageHeading));
   });
 
   test("should include entry title with site title", () => {
     const { document } = blogEntryFixture(entry);
     const titleEl = document.getElementsByTagName("title")[0];
 
-    assert.match(titleEl?.innerHTML, new RegExp(entry.title));
+    assert.match(titleEl?.innerHTML, new RegExp(entry.pageTitle));
   });
 
   test("should include bread crumb", () => {

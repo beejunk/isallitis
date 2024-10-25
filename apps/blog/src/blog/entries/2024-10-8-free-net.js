@@ -1,15 +1,15 @@
 import { html } from "htm/preact";
-import { BlogLink } from "../../../../../../../components/blog-link.js";
+import { BlogLink } from "../components/blog-link.js";
 
-const title = "The Free Net";
+export const title = "The Free Net";
 
-const slug = "free-net";
+export const slug = "free-net";
 
-const hour = 8;
+export const hour = 8;
 
-const minute = 11;
+export const minute = 11;
 
-const links = [
+export const links = [
   {
     title: "Fight For Our Web",
     url: "https://www.citationneeded.news/fighting-for-our-web/",
@@ -32,7 +32,7 @@ const links = [
   },
 ];
 
-const body = () => html`
+export const body = () => html`
   <p>
     Molly White recently gave <${BlogLink} href=${links[0].url}>a talk
     called "Fighting For Our Web"</${BlogLink}>. It's inspiring stuff all around,
@@ -204,12 +204,3 @@ const body = () => html`
 
   <p>/ramble</p>
 `;
-
-/** @type {import("../../../../../../../blog.js").BlogEntry} */
-export const freeNet = {
-  body,
-  hour,
-  minute,
-  slug,
-  title,
-};

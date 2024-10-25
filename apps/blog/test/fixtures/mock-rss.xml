@@ -1,21 +1,12 @@
 <rss version="2.0">
   <channel>
-    <title>Test Blog</title>
-    <link>https://isallitis.onrender.com/</link>
-    <description>Test Blog</description>
+    <title>A Test Blog Is All It Is</title>
+    <link>https://test.blog.com/</link>
+    <description>Blog data for running tests</description>
     <item>
-      <title>A Test Is All It Is</title>
-      <description><![CDATA[<p>A test is all it is</p>]]></description>
-      <link>
-        https://isallitis.onrender.com/year/2024/month/8/day/18/a-test-is-all-it-is
-      </link>
-    </item>
-    <item>
-      <title>A Test Is All It Is pt. 2</title>
-      <description><![CDATA[<p>A test is all it is pt. 2</p>]]></description>
-      <link>
-        https://isallitis.onrender.com/year/2024/month/8/day/19/a-test-is-all-it-is-part-2
-      </link>
+      <title>Test Entry 1</title>
+      <description><![CDATA[<p>Test Entry 1</p>]]></description>
+      <link>https://test.blog.com/year/2024/month/10/day/12/test-entry-1</link>
     </item>
   </channel>
 </rss>

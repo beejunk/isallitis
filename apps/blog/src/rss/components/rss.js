@@ -1,10 +1,15 @@
 import { html } from "htm/preact";
 import { Channel } from "./channel.js";
 
-export function RSS() {
+/** @typedef {import("../../views/views.js").RSSView} RSSView */
+
+/**
+ * @param {RSSView} props
+ */
+export function RSS(props) {
   return html`
     <rss version="2.0">
-      <${Channel} />
+      <${Channel} ...${props} />
     </rss>
   `;
 }

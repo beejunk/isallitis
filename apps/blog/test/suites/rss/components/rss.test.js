@@ -6,8 +6,14 @@ import assert from "node:assert/strict";
 import { renderToString } from "preact-render-to-string";
 import { html } from "htm/preact";
 import { RSS } from "../../../../src/rss/components/rss.js";
-import { blogSignal } from "../../../../src/blog/signals/signals.js";
 import { mockBlog } from "../../../fixtures/mock-blog.js";
+import { getRSSView } from "../../../../src/views/views.js";
+import path from "node:path";
+
+const entriesBaseURL = new URL(
+  path.join("..", "..", "..", "fixtures", "entries"),
+  import.meta.url,
+);
 
 function getMockRSSFeed() {
   return fs.readFileSync(
@@ -16,8 +22,13 @@ function getMockRSSFeed() {
   );
 }
 
-function renderAndFormat() {
-  return prettier.format(renderToString(html`<${RSS} />`), {
+async function renderAndFormat() {
+  const rssView = await getRSSView(mockBlog, {
+    entriesBaseURL,
+    hostname: "https://test.blog.com",
+  });
+
+  return prettier.format(renderToString(html`<${RSS} ...${rssView} />`), {
     parser: "xml",
     plugins: [prettierXML],
     xmlWhitespaceSensitivity: "ignore",
@@ -26,7 +37,6 @@ function renderAndFormat() {
 
 describe("channel()", () => {
   const mockRSSFeed = getMockRSSFeed();
-  blogSignal.value = mockBlog;
 
   test("should match expected RSS format", async () => {
     const actual = await renderAndFormat();

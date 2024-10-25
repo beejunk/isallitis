@@ -1,5 +1,7 @@
 import { html } from "htm/preact";
 
+/** @typedef {import("../../views/views.js").RSSItemView} RSSItemView */
+
 class RSSItemError extends Error {
   /**
    * @param {string} msg
@@ -54,14 +56,7 @@ function Link({ children }) {
 }
 
 /**
- * @typedef {Object} RSSItemProps
- * @property {string} [props.description]
- * @property {string} [props.title]
- * @property {URL} [props.link]
- */
-
-/**
- * @param {RSSItemProps} props
+ * @param {RSSItemView} props
  */
 export function Item(props) {
   const {

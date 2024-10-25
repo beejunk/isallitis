@@ -3,10 +3,7 @@ import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { toDate } from "../../../src/rss/date-utils.js";
 
-/** @typedef {import("../../../src/blog/blog-utils.js").EntryData} EntryData */
-
 describe("toDate()", () => {
-  /** @type {EntryData} */
   const entry = {
     year: 2024,
     month: 10,

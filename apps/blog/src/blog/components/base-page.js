@@ -1,5 +1,4 @@
 import { html } from "htm/preact";
-import { blogData } from "../signals/signals.js";
 
 /**
  * @param {Object} props
@@ -36,12 +35,10 @@ function Head(props) {
  */
 export function BasePage(props) {
   const { children, fingerprint, pageTitle } = props;
-  const { blogTitle } = blogData.value;
-  const title = pageTitle ? `${blogTitle} - ${pageTitle}` : blogTitle;
 
   return html`
     <html lang="en">
-      <${Head} fingerprint=${fingerprint} title=${title} />
+      <${Head} fingerprint=${fingerprint} title=${pageTitle} />
       ${children}
     </html>
   `;

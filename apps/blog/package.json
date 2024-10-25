@@ -9,7 +9,7 @@
     "lint": "eslint",
     "serve": "npx serve build",
     "start": "NODE_ENV=production node src/server/server.js",
-    "test": "node --test test/suites",
+    "test": "node --test \"test/suites/**/*.test.js\"",
     "types:check": "tsc"
   },
   "description": "Engineering blog.",
@@ -19,6 +19,7 @@
     "he": "^1.2.0",
     "htm": "^3.1.1",
     "preact": "^10.24.1",
-    "preact-render-to-string": "^6.5.11"
+    "preact-render-to-string": "^6.5.11",
+    "zod": "^3.23.8"
   }
 }

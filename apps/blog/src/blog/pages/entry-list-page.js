@@ -1,27 +1,20 @@
 import { html } from "htm/preact";
 import { BasePage } from "../components/base-page.js";
 import { Layout } from "../components/layout.js";
-import { blogData } from "../signals/signals.js";
-
 import { EntryListItem } from "../components/entry-list-item.js";
 
+/** @typedef {import("../../views/views.js").EntryListView} EntryListView */
+
 /**
- * @param {Object} props
- * @param {string} [props.fingerprint]
- * @param {number} props.month
- * @param {number} props.year
+ * @param {EntryListView} props
  */
-export function MonthList(props) {
-  const { fingerprint, month, year } = props;
-  const entries = blogData.value.sortedEntries.filter(
-    (entry) => entry.month === month,
-  );
-  const pageTitle = `${year}-${month}`;
+export function EntryListPage(props) {
+  const { blogTitle, entries, fingerprint, pageTitle, pageHeading } = props;
 
   return html`
     <${BasePage} fingerprint=${fingerprint} pageTitle=${pageTitle}>
-      <${Layout} titleLink>
-        <h1>${pageTitle}</h1>
+      <${Layout} blogTitle=${blogTitle} titleLink>
+        <h1>${pageHeading}</h1>
         
         <ul>
           ${entries.map((entry) => html`<${EntryListItem} ...${entry} />`)}

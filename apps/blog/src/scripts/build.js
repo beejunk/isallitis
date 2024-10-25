@@ -1,6 +1,9 @@
 import path from "node:path";
 import fs from "node:fs/promises";
 import { compileRouteMap } from "../routes/routes.js";
+import { loadBlog } from "../blog/blog-utils.js";
+
+const blog = await loadBlog();
 
 /**
  * @param {function(): Promise<void | void[]>} fn
@@ -17,7 +20,7 @@ async function tryStep(fn) {
 
 const startTime = Date.now();
 
-const routes = compileRouteMap({
+const routes = await compileRouteMap(blog, {
   fingerprint: startTime.toString(),
 });
 const distPath = "../../build";

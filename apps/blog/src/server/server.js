@@ -1,10 +1,13 @@
 import fs from "node:fs";
 import Fastify from "fastify";
 import { compileRouteMap } from "../routes/routes.js";
+import { loadBlog } from "../blog/blog-utils.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
 
-const routeMap = compileRouteMap();
+const blog = await loadBlog();
+
+const routeMap = await compileRouteMap(blog);
 
 const stylesPath = new URL("../blog/styles/styles.css", import.meta.url);
 const prismJSPath = new URL("../../vendors/prism/prism.js", import.meta.url);

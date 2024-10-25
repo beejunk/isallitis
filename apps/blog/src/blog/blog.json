@@ -1,0 +1,63 @@
+{
+  "title": "A Blog Is All It Is",
+  "description": "Brian David's web development blog.",
+  "entities": {
+    "year": [
+      {
+        "id": 1,
+        "year": 2024,
+        "type": "year"
+      }
+    ],
+    "month": [
+      {
+        "id": 1,
+        "month": 9,
+        "yearId": 1,
+        "type": "month"
+      },
+      {
+        "id": 2,
+        "month": 10,
+        "yearId": 1,
+        "type": "month"
+      }
+    ],
+    "day": [
+      {
+        "id": 1,
+        "day": 18,
+        "monthId": 1,
+        "yearId": 1,
+        "type": "day"
+      },
+      {
+        "id": 2,
+        "day": 8,
+        "monthId": 2,
+        "yearId": 1,
+        "type": "day"
+      }
+    ],
+    "entry": [
+      {
+        "id": 1,
+        "dayId": 1,
+        "monthId": 1,
+        "yearId": 1,
+        "slug": "detecting-rss",
+        "title": "Detecting RSS",
+        "type": "entry"
+      },
+      {
+        "id": 2,
+        "dayId": 2,
+        "monthId": 2,
+        "yearId": 1,
+        "slug": "free-net",
+        "title": "The Free Net",
+        "type": "entry"
+      }
+    ]
+  }
+}
