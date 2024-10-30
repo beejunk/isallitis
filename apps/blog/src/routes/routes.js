@@ -1,19 +1,17 @@
 import { renderToString } from "preact-render-to-string";
 import { html } from "htm/preact";
-import { BlogEntry } from "../blog/pages/blog-entry.js";
-import { RSS } from "../rss/components/rss.js";
-import {
-  getDayView,
-  getEntryPageView,
-  getMonthView,
-  getRecentEntriesView,
-  getRSSView,
-  getYearView,
-} from "../views/views.js";
+import { BlogEntry } from "../components/pages/blog-entry.js";
+import { RSS } from "../components/rss/rss.js";
 import { HOST_NAME } from "../constants.js";
 import { getMonth } from "../models/queries/month.js";
 import { getYear } from "../models/queries/year.js";
-import { EntryListPage } from "../blog/pages/entry-list-page.js";
+import { EntryListPage } from "../components/pages/entry-list-page.js";
+import { getRecentEntriesPageView } from "../views/recent-entries-page.js";
+import { getYearPageView } from "../views/year-page.js";
+import { getMonthPageView } from "../views/month-page.js";
+import { getDayPageView } from "../views/day-page.js";
+import { getEntryPageView } from "../views/entry-page.js";
+import { getRSSView } from "../views/rss.js";
 
 /** @typedef {import("preact").FunctionComponent} FunctionComponent */
 /** @typedef {import("../models/schemas.js").Blog} Blog */
@@ -148,7 +146,7 @@ async function createRSSRoute(blog, params) {
  */
 function createIndexRoute(blog, params = {}) {
   const { fingerprint } = params;
-  const recentEntriesView = getRecentEntriesView(blog, { fingerprint });
+  const recentEntriesView = getRecentEntriesPageView(blog, { fingerprint });
 
   return [
     "/index",
@@ -175,7 +173,7 @@ function createDayRoutes(blog, params = {}) {
   return blog.entities.day.map(({ day, monthId, yearId }) => {
     const { month } = getMonth(blog, { id: monthId });
     const { year } = getYear(blog, { id: yearId });
-    const dayView = getDayView(blog, { fingerprint, day, month, year });
+    const dayView = getDayPageView(blog, { fingerprint, day, month, year });
     const path = `/year/${year}/month/${month}/day/${day}`;
 
     return [
@@ -203,7 +201,7 @@ function createMonthRoutes(blog, params = {}) {
 
   return blog.entities.month.map(({ month, yearId }) => {
     const { year } = getYear(blog, { id: yearId });
-    const monthView = getMonthView(blog, { fingerprint, month, year });
+    const monthView = getMonthPageView(blog, { fingerprint, month, year });
     const path = `/year/${year}/month/${month}`;
 
     return [
@@ -230,7 +228,7 @@ function createYearRoutes(blog, params = {}) {
   const { fingerprint } = params;
 
   return blog.entities.year.map(({ year }) => {
-    const yearView = getYearView(blog, { fingerprint, year });
+    const yearView = getYearPageView(blog, { fingerprint, year });
     const path = `/year/${year}`;
 
     return [

@@ -1,12 +1,12 @@
 import { html } from "htm/preact";
-import { BasePage } from "../components/base-page.js";
-import { Layout } from "../components/layout.js";
-import { EntryListItem } from "../components/entry-list-item.js";
+import { BasePage } from "../shared/base-page.js";
+import { Layout } from "../shared/layout.js";
+import { EntryListItem } from "../shared/entry-list-item.js";
 
-/** @typedef {import("../../views/views.js").EntryListView} EntryListView */
+/** @typedef {import("../../views/entry-list-page.js").EntryListPageView} EntryListPageView */
 
 /**
- * @param {EntryListView} props
+ * @param {EntryListPageView} props
  */
 export function EntryListPage(props) {
   const { blogTitle, entries, fingerprint, pageTitle, pageHeading } = props;

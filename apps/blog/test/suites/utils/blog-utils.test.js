@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import path from "node:path";
-import { importEntry } from "../../../src/blog/blog-utils.js";
+import { importEntry } from "../../../src/utils/blog-utils.js";
 
 describe("importEntry()", () => {
   const baseURL = new URL(

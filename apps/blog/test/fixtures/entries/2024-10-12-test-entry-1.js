@@ -8,4 +8,4 @@ export const hour = 11;
 
 export const minute = 30;
 
-export const body = () => html`<p>Test Entry 1</p>`;
+export const body = () => html`<p>This is a mock blog entry</p>`;

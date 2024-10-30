@@ -1,7 +1,7 @@
 import { html } from "htm/preact";
 import { Item } from "./item.js";
 
-/** @typedef {import("../../views/views.js").RSSView} RSSView */
+/** @typedef {import("../../views/rss.js").RSSView} RSSView */
 
 /**
  * @param {Object} props

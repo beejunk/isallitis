@@ -1,6 +1,6 @@
 import { html } from "htm/preact";
 
-/** @typedef {import("../../views/views.js").RSSItemView} RSSItemView */
+/** @typedef {import("../../views/rss.js").RSSItemView} RSSItemView */
 
 class RSSItemError extends Error {
   /**

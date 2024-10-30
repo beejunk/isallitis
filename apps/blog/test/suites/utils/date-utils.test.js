@@ -1,7 +1,7 @@
 import { html } from "htm/preact";
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { toDate } from "../../../src/rss/date-utils.js";
+import { toDate } from "../../../src/utils/date-utils.js";
 
 describe("toDate()", () => {
   const entry = {

@@ -5,9 +5,9 @@ import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { renderToString } from "preact-render-to-string";
 import { html } from "htm/preact";
-import { RSS } from "../../../../src/rss/components/rss.js";
+import { RSS } from "../../../../src/components/rss/rss.js";
 import { mockBlog } from "../../../fixtures/mock-blog.js";
-import { getRSSView } from "../../../../src/views/views.js";
+import { getRSSView } from "../../../../src/views/rss.js";
 import path from "node:path";
 
 const entriesBaseURL = new URL(

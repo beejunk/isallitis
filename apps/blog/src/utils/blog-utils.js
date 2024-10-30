@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import { BlogSchema } from "../models/schemas.js";
 
 export async function loadBlog() {
-  const blogUrl = new URL("./blog.json", import.meta.url);
+  const blogUrl = new URL(path.join("..", "db", "/blog.json"), import.meta.url);
   const blogFile = await fs.readFile(blogUrl, "utf8");
   const blogJSON = JSON.parse(blogFile);
 
@@ -24,7 +24,7 @@ export async function importEntry(params) {
   const moduleName = `${year}-${month}-${day}-${slug}.js`;
   const moduleURL = new URL(
     path.join("entries", moduleName),
-    baseURL ?? import.meta.url,
+    baseURL ?? new URL("..", import.meta.url),
   );
 
   const entryModule = await import(moduleURL.pathname);

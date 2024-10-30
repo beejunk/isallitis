@@ -1,5 +1,5 @@
 import { html } from "htm/preact";
-import { BlogLink } from "../components/blog-link.js";
+import { BlogLink } from "../components/shared/blog-link.js";
 
 export const title = "The Free Net";
 

@@ -1,7 +1,7 @@
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { html } from "htm/preact";
-import { BreadCrumb } from "../../../../src/blog/components/bread-crumb.js";
+import { BreadCrumb } from "../../../../src/components/shared/bread-crumb.js";
 import { renderStatic } from "../../../test-utils.js";
 
 describe("<BreadCrumb>", () => {

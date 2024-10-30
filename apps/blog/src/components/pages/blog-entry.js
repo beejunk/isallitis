@@ -1,16 +1,16 @@
 import { html } from "htm/preact";
-import { BasePage } from "../components/base-page.js";
-import { Layout } from "../components/layout.js";
-import { BreadCrumb } from "../components/bread-crumb.js";
+import { BasePage } from "../shared/base-page.js";
+import { Layout } from "../shared/layout.js";
+import { BreadCrumb } from "../shared/bread-crumb.js";
 
-/** @typedef {import("../../views/views.js").EntryPageView} EntryPageView
+/** @typedef {import("../../views/entry-page.js").EntryPageView} EntryPageView
 /**
  * @param {EntryPageView} props
  */
 export function BlogEntry(props) {
   const {
     blogTitle,
-    children,
+    body,
     pageTitle,
     pageHeading,
     fingerprint,
@@ -27,7 +27,7 @@ export function BlogEntry(props) {
         
           <${BreadCrumb} year=${year} month=${month} day=${day} />
         
-          <${children} />
+          <${body} />
         </article> 
       </${Layout}>
     </${BasePage}>

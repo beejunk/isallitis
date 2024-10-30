@@ -2,7 +2,7 @@ import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { blogEntryFixture } from "../../../fixtures/blog-entry-fixture.js";
 import { mockBlog } from "../../../fixtures/mock-blog.js";
-import { getEntryPageView } from "../../../../src/views/views.js";
+import { getEntryPageView } from "../../../../src/views/entry-page.js";
 import path from "node:path";
 
 describe("<BlogEntry>", async () => {

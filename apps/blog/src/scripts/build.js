@@ -1,7 +1,7 @@
 import path from "node:path";
 import fs from "node:fs/promises";
 import { compileRouteMap } from "../routes/routes.js";
-import { loadBlog } from "../blog/blog-utils.js";
+import { loadBlog } from "../utils/blog-utils.js";
 
 const blog = await loadBlog();
 
@@ -25,7 +25,7 @@ const routes = await compileRouteMap(blog, {
 });
 const distPath = "../../build";
 const distURL = new URL(distPath, import.meta.url);
-const cssSrcURL = new URL("../blog/styles/styles.css", import.meta.url);
+const cssSrcURL = new URL("../styles/styles.css", import.meta.url);
 const cssBuildURL = new URL(
   path.join(distPath, `styles-${startTime}.css`),
   import.meta.url,

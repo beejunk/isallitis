@@ -1,6 +1,6 @@
 import { html } from "htm/preact";
-import { Code } from "../components/code.js";
-import { BlogLink } from "../components/blog-link.js";
+import { Code } from "../components/shared/code.js";
+import { BlogLink } from "../components/shared/blog-link.js";
 
 export const title = "Detecting RSS";
 

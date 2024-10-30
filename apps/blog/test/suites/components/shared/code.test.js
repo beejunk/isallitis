@@ -2,7 +2,7 @@ import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { renderToString } from "preact-render-to-string";
 import { html } from "htm/preact";
-import { Code } from "../../../../src/blog/components/code.js";
+import { Code } from "../../../../src/components/shared/code.js";
 
 describe("<Code>", () => {
   test("should take raw code as a prop and render the code with HTML escape characters", () => {
