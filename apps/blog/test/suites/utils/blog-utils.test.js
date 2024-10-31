@@ -18,6 +18,6 @@ describe("importEntry()", () => {
       slug: "test-entry-1",
     });
 
-    assert.equal(entry.slug, "test-entry-1");
+    assert.equal(entry.title, "Test Entry 1");
   });
 });

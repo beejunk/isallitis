@@ -1,6 +1,12 @@
 import path from "node:path";
 import fs from "node:fs/promises";
 import { BlogSchema } from "../models/schemas.js";
+import {
+  assertBodyExport,
+  EntryModuleSchema,
+} from "../views/entry-module-schema.js";
+
+/** @typedef {import("../views/entry-module-schema.js").EntryModule} EntryModule */
 
 export async function loadBlog() {
   const blogUrl = new URL(path.join("..", "db", "/blog.json"), import.meta.url);
@@ -17,6 +23,7 @@ export async function loadBlog() {
  * @param {number} params.month
  * @param {number} params.year
  * @param {URL} [params.baseURL]
+ * @returns {Promise<EntryModule>}
  */
 export async function importEntry(params) {
   const { baseURL, slug, day, month, year } = params;
@@ -28,7 +35,9 @@ export async function importEntry(params) {
   );
 
   const entryModule = await import(moduleURL.pathname);
+  const validatedModule = EntryModuleSchema.parse(entryModule);
 
-  // TODO Validate module with schema
-  return entryModule;
+  assertBodyExport(validatedModule);
+
+  return validatedModule;
 }

@@ -3,8 +3,6 @@ import { BlogLink } from "../components/shared/blog-link.js";
 
 export const title = "The Free Net";
 
-export const slug = "free-net";
-
 export const hour = 8;
 
 export const minute = 11;
