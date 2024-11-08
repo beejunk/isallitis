@@ -1,20 +1,13 @@
 import { describe, test } from "node:test";
 import assert from "node:assert";
 import { getEntityById } from "../../../../src/models/queries/entity.js";
-import {
-  BLOG_DAY,
-  BLOG_ENTRY,
-  BLOG_MONTH,
-  BLOG_YEAR,
-} from "../../../../src/models/schemas.js";
+import { BLOG_ENTRY } from "../../../../src/models/schemas.js";
 import { mockBlog } from "../../../fixtures/mock-blog.js";
 
 describe("getEntityByIdId()", () => {
-  test("should return the expected entities", () => {
-    [BLOG_ENTRY, BLOG_DAY, BLOG_MONTH, BLOG_YEAR].forEach((type) => {
-      const entity = getEntityById(mockBlog, { type, id: 1 });
+  test("should return the expected entity type", () => {
+    const entity = getEntityById(mockBlog, { type: BLOG_ENTRY, id: 1 });
 
-      assert.equal(entity?.type, type);
-    });
+    assert.equal(entity?.type, BLOG_ENTRY);
   });
 });

@@ -1,10 +1,8 @@
 import { renderToString } from "preact-render-to-string";
 import { html } from "htm/preact";
-import { getDay } from "../models/queries/day.js";
-import { getMonth } from "../models/queries/month.js";
-import { getYear } from "../models/queries/year.js";
 import { importEntry } from "../utils/blog-utils.js";
 import { getBlogEntryRoute } from "../routes/routes.js";
+import { getEntryDateParams } from "../utils/date-utils.js";
 
 /** @typedef {import("../models/schemas.js").Blog} Blog */
 /** @typedef {import("../models/schemas.js").BlogEntry} BlogEntry */
@@ -42,13 +40,10 @@ import { getBlogEntryRoute } from "../routes/routes.js";
  */
 async function getRSSItemView(blog, params) {
   const { entriesBaseURL, entry, hostname } = params;
-  const { dayId, monthId, yearId, slug } = entry;
+  const { createdAt, slug, title } = entry;
+  const { day, month, year } = getEntryDateParams(createdAt);
 
-  const { day } = getDay(blog, { id: dayId });
-  const { month } = getMonth(blog, { id: monthId });
-  const { year } = getYear(blog, { id: yearId });
-
-  const { body, title } = await importEntry({
+  const { body } = await importEntry({
     baseURL: entriesBaseURL,
     day,
     month,

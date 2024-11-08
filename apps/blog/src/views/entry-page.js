@@ -1,9 +1,7 @@
 import { getEntry } from "../models/queries/entry.js";
-import { getDay } from "../models/queries/day.js";
-import { getMonth } from "../models/queries/month.js";
-import { getYear } from "../models/queries/year.js";
 import { importEntry } from "../utils/blog-utils.js";
 import { getBasePageView } from "./base-page.js";
+import { getEntryDateParams } from "../utils/date-utils.js";
 
 /** @typedef {import("../models/schemas.js").Blog} Blog*/
 /** @typedef {import("./base-page.js").BasePageView} BasePageView */
@@ -33,10 +31,8 @@ import { getBasePageView } from "./base-page.js";
 export async function getEntryPageView(blog, params) {
   const { entriesBaseURL, fingerprint, slug } = params;
 
-  const { dayId, monthId, yearId } = getEntry(blog, { slug });
-  const { day } = getDay(blog, { id: dayId });
-  const { month } = getMonth(blog, { id: monthId });
-  const { year } = getYear(blog, { id: yearId });
+  const { createdAt, title } = getEntry(blog, { slug });
+  const { day, month, year } = getEntryDateParams(createdAt);
 
   const entryModule = await importEntry({
     baseURL: entriesBaseURL,
@@ -47,7 +43,7 @@ export async function getEntryPageView(blog, params) {
   });
 
   return {
-    ...getBasePageView(blog, { fingerprint, pageHeading: entryModule.title }),
+    ...getBasePageView(blog, { fingerprint, pageHeading: title }),
     body: entryModule.body,
     day,
     month,

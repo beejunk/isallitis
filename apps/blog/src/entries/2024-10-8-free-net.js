@@ -1,12 +1,6 @@
 import { html } from "htm/preact";
 import { BlogLink } from "../components/shared/blog-link.js";
 
-export const title = "The Free Net";
-
-export const hour = 8;
-
-export const minute = 11;
-
 export const links = [
   {
     title: "Fight For Our Web",

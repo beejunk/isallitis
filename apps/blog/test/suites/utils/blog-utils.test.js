@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import path from "node:path";
+import { renderToString } from "preact-render-to-string";
+import { html } from "htm/preact";
 import { importEntry } from "../../../src/utils/blog-utils.js";
 
 describe("importEntry()", () => {
@@ -13,11 +15,11 @@ describe("importEntry()", () => {
     const entry = await importEntry({
       baseURL,
       year: 2024,
-      month: 10,
-      day: 12,
+      month: 11,
+      day: 8,
       slug: "test-entry-1",
     });
 
-    assert.equal(entry.title, "Test Entry 1");
+    assert.match(renderToString(html`<${entry.body} />`), /mock blog entry 1/i);
   });
 });

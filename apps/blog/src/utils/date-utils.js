@@ -30,3 +30,23 @@ export function toDate(entryData) {
 
   return new Date(`${dateStr}T${timeStr}`);
 }
+
+/**
+ * @typedef {Object} EntryDate
+ * @prop {number} year
+ * @prop {number} month
+ * @prop {number} day
+ */
+
+/**
+ * @param {string} entryISOString
+ * @returns {EntryDate}
+ */
+export function getEntryDateParams(entryISOString) {
+  const entryDate = new Date(entryISOString);
+  const day = entryDate.getDate();
+  const month = entryDate.getMonth() + 1;
+  const year = entryDate.getFullYear();
+
+  return { day, month, year };
+}

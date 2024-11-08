@@ -1,6 +1,3 @@
-import { getDay } from "../models/queries/day.js";
-import { getMonth } from "../models/queries/month.js";
-import { getYear } from "../models/queries/year.js";
 import { getBasePageView } from "./base-page.js";
 
 /** @typedef {import("../models/schemas.js").Blog} Blog*/
@@ -39,29 +36,33 @@ function getEntryFilterFromDateParams(blog, params) {
   const { day, month, year } = params;
 
   if (day && month && year) {
-    const dayEntity = getDay(blog, { day, month, year });
-    const monthEntity = getMonth(blog, { id: dayEntity.monthId });
-    const yearEntity = getYear(blog, { id: dayEntity.yearId });
+    return (entryEntity) => {
+      const entryDate = new Date(entryEntity.createdAt);
+      const entryYear = entryDate.getFullYear();
+      const entryMonth = entryDate.getMonth() + 1;
+      const entryDay = entryDate.getDate();
 
-    return (entryEntity) =>
-      entryEntity.dayId === dayEntity.id &&
-      entryEntity.monthId === monthEntity.id &&
-      entryEntity.yearId === yearEntity.id;
+      return entryYear === year && entryMonth === month && entryDay === day;
+    };
   }
 
   if (month && year) {
-    const monthEntity = getMonth(blog, { month, year });
-    const yearEntity = getYear(blog, { id: monthEntity.yearId });
+    return (entryEntity) => {
+      const entryDate = new Date(entryEntity.createdAt);
+      const entryYear = entryDate.getFullYear();
+      const entryMonth = entryDate.getMonth() + 1;
 
-    return (entryEntity) =>
-      entryEntity.monthId === monthEntity.id &&
-      entryEntity.yearId === yearEntity.id;
+      return entryYear === year && entryMonth === month;
+    };
   }
 
   if (year) {
-    const yearEntity = getYear(blog, { year });
+    return (entryEntity) => {
+      const entryDate = new Date(entryEntity.createdAt);
+      const entryYear = entryDate.getFullYear();
 
-    return (entryEntity) => entryEntity.yearId === yearEntity.id;
+      return entryYear === year;
+    };
   }
 
   throw new Error(
@@ -127,12 +128,13 @@ export function getEntryListPageView(blog, params) {
 
   /** @type {Array<EntrySummaryView>} */
   const entryViews = entryEntities.map((entryEntity) => {
-    const { slug, title, dayId, monthId, yearId } = entryEntity;
-    const { day } = getDay(blog, { id: dayId });
-    const { month } = getMonth(blog, { id: monthId });
-    const { year } = getYear(blog, { id: yearId });
+    const { slug, title, createdAt } = entryEntity;
+    const entryDate = new Date(createdAt);
+    const entryYear = entryDate.getFullYear();
+    const entryMonth = entryDate.getMonth() + 1;
+    const entryDay = entryDate.getDate();
 
-    return { year, month, day, slug, title };
+    return { year: entryYear, month: entryMonth, day: entryDay, slug, title };
   });
 
   return {

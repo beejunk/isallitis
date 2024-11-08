@@ -10,10 +10,7 @@ const EntryLinkSchema = z.object({
 
 export const EntryModuleSchema = z.object({
   body: z.unknown(),
-  hour: z.number(),
-  minute: z.number(),
   links: z.array(EntryLinkSchema).default([]),
-  title: z.string(),
 });
 
 /** @typedef {z.infer<typeof EntryModuleSchema>} EntryModuleSchemaType */
@@ -33,8 +30,6 @@ export const EntryModuleSchema = z.object({
  */
 export function assertBodyExport(entryModule) {
   if (typeof entryModule.body !== "function") {
-    throw new Error(
-      `Entry module for '${entryModule.title}' does not have a 'body' export.`,
-    );
+    throw new Error(`Entry module does not have 'body' export.`);
   }
 }

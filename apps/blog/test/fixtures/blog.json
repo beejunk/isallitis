@@ -2,36 +2,10 @@
   "title": "A Test Blog Is All It Is",
   "description": "Blog data for running tests",
   "entities": {
-    "year": [
-      {
-        "id": 1,
-        "year": 2024,
-        "type": "year"
-      }
-    ],
-    "month": [
-      {
-        "id": 1,
-        "month": 10,
-        "yearId": 1,
-        "type": "month"
-      }
-    ],
-    "day": [
-      {
-        "id": 1,
-        "day": 12,
-        "monthId": 1,
-        "yearId": 1,
-        "type": "day"
-      }
-    ],
     "entry": [
       {
         "id": 1,
-        "dayId": 1,
-        "monthId": 1,
-        "yearId": 1,
+        "createdAt": "2024-11-08T21:15:52.481Z",
         "slug": "test-entry-1",
         "title": "Test Entry 1",
         "type": "entry"

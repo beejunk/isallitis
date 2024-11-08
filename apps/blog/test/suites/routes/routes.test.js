@@ -5,10 +5,7 @@ import {
   getBlogEntryRoute,
 } from "../../../src/routes/routes.js";
 import { mockBlog } from "../../fixtures/mock-blog.js";
-import { getEntry } from "../../../src/models/queries/entry.js";
-import { getYear } from "../../../src/models/queries/year.js";
-import { getDay } from "../../../src/models/queries/day.js";
-import { getMonth } from "../../../src/models/queries/month.js";
+import { getBlogDates, getEntry } from "../../../src/models/queries/entry.js";
 import path from "node:path";
 
 describe("createRouteMap()", () => {
@@ -20,10 +17,11 @@ describe("createRouteMap()", () => {
   test("it should return an entry for the provided path", async () => {
     const routeMap = await compileRouteMap(mockBlog, { entriesBaseURL });
 
-    const { dayId, monthId, slug, yearId } = getEntry(mockBlog, { id: 1 });
-    const { day } = getDay(mockBlog, { id: dayId });
-    const { month } = getMonth(mockBlog, { id: monthId });
-    const { year } = getYear(mockBlog, { id: yearId });
+    const { createdAt, slug } = getEntry(mockBlog, { id: 1 });
+    const entryDate = new Date(createdAt);
+    const day = entryDate.getDate();
+    const month = entryDate.getMonth() + 1;
+    const year = entryDate.getFullYear();
 
     const path = getBlogEntryRoute({ year, month, day, slug });
     const entry = routeMap.get(path);
@@ -33,8 +31,10 @@ describe("createRouteMap()", () => {
 
   test("it should create routes for each year with entries", async () => {
     const routeMap = await compileRouteMap(mockBlog, { entriesBaseURL });
+    const blogDates = getBlogDates(mockBlog);
+    const years = Object.values(blogDates.years).map(({ year }) => year);
 
-    mockBlog.entities.year.forEach(({ year }) => {
+    years.forEach((year) => {
       const route = routeMap.get(`/year/${year}`);
       assert.equal(route?.slug, year.toString());
     });
@@ -42,9 +42,9 @@ describe("createRouteMap()", () => {
 
   test("it should create routes for each month with entries", async () => {
     const routeMap = await compileRouteMap(mockBlog, { entriesBaseURL });
+    const { months } = getBlogDates(mockBlog);
 
-    mockBlog.entities.month.forEach(({ month, yearId }) => {
-      const { year } = getYear(mockBlog, { id: yearId });
+    Object.values(months).forEach(({ month, year }) => {
       const route = routeMap.get(`/year/${year}/month/${month}`);
       assert.equal(route?.slug, month.toString());
     });
@@ -52,10 +52,9 @@ describe("createRouteMap()", () => {
 
   test("it should create routes for each day with entries", async () => {
     const routeMap = await compileRouteMap(mockBlog, { entriesBaseURL });
+    const { days } = getBlogDates(mockBlog);
 
-    mockBlog.entities.day.forEach(({ day, monthId, yearId }) => {
-      const { year } = getYear(mockBlog, { id: yearId });
-      const { month } = getMonth(mockBlog, { id: monthId });
+    Object.values(days).forEach(({ day, month, year }) => {
       const route = routeMap.get(`/year/${year}/month/${month}/day/${day}`);
       assert.equal(route?.slug, day.toString());
     });

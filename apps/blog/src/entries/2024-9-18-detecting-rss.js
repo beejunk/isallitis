@@ -2,12 +2,6 @@ import { html } from "htm/preact";
 import { Code } from "../components/shared/code.js";
 import { BlogLink } from "../components/shared/blog-link.js";
 
-export const title = "Detecting RSS";
-
-export const hour = 12;
-
-export const minute = 45;
-
 export const links = [
   { title: "Vivaldi website", url: "https://www.vivaldi.com" },
   {

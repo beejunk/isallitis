@@ -3,8 +3,6 @@ import { html } from "htm/preact";
 import { BlogEntry } from "../components/pages/blog-entry.js";
 import { RSS } from "../components/rss/rss.js";
 import { HOST_NAME } from "../constants.js";
-import { getMonth } from "../models/queries/month.js";
-import { getYear } from "../models/queries/year.js";
 import { EntryListPage } from "../components/pages/entry-list-page.js";
 import { getRecentEntriesPageView } from "../views/recent-entries-page.js";
 import { getYearPageView } from "../views/year-page.js";
@@ -12,9 +10,11 @@ import { getMonthPageView } from "../views/month-page.js";
 import { getDayPageView } from "../views/day-page.js";
 import { getEntryPageView } from "../views/entry-page.js";
 import { getRSSView } from "../views/rss.js";
+import { getBlogDates } from "../models/queries/entry.js";
 
 /** @typedef {import("preact").FunctionComponent} FunctionComponent */
 /** @typedef {import("../models/schemas.js").Blog} Blog */
+/** @typedef {import("../models/queries/entry.js").BlogDates} BlogDates */
 
 /** @type {"html"} */
 const HTML_EXT = "html";
@@ -164,15 +164,14 @@ function createIndexRoute(blog, params = {}) {
 /**
  * @param {Blog} blog
  * @param {Object} params
+ * @param {BlogDates["days"]} params.days
  * @param {string} [params.fingerprint]
  * @returns {Array<[string, RouteData]>}
  */
-function createDayRoutes(blog, params = {}) {
-  const { fingerprint } = params;
+function createDayRoutes(blog, params) {
+  const { days, fingerprint } = params;
 
-  return blog.entities.day.map(({ day, monthId, yearId }) => {
-    const { month } = getMonth(blog, { id: monthId });
-    const { year } = getYear(blog, { id: yearId });
+  return Object.values(days).map(({ day, month, year }) => {
     const dayView = getDayPageView(blog, { fingerprint, day, month, year });
     const path = `/year/${year}/month/${month}/day/${day}`;
 
@@ -193,14 +192,14 @@ function createDayRoutes(blog, params = {}) {
 /**
  * @param {Blog} blog
  * @param {Object} params
+ * @param {BlogDates["months"]} params.months
  * @param {string} [params.fingerprint]
  * @returns {Array<[string, RouteData]>}
  */
-function createMonthRoutes(blog, params = {}) {
-  const { fingerprint } = params;
+function createMonthRoutes(blog, params) {
+  const { months, fingerprint } = params;
 
-  return blog.entities.month.map(({ month, yearId }) => {
-    const { year } = getYear(blog, { id: yearId });
+  return Object.values(months).map(({ month, year }) => {
     const monthView = getMonthPageView(blog, { fingerprint, month, year });
     const path = `/year/${year}/month/${month}`;
 
@@ -221,13 +220,14 @@ function createMonthRoutes(blog, params = {}) {
 /**
  * @param {Blog} blog
  * @param {Object} params
+ * @param {BlogDates["years"]} params.years
  * @param {string} [params.fingerprint]
  * @returns {Array<[string, RouteData]>}
  */
-function createYearRoutes(blog, params = {}) {
-  const { fingerprint } = params;
+function createYearRoutes(blog, params) {
+  const { fingerprint, years } = params;
 
-  return blog.entities.year.map(({ year }) => {
+  return Object.values(years).map(({ year }) => {
     const yearView = getYearPageView(blog, { fingerprint, year });
     const path = `/year/${year}`;
 
@@ -257,15 +257,16 @@ function createYearRoutes(blog, params = {}) {
  */
 export async function compileRouteMap(blog, params) {
   const { entriesBaseURL, fingerprint } = params ?? {};
+  const { years, months, days } = getBlogDates(blog);
 
   const entryRoutes = await createAllEntryRoutes(blog, {
     entriesBaseURL,
     fingerprint,
   });
   const indexRoute = createIndexRoute(blog, { fingerprint });
-  const dayRoutes = createDayRoutes(blog, { fingerprint });
-  const monthRoutes = createMonthRoutes(blog, { fingerprint });
-  const yearRoutes = createYearRoutes(blog, { fingerprint });
+  const dayRoutes = createDayRoutes(blog, { fingerprint, days });
+  const monthRoutes = createMonthRoutes(blog, { fingerprint, months });
+  const yearRoutes = createYearRoutes(blog, { fingerprint, years });
   const rssRoute = await createRSSRoute(blog, {
     entriesBaseURL,
     hostname: HOST_NAME,
