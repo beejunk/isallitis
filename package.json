@@ -9,13 +9,9 @@
     "format:check": "prettier -c .",
     "format:write": "prettier -w ."
   },
-  "workspaces": [
-    "apps/*"
-  ],
   "engines": {
     "node": "22.14.0"
   },
-  "packageManager": "npm@10.9.0+sha512.65a9c38a8172948f617a53619762cd77e12b9950fe1f9239debcb8d62c652f2081824b986fee7c0af6c0a7df615becebe4bf56e17ec27214a87aa29d9e038b4b",
   "devDependencies": {
     "@eslint/js": "^9.11.1",
     "@prettier/plugin-xml": "^3.4.1",
@@ -31,5 +27,6 @@
     "prettier": "^3.3.3",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.7.0"
-  }
+  },
+  "packageManager": "pnpm@10.7.0+sha512.6b865ad4b62a1d9842b61d674a393903b871d9244954f652b8842c2b553c72176b278f64c463e52d40fff8aba385c235c8c9ecf5cc7de4fd78b8bb6d49633ab6"
 }
