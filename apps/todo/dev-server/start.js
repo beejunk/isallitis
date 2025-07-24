@@ -20,12 +20,6 @@ server.register(fastifyStatic, {
   decorateReply: false,
 });
 
-server.register(fastifyStatic, {
-  root: path.resolve("node_modules", "@preact", "signals-core", "dist"),
-  prefix: "/preact-signals-core",
-  decorateReply: false,
-});
-
 try {
   await server.listen({ port: PORT });
 } catch (err) {

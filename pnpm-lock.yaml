@@ -87,7 +87,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/shared-components
       '@preact/signals-core':
-        specifier: ^1.11.0
+        specifier: 1.11.0
         version: 1.11.0
     devDependencies:
       '@fastify/static':
