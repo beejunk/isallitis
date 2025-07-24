@@ -3,7 +3,8 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
+    "module": "nodenext",
     "noEmit": true
   },
-  "include": ["src/**/*", "test/**/*"]
+  "include": ["client"]
 }

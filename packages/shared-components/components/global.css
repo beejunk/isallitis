@@ -1,0 +1,12 @@
+:root {
+  --base-size: 4px;
+
+  --base-font-size: calc(var(--base-size) * 4);
+
+  --color-primary: #ffffff;
+}
+
+body {
+  font-size: var(--base-font-size);
+  font-family: sans-serif;
+}

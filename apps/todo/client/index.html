@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A To-Do App Is All It Is</title>
+
+    <link rel="stylesheet" href="/shared-components/global.css" />
+    <link rel="stylesheet" href="/global.css" />
+  </head>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "@isallitis/shared-components/": "/shared-components/",
+        "@preact/signals-core": "/preact-signals-core/signals-core.mjs"
+      }
+    }
+  </script>
+
+  <body>
+    <todo-app-is-all-it-is>
+      <template shadowrootmode="open">
+        <link rel="stylesheet" href="/todo.css" />
+
+        <div class="content">
+          <header>
+            <h1>To-Do</h1>
+            <p><em>Is All It Is</em></p>
+          </header>
+
+          <todo-list-is-all-it-is></todo-list-is-all-it-is>
+        </div>
+
+        <todo-add-button-is-all-it-is></todo-add-button-is-all-it-is>
+
+        <todo-add-dialog-is-all-it-is></todo-add-dialog-is-all-it-is>
+      </template>
+    </todo-app-is-all-it-is>
+
+    <script src="/todo.js" type="module"></script>
+  </body>
+</html>

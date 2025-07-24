@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pattern Library Dev Application</title>
+
+    <link rel="stylesheet" href="/mocha/mocha.css" />
+    <link rel="stylesheet" href="/components/global.css" />
+  </head>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "@testing-library/dom": "/deps/testing-library-dom-shim.js",
+        "chai": "/chai/chai.js",
+        "shadow-dom-testing-library": "/shadow-dom-testing-library/index.js"
+      }
+    }
+  </script>
+
+  <body>
+    <div id="mocha"></div>
+
+    <div id="app"></div>
+
+    <script src="/testing-library-dom/dom.umd.js"></script>
+    <script src="/mocha/mocha.js"></script>
+    <script src="/run-tests.js" type="module"></script>
+  </body>
+</html>
