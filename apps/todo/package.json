@@ -14,7 +14,7 @@
     "@preact/signals-core": "1.11.0"
   },
   "devDependencies": {
-    "@fastify/static": "^8.2.0",
-    "fastify": "5.4.0"
+    "@fastify/static": "catalog:",
+    "fastify": "catalog:"
   }
 }

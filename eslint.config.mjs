@@ -4,7 +4,7 @@ import tseslint from "typescript-eslint";
 
 export default [
   { files: ["**/*.{js,mjs,cjs,ts}"] },
-  { ignores: ["**/vendors/**"] },
+  { ignores: ["**/vendors/**", "**/dist/**"] },
   {
     languageOptions: {
       globals: { ...globals.browser, ...globals.node, ...globals.mocha },
