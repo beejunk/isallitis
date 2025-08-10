@@ -261,6 +261,7 @@ class TodoAddDialog extends CustomElement {
     super();
 
     this.handleCreateButtonClicked = this.handleCreateButtonClicked.bind(this);
+    this.handleInputKeypress = this.handleInputKeypress.bind(this);
   }
 
   get createButton() {
@@ -285,25 +286,39 @@ class TodoAddDialog extends CustomElement {
     super.connectedCallback();
 
     this.createButton.addClickEventListener(this.handleCreateButtonClicked);
+    this.input.addEventListener("keydown", this.handleInputKeypress);
   }
 
-  /**
-   * @param {Event} event
-   * @returns {Promise<void>}
-   */
-  async handleCreateButtonClicked(event) {
-    event.preventDefault();
-
+  async createToDo() {
     // TODO Some kind of validation
     const description = this.input.value;
 
     try {
       const newTodo = await saveToDo(createTodo({ description }));
       this.dialog.handleCloseButtonClick();
+      this.input.value = "";
       todos.value = [...todos.value, newTodo];
     } catch (err) {
       console.error(err);
     }
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   */
+  handleInputKeypress(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this.createToDo();
+    }
+  }
+
+  /**
+   * @param {Event} event
+   */
+  handleCreateButtonClicked(event) {
+    event.preventDefault();
+    this.createToDo();
   }
 
   render() {
