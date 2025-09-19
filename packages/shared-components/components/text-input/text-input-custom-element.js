@@ -1,18 +1,13 @@
 import { CustomElement } from "../custom-element.js";
-import { shadowCSS, shadowHTML, TAG } from "./text-input-template.js";
+import { styles, shadowHTML, TAG } from "./text-input-template.js";
+import { createStyleSheet } from "../utils.js";
+
+const styleSheet = createStyleSheet(styles);
 
 export class TextInput extends CustomElement {
-  static tag = TAG;
-
-  static toString() {
-    return TAG;
-  }
-
-  styles = new CSSStyleSheet();
+  static styles = [styleSheet];
 
   render() {
-    this.styles.replaceSync(shadowCSS());
-
     return shadowHTML();
   }
 }

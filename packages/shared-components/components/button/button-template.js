@@ -2,11 +2,6 @@ import { tag, html, css } from "../utils.js";
 
 export const TAG = tag`button`;
 
-/**
- * @typedef {Object} ButtonTemplateProps
- * @prop {string} label
- */
-
 const VARIATIONS = {
   /** @type {"default"} */
   default: "default",
@@ -34,6 +29,13 @@ const RADIUS_SIZES = {
 /** @typedef {keyof typeof RADIUS_SIZES} ButtonRadius */
 
 /**
+ * @typedef {Object} ButtonTemplateProps
+ * @prop {string} label
+ * @prop {(ButtonVariation | null)} [variation="default"]
+ * @prop {(ButtonRadius | null)} [radius="radius-small"]
+ */
+
+/**
  * @param {(string | null)} attr
  * @returns {attr is ButtonVariation}
  */
@@ -57,72 +59,46 @@ export function isButtonRadius(attr) {
   return attr in RADIUS_SIZES;
 }
 
-/**
- * @param {(ButtonRadius | null)} radius
- * @returns {string}
- */
-function getRadiusStyle(radius) {
-  switch (radius) {
-    case RADIUS_SIZES.small:
-      return `var(--base-size)`;
-    case RADIUS_SIZES.large:
-      return `calc(var(--base-size) * 3)`;
-    case RADIUS_SIZES.round:
-      return "50%";
-    default:
-      return `calc(var(--base-size) * 2)`;
-  }
-}
-
-/**
- * @param {Object} props
- * @param {(ButtonVariation | null)} props.variation
- * @param {(ButtonRadius | null)} props.radius
- * @returns {string}
- */
-export function shadowCSS({ variation = "default", radius }) {
-  const radiusStyle = getRadiusStyle(radius);
-  const paddingMultiplier = radius === "round" ? 3 : 2;
-
-  const shared = css`
-    :host {
-      display: block;
-    }
-
-    button {
-      cursor: pointer;
-      display: inline-block;
-      padding: calc(var(--base-size) * ${paddingMultiplier});
-    }
-  `;
-
-  if (variation === "icon") {
-    return css`
-      ${shared}
-      button {
-        border: none;
-        background: none;
-      }
-    `;
+export const styles = css`
+  :host {
+    display: block;
   }
 
-  return css`
-    ${shared}
+  button {
+    border: none;
+    cursor: pointer;
+    background-color: var(--color-primary);
+    display: inline-block;
+    font-size: var(--text-m);
+    padding: var(--space-s);
+  }
+
+  button.icon {
     button {
-      border: 1px solid var(--color-primary);
-      border-radius: ${radiusStyle};
-      background-color: var(--color-primary);
-      font-size: var(--base-font-size);
+      background: none;
+      padding: var(--space-m);
     }
-  `;
-}
+  }
+
+  :focus {
+    outline: solid calc(var(--space-s) / 2) var(--color-focus);
+  }
+
+  button:hover {
+    background-color: var(--color-primary-hover);
+  }
+`;
 
 /**
+ * @param {Omit<ButtonTemplateProps, "label">} props
  * @returns {string}
  */
-export function shadowHTML() {
+export function template(props) {
+  const variation = props.variation ?? "default";
+  const radius = props.radius ?? "small";
+
   return html`
-    <button>
+    <button class="${variation} radius-${radius}">
       <slot></slot>
     </button>
   `;

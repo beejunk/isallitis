@@ -8,22 +8,11 @@ export const TAG = tag`pen-to-square`;
  * @prop {(string | null)} [width = "20"]
  */
 
-/**
- * @param {Object} props
- * @param {(string | null)} [props.fill = "#000000"]
- * @returns {string}
- */
-export function shadowCSS({ fill }) {
-  return css`
-    :host {
-      display: block;
-    }
-
-    svg {
-      fill: ${fill};
-    }
-  `;
-}
+export const styles = css`
+  :host {
+    display: block;
+  }
+`;
 
 /**
  * @param {PenToSquareProps} props

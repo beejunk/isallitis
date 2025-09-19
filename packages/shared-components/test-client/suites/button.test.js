@@ -1,53 +1,63 @@
 import { expect } from "chai";
-import { within } from "shadow-dom-testing-library";
 
-import { css, html } from "../../components/utils.js";
+import { html } from "../../components/utils.js";
 import { Button } from "../../components/button/button-custom-element.js";
+import { PenToSquare } from "../../components/pen-to-square/pen-to-square-custom-element.js";
+import { createRender } from "../test-components.js";
 
-const TEST_ID = `${Button}-test`;
+const SUITE_ID = `${Button}-test`;
 
-const testCSS = css`
-  .${TEST_ID} {
-    margin: 1rem;
-  }
-`;
-
-const testStyleSheet = new CSSStyleSheet();
-
-testStyleSheet.replaceSync(testCSS);
-
-document.adoptedStyleSheets.push(testStyleSheet);
-
-function getAppRoot() {
-  const appRoot = document.getElementById("app");
-
-  if (!appRoot) {
-    throw new Error("Unable to find test app root element.");
-  }
-
-  return appRoot;
-}
-
-function render(innerHTML = "") {
-  const appRoot = getAppRoot();
-  const testRoot = document.createElement("div");
-
-  testRoot.className = TEST_ID;
-  testRoot.innerHTML = innerHTML;
-
-  appRoot.appendChild(testRoot);
-
-  return within(testRoot);
-}
+const render = createRender(SUITE_ID);
 
 describe(`<${Button}>`, () => {
-  it("should render render", () => {
+  it("should render button with default styles", () => {
+    const { getByShadowRole } = render(html`<${Button}>Default</${Button}>`);
+
+    const button = getByShadowRole("button", { name: /default/i });
+
+    expect(button.classList.toString()).to.include("default");
+    expect(button.classList.toString()).to.include("radius-small");
+  });
+
+  it("should render button with medium radius", () => {
     const { getByShadowRole } = render(
-      html`<${Button}>Test Button</${Button}>`,
+      html`
+        <${Button} radius="medium">
+          Medium Radius
+        </${Button}>`,
     );
 
-    const button = getByShadowRole("render", { name: /test render/i });
+    const button = getByShadowRole("button", { name: /medium/i });
 
-    expect(button).to.be.an.instanceof(Button);
+    expect(button.classList.toString()).to.include("default");
+    expect(button.classList.toString()).to.include("radius-medium");
+  });
+
+  it("should render button with large radius", () => {
+    const { getByShadowRole } = render(
+      html`
+        <${Button} radius="large">
+          Large Radius
+        </${Button}>`,
+    );
+
+    const button = getByShadowRole("button", { name: /large/i });
+
+    expect(button.classList.toString()).to.include("default");
+    expect(button.classList.toString()).to.include("radius-large");
+  });
+
+  it("should render button with round radius", () => {
+    const { getByShadowRole } = render(
+      html`
+        <${Button} radius="round">
+          <${PenToSquare}>Round</${PenToSquare}>
+        </${Button}>`,
+    );
+
+    const button = getByShadowRole("button", { name: /round/i });
+
+    expect(button.classList.toString()).to.include("default");
+    expect(button.classList.toString()).to.include("radius-round");
   });
 });

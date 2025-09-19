@@ -1,14 +1,18 @@
 import { CustomElement } from "../custom-element.js";
 import {
-  shadowCSS,
-  shadowHTML,
+  styles,
+  template,
   isButtonVariation,
   TAG,
   isButtonRadius,
 } from "./button-template.js";
+import { createStyleSheet } from "../utils.js";
+import { radiusSheet } from "../style-sheets.js";
+
+const styleSheet = createStyleSheet(styles);
 
 export class Button extends CustomElement {
-  styles = new CSSStyleSheet();
+  static styles = [radiusSheet, styleSheet];
 
   get variation() {
     const variation = this.getAttribute("variation");
@@ -21,10 +25,10 @@ export class Button extends CustomElement {
   }
 
   get radius() {
-    const variation = this.getAttribute("radius");
+    const radius = this.getAttribute("radius");
 
-    if (isButtonRadius(variation)) {
-      return variation;
+    if (isButtonRadius(radius)) {
+      return radius;
     }
 
     return null;
@@ -39,11 +43,7 @@ export class Button extends CustomElement {
   }
 
   render() {
-    this.styles.replaceSync(
-      shadowCSS({ radius: this.radius, variation: this.variation }),
-    );
-
-    return shadowHTML();
+    return template({ variation: this.variation, radius: this.radius });
   }
 }
 

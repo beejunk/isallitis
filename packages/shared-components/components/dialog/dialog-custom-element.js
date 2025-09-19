@@ -1,16 +1,13 @@
 import { CustomElement } from "../custom-element.js";
 import { Button } from "../button/button-custom-element.js";
-import { shadowCSS, shadowHTML, TAG } from "./dialog-template.js";
+import { styles, shadowHTML, TAG } from "./dialog-template.js";
 import "../circle-xmark/circle-xmark-custom-element.js";
+import { createStyleSheet } from "../utils.js";
+
+const styleSheet = createStyleSheet(styles);
 
 export class Dialog extends CustomElement {
-  static tag = TAG;
-
-  static toString() {
-    return TAG;
-  }
-
-  styles = new CSSStyleSheet();
+  static styles = [styleSheet];
 
   constructor() {
     super();
@@ -87,8 +84,6 @@ export class Dialog extends CustomElement {
   }
 
   render() {
-    this.styles.replaceSync(shadowCSS());
-
     return shadowHTML();
   }
 

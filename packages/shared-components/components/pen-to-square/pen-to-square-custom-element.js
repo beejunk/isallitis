@@ -1,14 +1,12 @@
 import { CustomElement } from "../custom-element.js";
-import { shadowCSS, shadowHTML, TAG } from "./pen-to-square-template.js";
+import { styles, shadowHTML, TAG } from "./pen-to-square-template.js";
+import { createStyleSheet } from "../utils.js";
+import { fillSheet } from "../style-sheets.js";
+
+const styleSheet = createStyleSheet(styles);
 
 export class PenToSquare extends CustomElement {
-  static tag = TAG;
-
-  static toString() {
-    return TAG;
-  }
-
-  styles = new CSSStyleSheet();
+  static styles = [fillSheet, styleSheet];
 
   /**
    * @returns {import("./pen-to-square-template.js").PenToSquareProps}
@@ -20,8 +18,6 @@ export class PenToSquare extends CustomElement {
   }
 
   render() {
-    this.styles.replaceSync(shadowCSS({ fill: this.getAttribute("fill") }));
-
     return shadowHTML(this.getProps());
   }
 }

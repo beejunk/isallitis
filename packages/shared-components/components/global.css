@@ -1,12 +1,52 @@
 :root {
-  --base-size: 4px;
+  --base-size: 16px;
 
-  --base-font-size: calc(var(--base-size) * 4);
+  --size-50: 0.5em;
+  --size-100: 1em;
+  --size-150: 1.5em;
+  --size-200: 2em;
+  --size-250: 2.5em;
+  --size-300: 3em;
+  --size-350: 3.5em;
+  --size-400: 4em;
+  --size-800: 8em;
 
-  --color-primary: #ffffff;
-}
+  --black: hsl(0 0% 0%);
+  --white: hsl(0 0% 100%);
 
-body {
-  font-size: var(--base-font-size);
-  font-family: sans-serif;
+  --grey-25: hsl(0 0% 25%);
+  --grey-50: hsl(0 0% 50%);
+  --grey-75: hsl(0 0% 75%);
+
+  --purple-100: hsl(300, 100%, 50%);
+  --purple-75: hsl(from var(--purple-100) h s 40%);
+
+  /* --- */
+
+  --space-s: var(--size-50);
+  --space-m: var(--size-100);
+  --space-l: var(--size-200);
+  --space-xl: var(--size-400);
+  --space-xxl: var(--size-800);
+
+  --text-s: var(--size-50);
+  --text-m: var(--size-100);
+  --text-l: var(--size-200);
+  --text-xl: var(--size-300);
+  --text-xxl: var(--size-400);
+
+  --color-focus: var(--purple-75);
+
+  --color-primary: var(--white);
+  --color-primary-border: var(--grey-50);
+  --color-primary-hover: var(--grey-50);
+  --color-primary-bg: var(--black);
+
+  --color-secondary: var(--grey-50);
+  --color-secondary-light: var(--grey-50);
+  --color-secondary-dark: var(--black);
+
+  --color-surface-raised: var(--grey-50);
+  --color-surface-default: var(--grey-25);
+  --color-surface-lowered: var(--black);
 }

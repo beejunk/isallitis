@@ -1,24 +1,11 @@
 import { CustomElement } from "../custom-element.js";
-import { shadowCSS, shadowHTML, TAG } from "./card-template.js";
+import { styles, shadowHTML, TAG } from "./card-template.js";
+import { createStyleSheet } from "../utils.js";
+
+const styleSheet = createStyleSheet(styles);
 
 export class Card extends CustomElement {
-  static tag = TAG;
-
-  static toString() {
-    return TAG;
-  }
-
-  styles = new CSSStyleSheet();
-
-  /**
-   * @returns {import("./card-template.js").CardProps}
-   */
-  getProps() {
-    return {
-      maxWidth: this.getAttribute("max-width"),
-      withHeader: this.hasHeader(),
-    };
-  }
+  static styles = [styleSheet];
 
   /**
    * @returns {boolean}
@@ -34,8 +21,6 @@ export class Card extends CustomElement {
   }
 
   render() {
-    this.styles.replaceSync(shadowCSS(this.getProps()));
-
     return shadowHTML();
   }
 }

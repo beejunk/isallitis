@@ -8,36 +8,26 @@ export const TAG = tag`card`;
  * @prop {boolean} [withHeader=false]
  */
 
-/**
- * @param {CardProps} props
- * @returns {string}
- */
-export function shadowCSS(props) {
-  const { maxWidth = "100%", withHeader = false } = props;
-  const headerDisplay = withHeader ? "block" : "none";
+export const styles = css`
+  :host {
+    display: block;
+    border: 1px solid white;
+    border-radius: 4px;
 
-  return css`
-    :host {
-      display: block;
-      border: 1px solid white;
-      border-radius: 4px;
-      max-width: ${maxWidth};
+    --card-padding: calc(var(--base-font-size) * 0.5);
+  }
 
-      --card-padding: calc(var(--base-font-size) * 0.5);
-    }
+  :host([with-header]) .header {
+    display: block;
+    border-bottom: 1px solid white;
+    padding: var(--space-s);
+  }
 
-    .header {
-      display: ${headerDisplay};
-      border-bottom: 1px solid white;
-      padding: var(--card-padding);
-    }
-
-    .body {
-      display: block;
-      padding: var(--card-padding);
-    }
-  `;
-}
+  .body {
+    display: block;
+    padding: var(--space-s);
+  }
+`;
 
 /**
  * @returns {string}

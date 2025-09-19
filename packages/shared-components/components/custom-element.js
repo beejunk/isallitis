@@ -1,7 +1,10 @@
+import { defaultStyles } from "./default-styles.js";
+
 /**
  * @typedef {Object} CustomElementStaticMembers
  * @prop {string} TAG
  * @prop {function(): string} toString
+ * @prop {Array<CSSStyleSheet>} styles
  */
 
 /**
@@ -9,10 +12,66 @@
  * @typedef {(props: Props) => string} Template
  */
 
+/**
+ * @param {Function} clsConstructor
+ * @returns {clsConstructor is Pick<CustomElementStaticMembers, "styles">}
+ */
+function hasStyles(clsConstructor) {
+  if (Object.hasOwn(clsConstructor, "styles")) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * @template CustomElementInstance
+ * @param {unknown} instance
+ * @param {new (...args: any[]) => CustomElementInstance} CustomElementClass
+ * @returns {asserts instance is CustomElementInstance}
+ */
+function assertElementClass(instance, CustomElementClass) {
+  if (!(instance instanceof CustomElementClass)) {
+    throw new Error(`Element not an instance of ${CustomElementClass}.`);
+  }
+}
+
+/**
+ * @param {(CustomElementConstructor & Partial<CustomElementStaticMembers>)} NewCustomElement
+ * @returns {asserts NewCustomElement is (CustomElementConstructor & CustomElementStaticMembers)}
+ */
+function assertHasStaticMembers(NewCustomElement) {
+  const hasAllStaticMembers =
+    typeof NewCustomElement.TAG === "string" &&
+    typeof NewCustomElement.toString === "function" &&
+    Array.isArray(NewCustomElement.styles);
+
+  if (!hasAllStaticMembers) {
+    throw new Error("New CustomElement is missing required static members.");
+  }
+}
+
+const defaultSheet = new CSSStyleSheet();
+defaultSheet.replaceSync(defaultStyles);
+
 export class CustomElement extends HTMLElement {
+  /**
+   * @template CustomElementInstance
+   * @param {new (...args: any[]) => CustomElementInstance} CustomElementClass
+   * @returns {CustomElementInstance}
+   */
+  static createElement(CustomElementClass) {
+    const newElement = document.createElement(`${CustomElementClass}`);
+
+    assertElementClass(newElement, CustomElementClass);
+
+    return newElement;
+  }
+
   /**
    * @param {string} tag
    * @param {(CustomElementConstructor & Partial<CustomElementStaticMembers>)} NewCustomElement
+   * @returns {(CustomElementConstructor & CustomElementStaticMembers)}
    */
   static define(tag, NewCustomElement) {
     NewCustomElement.TAG = tag;
@@ -20,16 +79,30 @@ export class CustomElement extends HTMLElement {
       return tag;
     };
 
+    assertHasStaticMembers(NewCustomElement);
+
     window.customElements.define(tag, NewCustomElement);
+
+    return NewCustomElement;
   }
 
   /**
-   * Should be explicitly set to a new CSSStyleSheet as a default in custom elements
-   * that are not using declarative shadow DOM and intend to have custom styles.
-   *
-   * @type {(CSSStyleSheet | null)}
+   * @type {Array<CSSStyleSheet>}
    */
-  styles = null;
+  static styles = [];
+
+  /**
+   * @param {Array<string>} styles
+   * @returns {Array<CSSStyleSheet>}
+   */
+  static createStyleSheets(styles) {
+    return styles.map((styleStr) => {
+      const sheet = new CSSStyleSheet();
+      sheet.replaceSync(styleStr);
+
+      return sheet;
+    });
+  }
 
   constructor() {
     super();
@@ -39,13 +112,18 @@ export class CustomElement extends HTMLElement {
     if (!this.shadowRoot) {
       const innerHTML = this.render();
       const shadow = this.attachShadow({ mode: "open" });
+      const clsConstructor = this.constructor;
+
+      shadow.adoptedStyleSheets.push(defaultSheet);
+
+      if (hasStyles(clsConstructor)) {
+        clsConstructor.styles.forEach((sheet) => {
+          shadow.adoptedStyleSheets.push(sheet);
+        });
+      }
 
       if (innerHTML) {
         shadow.innerHTML = innerHTML;
-      }
-
-      if (this.styles) {
-        shadow.adoptedStyleSheets.push(this.styles);
       }
     }
   }
@@ -65,13 +143,9 @@ export class CustomElement extends HTMLElement {
     const el =
       this.querySelector(selector) ?? shadowRoot.querySelector(selector);
 
-    if (el instanceof CustomElementClass) {
-      return el;
-    }
+    assertElementClass(el, CustomElementClass);
 
-    throw new Error(
-      `Could not find element that is an instance of ${CustomElementClass}`,
-    );
+    return el;
   }
 
   /**
@@ -100,7 +174,7 @@ export class CustomElement extends HTMLElement {
     const shadowRoot = this.shadowRoot;
 
     if (!shadowRoot) {
-      throw new Error("Unable to find `<CustomElement>` shadow root.");
+      throw new Error(`Unable to find ${this} shadow root.`);
     }
 
     return shadowRoot;
