@@ -1,3 +1,4 @@
+import { computed, effect, signal } from "@preact/signals-core";
 import {
   Button,
   Card,
@@ -6,9 +7,10 @@ import {
   Dialog,
   PenToSquare,
 } from "@isallitis/shared-components/components.js";
+import { defaultSheet } from "@isallitis/shared-components/style-sheets.js";
 import { tag, html, css } from "@isallitis/shared-components/utils.js";
 import { saveToDo, deleteToDo, createTodo, getAllToDos } from "./db.js";
-import { computed, effect, signal } from "@preact/signals-core";
+import { register } from "./register.js";
 
 /** @typedef {import("./db.js").ToDo} ToDo */
 
@@ -347,6 +349,8 @@ CustomElement.define(tag`todo-add-dialog`, TodoAddDialog);
  * Main ToDo app container component.
  */
 class TodoApp extends CustomElement {
+  static styles = [defaultSheet];
+
   constructor() {
     super();
 
@@ -369,8 +373,10 @@ class TodoApp extends CustomElement {
     this.todoAddDialog.dialog.showModal();
   }
 
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback();
+
+    await register();
 
     this.todoAddButton.button.addClickEventListener(
       this.handleAddTodoButtonClick,
