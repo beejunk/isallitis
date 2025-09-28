@@ -3,6 +3,7 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
+    "lib": ["es2022", "dom", "dom.iterable"],
     "noEmit": true,
     "target": "es2022"
   },

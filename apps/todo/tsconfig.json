@@ -3,6 +3,7 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
+    "lib": ["dom", "dom.iterable", "es2022", "WebWorker"],
     "module": "nodenext",
     "noEmit": true
   },

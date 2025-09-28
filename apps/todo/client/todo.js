@@ -8,7 +8,12 @@ import {
   PenToSquare,
 } from "@isallitis/shared-components/components.js";
 import { defaultSheet } from "@isallitis/shared-components/style-sheets.js";
-import { tag, html, css } from "@isallitis/shared-components/utils.js";
+import {
+  createStyleSheet,
+  tag,
+  html,
+  css,
+} from "@isallitis/shared-components/utils.js";
 import { saveToDo, deleteToDo, createTodo, getAllToDos } from "./db.js";
 import { register } from "./register.js";
 
@@ -43,7 +48,7 @@ const todosById = computed(() => {
 // Custom Elements
 // ---------------
 
-const todoCardCSS = css`
+const todoCardCSS = createStyleSheet(css`
   :host {
     width: 100%;
   }
@@ -52,10 +57,10 @@ const todoCardCSS = css`
     display: flex;
     justify-content: space-between;
   }
-`;
+`);
 
 class TodoCard extends CustomElement {
-  styles = new CSSStyleSheet();
+  styles = [todoCardCSS];
 
   #todoSignal = computed(() => {
     const id = this.todoId.value;
@@ -99,8 +104,6 @@ class TodoCard extends CustomElement {
   }
 
   render() {
-    this.styles.replaceSync(todoCardCSS);
-
     if (!this.todo) {
       return null;
     }
@@ -121,7 +124,7 @@ class TodoCard extends CustomElement {
 
 CustomElement.define(tag`todo-card`, TodoCard);
 
-const todoListCSS = css`
+const todoListCSS = createStyleSheet(css`
   :host {
     display: flex;
     flex-direction: column;
@@ -129,10 +132,10 @@ const todoListCSS = css`
     width: 100%;
     gap: calc(var(--base-size) * 2);
   }
-`;
+`);
 
 class TodoList extends CustomElement {
-  styles = new CSSStyleSheet();
+  styles = [todoListCSS];
 
   constructor() {
     super();
@@ -203,8 +206,6 @@ class TodoList extends CustomElement {
   }
 
   render() {
-    this.styles.replaceSync(todoListCSS);
-
     // Card elements are appended in the `handleTodoListUpdate` method that gets
     // triggered by changes in the `todos` signal.
     return null;
@@ -229,7 +230,7 @@ class TodoAddButton extends CustomElement {
 
 CustomElement.define(tag`todo-add-button`, TodoAddButton);
 
-const todoDialogCSS = css`
+const todoDialogCSS = createStyleSheet(css`
   form {
     display: flex;
     flex-direction: column;
@@ -254,10 +255,10 @@ const todoDialogCSS = css`
   ${Button} {
     align-self: flex-end;
   }
-`;
+`);
 
 class TodoAddDialog extends CustomElement {
-  styles = new CSSStyleSheet();
+  styles = [todoDialogCSS];
 
   constructor() {
     super();
@@ -324,8 +325,6 @@ class TodoAddDialog extends CustomElement {
   }
 
   render() {
-    this.styles.replaceSync(todoDialogCSS);
-
     return html`
       <${Dialog}>
         <form>
@@ -336,20 +335,58 @@ class TodoAddDialog extends CustomElement {
             <input type="text" id="description" />
           </fieldset>
           
-          <${Button}>Create</Button>
+          <${Button}>Create</${Button}>
         </form>
-      </${Button}>
+      </${Dialog}>
     `;
   }
 }
 
 CustomElement.define(tag`todo-add-dialog`, TodoAddDialog);
 
+const todoAppCSS = createStyleSheet(css`
+  :host {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--base-size) * 2);
+    align-content: center;
+    min-height: 100vh;
+  }
+
+  .content {
+    flex-grow: 1;
+    margin: 0 auto;
+    max-width: 600px;
+    width: 100%;
+  }
+
+  .content header {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  .content header h1,
+  .content header p {
+    margin: 0;
+  }
+
+  ${TodoAddButton} {
+    align-self: flex-end;
+    bottom: 0;
+    padding-bottom: calc(var(--base-size) * 4);
+    padding-right: calc(var(--base-size) * 2);
+    position: sticky;
+    right: 0;
+  }
+`);
+
 /**
  * Main ToDo app container component.
  */
 class TodoApp extends CustomElement {
-  static styles = [defaultSheet];
+  static styles = [defaultSheet, todoAppCSS];
 
   constructor() {
     super();
@@ -381,6 +418,23 @@ class TodoApp extends CustomElement {
     this.todoAddButton.button.addClickEventListener(
       this.handleAddTodoButtonClick,
     );
+  }
+
+  render() {
+    return html`
+      <div class="content">
+        <header>
+          <h1>To-Do</h1>
+          <p><em>Is All It Is</em></p>
+        </header>
+
+        <${TodoList}></${TodoList}>
+      </div>
+
+      <${TodoAddButton}></${TodoAddButton}>
+
+      <${TodoAddDialog}></${TodoAddDialog}>
+    `;
   }
 }
 

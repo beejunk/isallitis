@@ -18,6 +18,10 @@
       "import": "./components/components.js",
       "types": "./dist/components.d.ts"
     },
+    "./style-sheets.js": {
+      "import": "./components/style-sheets.js",
+      "types": "./dist/style-sheets.d.ts"
+    },
     "./templates.js": {
       "import": "./components/templates.js",
       "types": "./dist/templates.d.ts"
