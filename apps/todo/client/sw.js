@@ -2,6 +2,9 @@ const VERSION = "v1";
 
 /** @type {Array<string>} */
 const STATIC_ASSETS = [
+  // HTML
+  "/",
+
   // CSS
   "/shared-components/global.css",
   "/global.css",
@@ -54,6 +57,24 @@ async function cacheAssets() {
   }
 }
 
+/**
+ * @param {Request} request
+ * @returns {Promise<Response>}
+ */
+async function handleAssetRequest(request) {
+  const cachedResponse = await caches.match(request);
+
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  return fetch(request);
+}
+
 globalScope.addEventListener("install", (installEvent) => {
   installEvent.waitUntil(cacheAssets());
+});
+
+globalScope.addEventListener("fetch", (event) => {
+  event.respondWith(handleAssetRequest(event.request));
 });
