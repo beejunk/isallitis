@@ -1,4 +1,6 @@
-const VERSION = "v1";
+const VERSION = "v1.0.0";
+
+const CACHE_NAME = `todo-cache-${VERSION}`;
 
 /** @type {Array<string>} */
 const STATIC_ASSETS = [
@@ -40,12 +42,8 @@ const STATIC_ASSETS = [
 const unknownScope = /** @type {unknown} */ (self);
 const globalScope = /** @type {ServiceWorkerGlobalScope} */ (unknownScope);
 
-function getCacheName() {
-  return `todo-cache-${VERSION}`;
-}
-
 async function getCache() {
-  return caches.open(getCacheName());
+  return caches.open(CACHE_NAME);
 }
 
 async function cacheAssets() {
