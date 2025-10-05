@@ -7,6 +7,9 @@ const STATIC_ASSETS = [
   // HTML
   "/",
 
+  // Images
+  "/favicon.png",
+
   // CSS
   "/shared-components/global.css",
   "/global.css",
