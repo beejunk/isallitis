@@ -1,8 +1,13 @@
 const VERSION = "v1.0.0";
 
-const CACHE_NAME = `todo-cache-${VERSION}`;
+const STATIC_ASSET_CACHE = `static_asset_cache_${VERSION}`;
 
-/** @type {Array<string>} */
+/**
+ * All static assets used by the application. These assets are cached when the
+ * service worker is installed to provide offline support.
+ *
+ * @type {Array<string>}
+ */
 const STATIC_ASSETS = [
   // HTML
   "/",
@@ -42,27 +47,41 @@ const STATIC_ASSETS = [
   "/shared-components/text-input/text-input-template.js",
 ];
 
-const unknownScope = /** @type {unknown} */ (self);
-const globalScope = /** @type {ServiceWorkerGlobalScope} */ (unknownScope);
+// Cast the global object to `ServiceWorkerGlobalScope` since the TypeScript install
+// will not automatically identify that this code is running only in a service
+// worker environment.
+const UNKNOWN_SCOPE = /** @type {unknown} */ (self);
+const GLOBAL_SCOPE = /** @type {ServiceWorkerGlobalScope} */ (UNKNOWN_SCOPE);
 
-async function getCache() {
-  return caches.open(CACHE_NAME);
+// -----------------------------------------------------------------------------
+// Cache utils.
+// -----------------------------------------------------------------------------
+
+async function getStaticAssetCache() {
+  return GLOBAL_SCOPE.caches.open(STATIC_ASSET_CACHE);
 }
 
-async function cacheAssets() {
-  try {
-    const staticCache = await getCache();
-    await staticCache.addAll(STATIC_ASSETS);
-  } catch (err) {
-    console.error(`Failed to cache app assets.\n${err}`);
-  }
+async function deleteUnusedCaches() {
+  const cacheKeys = await GLOBAL_SCOPE.caches.keys();
+  const unusedCacheKeys = cacheKeys.filter(
+    (cacheKey) => cacheKey !== STATIC_ASSET_CACHE,
+  );
+
+  return Promise.all(
+    unusedCacheKeys.map((cacheKey) => GLOBAL_SCOPE.caches.delete(cacheKey)),
+  );
+}
+
+async function cacheStaticAssets() {
+  const staticAssetCache = await getStaticAssetCache();
+  return staticAssetCache.addAll(STATIC_ASSETS);
 }
 
 /**
  * @param {Request} request
  * @returns {Promise<Response>}
  */
-async function handleAssetRequest(request) {
+async function handleStaticAssetRequest(request) {
   const cachedResponse = await caches.match(request);
 
   if (cachedResponse) {
@@ -72,10 +91,48 @@ async function handleAssetRequest(request) {
   return fetch(request);
 }
 
-globalScope.addEventListener("install", (installEvent) => {
-  installEvent.waitUntil(cacheAssets());
+// -----------------------------------------------------------------------------
+// Service worker lifecycle utilities and event install.
+// -----------------------------------------------------------------------------
+
+/**
+ * Setup steps to be run during service worker installation.
+ */
+async function install() {
+  try {
+    await cacheStaticAssets();
+  } catch (err) {
+    console.error(`Failed to cache app assets.\n${err}`);
+  }
+}
+
+/**
+ * Manages all cleanup steps that should be run during service worker activation.
+ */
+async function activate() {
+  try {
+    await deleteUnusedCaches();
+  } catch (err) {
+    console.error(`Failed to delete unused caches.\n${err}`);
+  }
+
+  try {
+    await GLOBAL_SCOPE.clients.claim();
+  } catch (err) {
+    console.error(`Failed to claim clients.\n${err}`);
+  }
+}
+
+GLOBAL_SCOPE.addEventListener("install", (installEvent) => {
+  GLOBAL_SCOPE.skipWaiting();
+
+  installEvent.waitUntil(install());
 });
 
-globalScope.addEventListener("fetch", (event) => {
-  event.respondWith(handleAssetRequest(event.request));
+GLOBAL_SCOPE.addEventListener("activate", (activateEvent) => {
+  activateEvent.waitUntil(activate());
+});
+
+GLOBAL_SCOPE.addEventListener("fetch", (event) => {
+  event.respondWith(handleStaticAssetRequest(event.request));
 });
