@@ -62,8 +62,8 @@ const todoCardCSS = createStyleSheet(css`
 class TodoCard extends CustomElement {
   styles = [todoCardCSS];
 
-  #todoSignal = computed(() => {
-    const id = this.todoId.value;
+  #todo = computed(() => {
+    const id = this.todoId;
 
     return id ? todosById.value[id] : null;
   });
@@ -71,7 +71,7 @@ class TodoCard extends CustomElement {
   /**
    * @type {Signal<null | number>}
    */
-  todoId = signal(null);
+  #todoId = signal(null);
 
   constructor() {
     super();
@@ -79,14 +79,26 @@ class TodoCard extends CustomElement {
   }
 
   get todo() {
-    return this.#todoSignal.value;
+    return this.#todo.value;
   }
+
+  get todoId() {
+    return this.#todoId.value;
+  }
+
+  /**
+   * @param {(number | null)} id
+   */
+  set todoId(id) {
+    this.#todoId.value = id;
+  }
+
   get deleteButton() {
     return this.getCustomElement(Button);
   }
 
   async handleDeleteButtonClick() {
-    const todoId = this.todo?.id;
+    const todoId = this.todoId;
 
     if (todoId) {
       const nextToDos = todos.value.filter(({ id }) => id !== todoId);
@@ -130,12 +142,16 @@ const todoListCSS = createStyleSheet(css`
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: calc(var(--base-size) * 2);
+    gap: var(--space-m);
+  }
+
+  ${TodoCard} {
+    width: 100%;
   }
 `);
 
 class TodoList extends CustomElement {
-  styles = [todoListCSS];
+  static styles = [todoListCSS];
 
   constructor() {
     super();
@@ -158,7 +174,7 @@ class TodoList extends CustomElement {
     const cards = shadowRoot.querySelectorAll(`${TodoCard}`);
 
     for (const card of cards) {
-      if (card instanceof TodoCard && card.todoId.value === id) {
+      if (card instanceof TodoCard && card.todoId === id) {
         return card;
       }
     }
@@ -185,13 +201,11 @@ class TodoList extends CustomElement {
    * @param {ToDo} todo
    */
   appendTodoCard(todo) {
-    // TODO This could be useful as a utility.
-    const todoCard = document.createElement(`${TodoCard}`);
+    const todoCard = CustomElement.createElement(TodoCard);
 
-    if (todoCard instanceof TodoCard && this.shadowRoot) {
-      todoCard.todoId.value = todo.id;
-      this.shadowRoot.appendChild(todoCard);
-    }
+    todoCard.todoId = todo.id;
+
+    this.getShadowRoot().appendChild(todoCard);
   }
 
   async connectedCallback() {
