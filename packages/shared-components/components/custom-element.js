@@ -1,9 +1,12 @@
 import { defaultStyles } from "./default-styles.js";
+import { createStyleSheet } from "./utils.js";
 
 /**
  * @typedef {Object} CustomElementStaticMembers
  * @prop {string} TAG
- * @prop {function(): string} toString
+ * @prop {function(): string} toString - Returns the TAG for the CustomElement.
+ *   This allows for using the CustomElement class in an HTML template string, e.g.
+ *   `<${MyElement}>Text Content</${MyElement>`.
  * @prop {Array<CSSStyleSheet>} styles
  */
 
@@ -32,7 +35,7 @@ function hasStyles(clsConstructor) {
  */
 function assertElementClass(instance, CustomElementClass) {
   if (!(instance instanceof CustomElementClass)) {
-    throw new Error(`Element not an instance of ${CustomElementClass}.`);
+    throw new Error(`Element is not an instance of ${CustomElementClass}.`);
   }
 }
 
@@ -51,8 +54,7 @@ function assertHasStaticMembers(NewCustomElement) {
   }
 }
 
-const defaultSheet = new CSSStyleSheet();
-defaultSheet.replaceSync(defaultStyles);
+const defaultSheet = createStyleSheet(defaultStyles);
 
 export class CustomElement extends HTMLElement {
   /**
@@ -90,19 +92,6 @@ export class CustomElement extends HTMLElement {
    * @type {Array<CSSStyleSheet>}
    */
   static styles = [];
-
-  /**
-   * @param {Array<string>} styles
-   * @returns {Array<CSSStyleSheet>}
-   */
-  static createStyleSheets(styles) {
-    return styles.map((styleStr) => {
-      const sheet = new CSSStyleSheet();
-      sheet.replaceSync(styleStr);
-
-      return sheet;
-    });
-  }
 
   constructor() {
     super();
