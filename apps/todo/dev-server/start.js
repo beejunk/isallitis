@@ -19,6 +19,18 @@ function getClientPath() {
   return clientUrl.pathname;
 }
 
+/**
+ * @param {string} depPath
+ */
+function getDepPath(depPath) {
+  const depUrl = new URL(
+    path.join("..", "node_modules", depPath),
+    import.meta.url,
+  );
+
+  return depUrl.pathname;
+}
+
 const server = Fastify({
   logger: true,
 });
@@ -32,6 +44,12 @@ server.register(fastifyStatic, {
 server.register(fastifyStatic, {
   root: getSharedComponentsPath(),
   prefix: "/shared-components",
+  decorateReply: false,
+});
+
+server.register(fastifyStatic, {
+  root: getDepPath(path.join("@preact", "signals-core", "dist")),
+  prefix: "/preact/signals-core",
   decorateReply: false,
 });
 
