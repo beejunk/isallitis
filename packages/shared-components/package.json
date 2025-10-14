@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "build:types": "pnpm clean && tsc --project tsconfig.build.json",
+    "clean": "rimraf dist",
     "healthcheck": "pnpm run types:check && pnpm run lint",
-    "build:types": "tsc --project tsconfig.build.json",
     "lint": "eslint",
+    "start": "nodemon -e js,css,html test-server/start.js",
     "types:check": "pnpm run types:check:web && pnpm run types:check:node",
     "types:check:web": "tsc",
     "types:check:node": "tsc --project test-server/tsconfig.json",
-    "start": "nodemon -e js,css,html test-server/start.js",
-    "test": "echo \"Run test server to view tests in the browser.\""
+    "test": "node --test test-node/**/*.js"
   },
   "description": "Shared UI components for *Is All It Is* applications.",
   "exports": {

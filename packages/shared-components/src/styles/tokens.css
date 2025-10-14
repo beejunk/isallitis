@@ -41,6 +41,7 @@
   --color-primary-border: var(--grey-50);
   --color-primary-hover: var(--grey-50);
   --color-primary-bg: var(--black);
+  --color-primary-on: var(--black);
 
   --color-secondary: var(--grey-50);
   --color-secondary-light: var(--grey-50);

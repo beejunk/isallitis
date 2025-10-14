@@ -1,5 +1,5 @@
 /**
- * Serves static assets for executing unit tests in a browser.
+ * Serves static assets for executing browser-based tests.
  */
 
 import path from "node:path";
@@ -14,9 +14,9 @@ function getSrcPath() {
   return srcUrl.pathname;
 }
 
-function getTestClientPath() {
+function getTestBrowserPath() {
   const testClientUrl = new URL(
-    path.join("..", "test-client"),
+    path.join("..", "test-browser"),
     import.meta.url,
   );
 
@@ -38,11 +38,11 @@ server.register(fastifyStatic, {
 });
 
 // -----------
-// Unit tests.
+// Test assets.
 // -----------
 
 server.register(fastifyStatic, {
-  root: getTestClientPath(),
+  root: getTestBrowserPath(),
   prefix: "/",
 });
 

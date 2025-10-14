@@ -1,16 +1,54 @@
-import { tag, html, css } from "../utils.js";
+import { tag, html, css, parseAttribute } from "../utils.js";
 
 export const TAG = tag`circle-xmark`;
 
+const FILL_VARIATIONS = {
+  /** @type {"primary"} */
+  primary: "primary",
+
+  /** @type {"primary-on"} */
+  "primary-on": "primary-on",
+};
+
+/** @typedef {keyof FILL_VARIATIONS} FillVariation */
+
+/**
+ * @param {(string | null)} fillAttrValue
+ */
+export function parseFillVariation(fillAttrValue) {
+  return parseAttribute(FILL_VARIATIONS, fillAttrValue);
+}
+
 /**
  * @typedef {Object} CircleXMarkProps
- * @prop {(string | null)} [title = "Close"]
- * @prop {(string | null)} [width = "20"]
+ * @prop {(FillVariation | null)} [fill]
+ * @prop {(string | null)} [title]
+ * @prop {(string | null)} [width]
  */
+
+/**
+ * @param {CircleXMarkProps} props
+ * @returns {NonNullable<CircleXMarkProps>}
+ */
+function parseProps(props) {
+  const fill = props.fill ?? "primary";
+  const title = props.title ?? "Close";
+  const width = props.width ?? "20";
+
+  return { fill, title, width };
+}
 
 export const styles = css`
   :host {
     display: block;
+  }
+
+  :host([fill="primary"]) {
+    fill: var(--color-primary);
+  }
+
+  :host([fill="primary-on"]) {
+    fill: var(--color-primary-on);
   }
 `;
 
@@ -19,8 +57,7 @@ export const styles = css`
  * @returns {string}
  */
 export function shadowHTML(props) {
-  const title = props.title ?? "Close";
-  const width = props.width ?? "20";
+  const { title, width } = parseProps(props);
 
   return html`
     <svg
@@ -42,6 +79,8 @@ export function shadowHTML(props) {
  * @param {CircleXMarkProps} [props]
  * @return {string}
  */
-export function render({ title, width } = { title: "Close", width: "20" }) {
-  return html`<${TAG} width="${width}">${title}</${TAG}>`;
+export function render(props = {}) {
+  const { fill, width, title } = parseProps(props);
+
+  return html`<${TAG} fill="${fill}" width="${width}">${title}</${TAG}>`;
 }

@@ -74,17 +74,14 @@ export const styles = css`
   }
 
   button.icon {
-    button {
-      background: none;
-      padding: var(--space-m);
-    }
+    background: none;
   }
 
   :focus {
     outline: solid calc(var(--space-s) / 2) var(--color-focus);
   }
 
-  button:hover {
+  button:hover:not(.icon) {
     background-color: var(--color-primary-hover);
   }
 `;
@@ -108,6 +105,6 @@ export function template(props) {
  * @param {ButtonTemplateProps} props
  * @returns {string}
  */
-export function render({ label }) {
-  return html`<${TAG}>${label}</${TAG}>`;
+export function render({ label, variation }) {
+  return html`<${TAG} variation=${variation}>${label}</${TAG}>`;
 }

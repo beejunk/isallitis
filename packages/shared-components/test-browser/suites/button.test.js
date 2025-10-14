@@ -4,6 +4,7 @@ import { html } from "../../src/utils.js";
 import { Button } from "../../src/button/custom-element.js";
 import { PenToSquare } from "../../src/pen-to-square/custom-element.js";
 import { createRender } from "../test-components.js";
+import { CircleXMark } from "../../src/circle-xmark/custom-element.js";
 
 const SUITE_ID = `${Button}-test`;
 
@@ -59,5 +60,18 @@ describe(`<${Button}>`, () => {
 
     expect(button.classList.toString()).to.include("default");
     expect(button.classList.toString()).to.include("radius-round");
+  });
+
+  it("should render icon button", () => {
+    const { getByShadowRole } = render(
+      html`
+        <${Button} variation="icon">
+          <${CircleXMark} fill="primary">Icon</${CircleXMark}>
+        </${Button}>`,
+    );
+
+    const button = getByShadowRole("button", { name: /icon/i });
+
+    expect(button.classList.toString()).to.include("icon");
   });
 });

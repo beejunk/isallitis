@@ -66,7 +66,10 @@ export const styles = css`
 export function shadowHTML() {
   return html`
     <dialog>
-      ${Button.render({ label: CircleXMark.render() })}
+      ${Button.render({
+        label: CircleXMark.render({ fill: "primary-on" }),
+        variation: "icon",
+      })}
       <slot></slot>
     </dialog>
   `;

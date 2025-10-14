@@ -12,9 +12,7 @@ export const styles = css`
   :host {
     display: block;
     border: 1px solid white;
-    border-radius: 4px;
-
-    --card-padding: calc(var(--base-font-size) * 0.5);
+    border-radius: var(--space-s);
   }
 
   :host([with-header]) .header {
@@ -25,7 +23,7 @@ export const styles = css`
 
   .body {
     display: block;
-    padding: var(--space-s);
+    padding: var(--space-m);
   }
 `;
 

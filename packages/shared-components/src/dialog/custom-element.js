@@ -1,8 +1,8 @@
 import { CustomElement } from "../custom-element.js";
 import { Button } from "../button/custom-element.js";
 import { styles, shadowHTML, TAG } from "./template.js";
-import "../circle-xmark/custom-element.js";
 import { createStyleSheet } from "../custom-element.js";
+import "../circle-xmark/custom-element.js";
 
 const styleSheet = createStyleSheet(styles);
 
