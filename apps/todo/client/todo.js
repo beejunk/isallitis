@@ -57,12 +57,15 @@ const todoCardCSS = createStyleSheet(css`
 
   .todo-card-body {
     display: flex;
-    justify-content: space-between;
+  }
+
+  p {
+    flex-grow: 1;
   }
 `);
 
 class TodoCard extends CustomElement {
-  styles = [todoCardCSS];
+  static styles = [defaultSheet, todoCardCSS];
 
   #todo = computed(() => {
     const id = this.todoId;
@@ -128,7 +131,7 @@ class TodoCard extends CustomElement {
           <p>${this.todo.description}</p>
           
           <${Button} variation="icon">
-            <${CircleXMark} fill="white">Delete to-do</${CircleXMark}>
+            <${CircleXMark} fill="primary">Delete to-do</${CircleXMark}>
           </${Button}>
         </div>
       </${Card}>
@@ -145,10 +148,6 @@ const todoListCSS = createStyleSheet(css`
     align-items: center;
     width: 100%;
     gap: var(--space-m);
-  }
-
-  ${TodoCard} {
-    width: 100%;
   }
 `);
 
