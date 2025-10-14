@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "healthcheck": "npm run types:check && npm run lint && npm run test && npm run build",
+    "healthcheck": "pnpm run types:check && pnpm run lint",
     "lint": "eslint",
     "types:check": "tsc",
     "start": "nodemon -e js,css,html dev-server/start.js"

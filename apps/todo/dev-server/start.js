@@ -4,18 +4,33 @@ import fastifyStatic from "@fastify/static";
 
 const PORT = Number(process.env.PORT ?? 3000);
 
+function getSharedComponentsPath() {
+  const sharedComponentUrl = new URL(
+    path.join("..", "..", "..", "packages", "shared-components", "src"),
+    import.meta.url,
+  );
+
+  return sharedComponentUrl.pathname;
+}
+
+function getClientPath() {
+  const clientUrl = new URL(path.join("..", "client"), import.meta.url);
+
+  return clientUrl.pathname;
+}
+
 const server = Fastify({
   logger: true,
 });
 
 server.register(fastifyStatic, {
-  root: path.resolve("client"),
+  root: getClientPath(),
   prefix: "/",
   decorateReply: false,
 });
 
 server.register(fastifyStatic, {
-  root: path.resolve("..", "..", "packages", "shared-components", "components"),
+  root: getSharedComponentsPath(),
   prefix: "/shared-components",
   decorateReply: false,
 });

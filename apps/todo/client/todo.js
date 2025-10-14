@@ -1,21 +1,23 @@
 import { computed, effect, signal } from "@preact/signals-core";
+import { Button } from "@isallitis/shared-components/button/custom-element.js";
+import { Card } from "@isallitis/shared-components/card/custom-element.js";
+import { CircleXMark } from "@isallitis/shared-components/circle-xmark/custom-element.js";
 import {
-  Button,
-  Card,
-  CircleXMark,
   CustomElement,
-  Dialog,
-  PenToSquare,
-} from "@isallitis/shared-components/components.js";
-import { defaultSheet } from "@isallitis/shared-components/style-sheets.js";
-import {
   createStyleSheet,
-  tag,
-  html,
-  css,
-} from "@isallitis/shared-components/utils.js";
+} from "@isallitis/shared-components/custom-element.js";
+import { Dialog } from "@isallitis/shared-components/dialog/custom-element.js";
+import { PenToSquare } from "@isallitis/shared-components/pen-to-square/custom-element.js";
+import { defaultSheet } from "@isallitis/shared-components/styles/style-sheets.js";
+import { tag, html, css } from "@isallitis/shared-components/utils.js";
 import { saveToDo, deleteToDo, createTodo, getAllToDos } from "./db.js";
 import { register } from "./register.js";
+
+/**
+ * Enables the service worker. Set this to `false` to disable the service worker
+ * as needed.
+ */
+const ENABLE_SW = true;
 
 /** @typedef {import("./db.js").ToDo} ToDo */
 
@@ -427,7 +429,9 @@ class TodoApp extends CustomElement {
   async connectedCallback() {
     super.connectedCallback();
 
-    await register();
+    if (ENABLE_SW) {
+      await register();
+    }
 
     this.todoAddButton.button.addClickEventListener(
       this.handleAddTodoButtonClick,

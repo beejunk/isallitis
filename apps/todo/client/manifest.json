@@ -1,6 +1,6 @@
 {
   "name": "To-Do Is All It Is",
-  "start_url": "https://todo.isallitis.com",
+  "start_url": "http://localhost:3000",
   "display": "standalone",
   "icons": [
     {

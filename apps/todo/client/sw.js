@@ -16,35 +16,43 @@ const STATIC_ASSETS = [
   "/favicon.png",
 
   // CSS
-  "/shared-components/global.css",
   "/global.css",
   "/todo.css",
 
-  // JS dependencies
-  "https://esm.sh/@preact/signals-core@1.11.0",
-  "https://esm.sh/@preact/signals-core@1.11.0/es2022/signals-core.mjs",
-
-  // JS
+  // App
   "/todo.js",
-  "/shared-components/components.js",
-  "/shared-components/utils.js",
   "/db.js",
   "/register.js",
+
+  // App dependencies
   "/shared-components/custom-element.js",
-  "/shared-components/button/button-custom-element.js",
-  "/shared-components/card/card-custom-element.js",
-  "/shared-components/circle-xmark/circle-xmark-custom-element.js",
-  "/shared-components/dialog/dialog-custom-element.js",
-  "/shared-components/pen-to-square/pen-to-square-custom-element.js",
-  "/shared-components/text-input/text-input-custom-element.js",
-  "/shared-components/default-styles.js",
-  "/shared-components/button/button-template.js",
-  "/shared-components/style-sheets.js",
-  "/shared-components/card/card-template.js",
-  "/shared-components/circle-xmark/circle-xmark-template.js",
-  "/shared-components/pen-to-square/pen-to-square-template.js",
-  "/shared-components/dialog/dialog-template.js",
-  "/shared-components/text-input/text-input-template.js",
+  "/shared-components/utils.js",
+
+  "/shared-components/styles/tokens.css",
+  "/shared-components/styles/style-sheets.js",
+  "/shared-components/styles/shared-styles.js",
+
+  "/shared-components/button/custom-element.js",
+  "/shared-components/button/template.js",
+
+  "/shared-components/card/custom-element.js",
+  "/shared-components/card/template.js",
+
+  "/shared-components/circle-xmark/custom-element.js",
+  "/shared-components/circle-xmark/template.js",
+
+  "/shared-components/dialog/custom-element.js",
+  "/shared-components/dialog/template.js",
+
+  "/shared-components/pen-to-square/custom-element.js",
+  "/shared-components/pen-to-square/template.js",
+
+  "/shared-components/text-input/custom-element.js",
+  "/shared-components/text-input/template.js",
+
+  // Vendors
+  "https://esm.sh/@preact/signals-core@1.11.0",
+  "https://esm.sh/@preact/signals-core@1.11.0/es2022/signals-core.mjs",
 ];
 
 // Cast the global object to `ServiceWorkerGlobalScope` since the TypeScript install
