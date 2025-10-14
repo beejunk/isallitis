@@ -1,6 +1,6 @@
 import { tag, html, css } from "../utils.js";
-import * as Button from "../button/button-template.js";
-import * as CircleXMark from "../circle-xmark/circle-xmark-template.js";
+import * as Button from "../button/template.js";
+import * as CircleXMark from "../circle-xmark/template.js";
 
 export const TAG = tag`dialog`;
 

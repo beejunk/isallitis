@@ -1,6 +1,6 @@
 import { CustomElement } from "../custom-element.js";
-import { styles, shadowHTML, TAG } from "./card-template.js";
-import { createStyleSheet } from "../utils.js";
+import { styles, shadowHTML, TAG } from "./template.js";
+import { createStyleSheet } from "../custom-element.js";
 
 const styleSheet = createStyleSheet(styles);
 

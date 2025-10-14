@@ -1,4 +1,4 @@
-import { css } from "./utils.js";
+import { css } from "../utils.js";
 
 export const defaultStyles = css`
   :host {

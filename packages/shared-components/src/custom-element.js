@@ -1,6 +1,3 @@
-import { defaultStyles } from "./default-styles.js";
-import { createStyleSheet } from "./utils.js";
-
 /**
  * @typedef {Object} CustomElementStaticMembers
  * @prop {string} TAG
@@ -19,7 +16,7 @@ import { createStyleSheet } from "./utils.js";
  * @param {Function} clsConstructor
  * @returns {clsConstructor is Pick<CustomElementStaticMembers, "styles">}
  */
-function hasStyles(clsConstructor) {
+function hasStylesStaticField(clsConstructor) {
   if (Object.hasOwn(clsConstructor, "styles")) {
     return true;
   }
@@ -54,7 +51,16 @@ function assertHasStaticMembers(NewCustomElement) {
   }
 }
 
-const defaultSheet = createStyleSheet(defaultStyles);
+/**
+ * @param {string} cssStr
+ * @returns {CSSStyleSheet}
+ */
+export function createStyleSheet(cssStr) {
+  const styleSheet = new CSSStyleSheet();
+  styleSheet.replaceSync(cssStr);
+
+  return styleSheet;
+}
 
 export class CustomElement extends HTMLElement {
   /**
@@ -98,14 +104,14 @@ export class CustomElement extends HTMLElement {
   }
 
   connectedCallback() {
+    // Note: If there is already a shadow root, then it is assumed this element
+    // was server rendered using a declarative shadow DOM.
     if (!this.shadowRoot) {
       const innerHTML = this.render();
       const shadow = this.attachShadow({ mode: "open" });
       const clsConstructor = this.constructor;
 
-      shadow.adoptedStyleSheets.push(defaultSheet);
-
-      if (hasStyles(clsConstructor)) {
+      if (hasStylesStaticField(clsConstructor)) {
         clsConstructor.styles.forEach((sheet) => {
           shadow.adoptedStyleSheets.push(sheet);
         });

@@ -1,5 +1,5 @@
-import { CustomElement } from "../components/custom-element.js";
-import { createStyleSheet, css, html, tag } from "../components/utils.js";
+import { CustomElement, createStyleSheet } from "../src/custom-element.js";
+import { css, html, tag } from "../src/utils.js";
 import { within } from "shadow-dom-testing-library";
 
 const unitTestCSS = createStyleSheet(css`

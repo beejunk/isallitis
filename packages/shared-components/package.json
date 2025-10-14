@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "healthcheck": "npm run types:check && npm run lint",
+    "healthcheck": "pnpm run types:check && pnpm run lint",
     "build:types": "tsc --project tsconfig.build.json",
     "lint": "eslint",
     "types:check": "pnpm run types:check:web && pnpm run types:check:node",
@@ -14,20 +14,68 @@
   },
   "description": "Shared UI components for *Is All It Is* applications.",
   "exports": {
-    "./components.js": {
-      "import": "./components/components.js",
-      "types": "./dist/components.d.ts"
+    "./button/custom-element.js": {
+      "import": "./src/button/custom-element.js",
+      "dist": "./dist/button/custom-element.d.ts"
     },
-    "./style-sheets.js": {
-      "import": "./components/style-sheets.js",
-      "types": "./dist/style-sheets.d.ts"
+    "./button/template.js": {
+      "import": "./src/button/template.js",
+      "dist": "./dist/button/template.d.ts"
     },
-    "./templates.js": {
-      "import": "./components/templates.js",
-      "types": "./dist/templates.d.ts"
+    "./card/custom-element.js": {
+      "import": "./src/card/custom-element.js",
+      "dist": "./dist/card/custom-element.d.ts"
+    },
+    "./card/template.js": {
+      "import": "./src/card/template.js",
+      "dist": "./dist/card/template.d.ts"
+    },
+    "./circle-xmark/custom-element.js": {
+      "import": "./src/circle-xmark/custom-element.js",
+      "dist": "./dist/circle-xmark/custom-element.d.ts"
+    },
+    "./circle-xmark/template.js": {
+      "import": "./src/circle-xmark/template.js",
+      "dist": "./dist/circle-xmark/template.d.ts"
+    },
+    "./custom-element.js": {
+      "import": "./src/custom-element.js",
+      "dist": "./dist/custom-element.d.ts"
+    },
+    "./dialog/custom-element.js": {
+      "import": "./src/dialog/custom-element.js",
+      "dist": "./dist/dialog/custom-element.d.ts"
+    },
+    "./dialog/template.js": {
+      "import": "./src/dialog/template.js",
+      "dist": "./dist/dialog/template.d.ts"
+    },
+    "./pen-to-square/custom-element.js": {
+      "import": "./src/pen-to-square/custom-element.js",
+      "dist": "./dist/pen-to-square/custom-element.d.ts"
+    },
+    "./pen-to-square/template.js": {
+      "import": "./src/pen-to-square/template.js",
+      "types": "./dist/pen-to-square/template.d.ts"
+    },
+    "./text-input/custom-element.js": {
+      "import": "./src/text-input/custom-element.js",
+      "types": "./dist/text-input/custom-element.d.ts"
+    },
+    "./text-input/template.js": {
+      "import": "./src/text-input/template.js",
+      "types": "./dist/text-input/template.d.ts"
+    },
+    "./styles/shared-styles.js": {
+      "import": "./src/styles/shared-styles",
+      "types": "./dist/styles/shared-styles.d.ts"
+    },
+    "./styles/style-sheets.js": {
+      "import": "./src/styles/styles-sheets.js",
+      "types": "./dist/styles/style-sheets.d.ts"
     },
     "./utils.js": {
-      "import": "./components/utils.js",
+      "import": "./src/utils.js",
       "types": "./dist/utils.d.ts"
     }
   },

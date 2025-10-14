@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import { html } from "../../components/utils.js";
-import { TextInput } from "../../components/text-input/text-input-custom-element.js";
+import { html } from "../../src/utils.js";
+import { TextInput } from "../../src/text-input/custom-element.js";
 import { createRender } from "../test-components.js";
 
 const SUITE_ID = `${TextInput}-test`;

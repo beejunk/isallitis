@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import { html } from "../../components/utils.js";
-import { Card } from "../../components/card/card-custom-element.js";
+import { html } from "../../src/utils.js";
+import { Card } from "../../src/card/custom-element.js";
 import { createRender } from "../test-components.js";
 
 const SUITE_ID = `${Card}-test`;

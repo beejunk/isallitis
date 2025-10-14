@@ -1,7 +1,7 @@
 import { CustomElement } from "../custom-element.js";
-import { styles, shadowHTML, TAG } from "./circle-xmark-template.js";
-import { createStyleSheet } from "../utils.js";
-import { fillSheet } from "../style-sheets.js";
+import { styles, shadowHTML, TAG } from "./template.js";
+import { createStyleSheet } from "../custom-element.js";
+import { fillSheet } from "../styles/style-sheets.js";
 
 const styleSheet = createStyleSheet(styles);
 
@@ -9,7 +9,7 @@ export class CircleXMark extends CustomElement {
   static styles = [fillSheet, styleSheet];
 
   /**
-   * @returns {import("./circle-xmark-template.js").CircleXMarkProps}
+   * @returns {import("./template.js").CircleXMarkProps}
    */
   getProps() {
     return {

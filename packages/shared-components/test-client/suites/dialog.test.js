@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
-import { html } from "../../components/utils.js";
-import { Button } from "../../components/button/button-custom-element.js";
-import { Dialog } from "../../components/dialog/dialog-custom-element.js";
+import { html } from "../../src/utils.js";
+import { Button } from "../../src/button/custom-element.js";
+import { Dialog } from "../../src/dialog/custom-element.js";
 import { createRender } from "../test-components.js";
 
 const SUITE_ID = `${Dialog}-test`;

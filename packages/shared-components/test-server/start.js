@@ -8,6 +8,21 @@ import fastifyStatic from "@fastify/static";
 
 const PORT = Number(process.env.PORT ?? 3000);
 
+function getSrcPath() {
+  const srcUrl = new URL(path.join("..", "src"), import.meta.url);
+
+  return srcUrl.pathname;
+}
+
+function getTestClientPath() {
+  const testClientUrl = new URL(
+    path.join("..", "test-client"),
+    import.meta.url,
+  );
+
+  return testClientUrl.pathname;
+}
+
 const server = Fastify({
   logger: true,
 });
@@ -17,8 +32,8 @@ const server = Fastify({
 // -----------
 
 server.register(fastifyStatic, {
-  root: path.resolve("components"),
-  prefix: "/components",
+  root: getSrcPath(),
+  prefix: "/src",
   decorateReply: false,
 });
 
@@ -27,7 +42,7 @@ server.register(fastifyStatic, {
 // -----------
 
 server.register(fastifyStatic, {
-  root: path.resolve("test-client"),
+  root: getTestClientPath(),
   prefix: "/",
 });
 
