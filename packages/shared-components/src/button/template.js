@@ -70,11 +70,21 @@ export const styles = css`
     background-color: var(--color-primary);
     display: inline-block;
     font-size: var(--text-m);
+  }
+
+  button:not(.icon) {
     padding: var(--space-s);
   }
 
-  button.icon {
+  button.icon:not(.radius-round) {
+    // Assume background should be removed only if radius is not set.
+    // Consider if this should be a variation instead, e.g. "icon-no-bg"
     background: none;
+  }
+
+  button.radius-round {
+    aspect-ratio: 1;
+    padding: 0 var(--space-s);
   }
 
   :focus {
