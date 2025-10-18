@@ -1,4 +1,4 @@
-const VERSION = "v1.0.0";
+const VERSION = "v1.0.1";
 
 const STATIC_ASSET_CACHE = `static_asset_cache_${VERSION}`;
 
