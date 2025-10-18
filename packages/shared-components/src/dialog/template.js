@@ -9,11 +9,18 @@ export const TAG = tag`dialog`;
  */
 export const styles = css`
   dialog {
+    background: none;
+    margin: auto;
+    max-width: 600px;
+    padding: var(--size-100);
+    width: 100%;
+  }
+
+  dialog .container {
     border: 1px solid var(--color-primary);
     border-radius: var(--size-100);
     background-color: var(--color-primary);
     padding: var(--size-100);
-    margin: auto var(--size-100);
   }
 
   ::backdrop {
@@ -23,11 +30,14 @@ export const styles = css`
 
   dialog[open] {
     animation: 200ms dialog-show;
+  }
+
+  dialog[open] .container {
     display: flex;
     flex-direction: column;
   }
 
-  dialog[open] ${Button.TAG} {
+  dialog[open] .container ${Button.TAG} {
     align-self: flex-end;
   }
 
@@ -66,11 +76,13 @@ export const styles = css`
 export function shadowHTML() {
   return html`
     <dialog closedby="any">
-      ${Button.render({
-        label: CircleXMark.render({ fill: "primary-on" }),
-        variation: "icon",
-      })}
-      <slot></slot>
+      <div class="container">
+        ${Button.render({
+          label: CircleXMark.render({ fill: "primary-on" }),
+          variation: "icon",
+        })}
+        <slot></slot>
+      </div>
     </dialog>
   `;
 }
