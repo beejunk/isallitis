@@ -1,6 +1,6 @@
 {
   "name": "To-Do Is All It Is",
-  "start_url": "http://localhost:3000",
+  "start_url": "http://todo.isallitis.com",
   "display": "standalone",
   "icons": [
     {
@@ -13,8 +13,14 @@
   "screenshots": [
     {
       "src": "./images/screenshot_mobile.png",
-      "sizes": "370x600",
+      "sizes": "360x800",
       "form_factor": "narrow",
+      "label": "The main To-Do user interface showing a list of things to do."
+    },
+    {
+      "src": "./images/screenshot_desktop.png",
+      "sizes": "1280x720",
+      "form_factor": "wide",
       "label": "The main To-Do user interface showing a list of things to do."
     }
   ]
