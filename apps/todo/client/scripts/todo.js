@@ -236,7 +236,7 @@ class TodoAddButton extends CustomElement {
 
   render() {
     return html`
-      <${Button} radius="round">
+      <${Button} radius="round" variation="icon">
         <${PenToSquare} width="35">Add to-do</${PenToSquare}>
       </${Button}>
     `;
@@ -390,8 +390,8 @@ const todoAppCSS = createStyleSheet(css`
   ${TodoAddButton} {
     align-self: flex-end;
     bottom: 0;
-    padding-bottom: calc(var(--base-size) * 4);
-    padding-right: calc(var(--base-size) * 2);
+    padding-bottom: var(--size-100);
+    padding-right: var(--size-100);
     position: sticky;
     right: 0;
   }
