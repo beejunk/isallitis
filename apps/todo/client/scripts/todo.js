@@ -57,6 +57,7 @@ const todoCardCSS = createStyleSheet(css`
 
   .todo-card-body {
     display: flex;
+    align-items: center;
   }
 
   p {
