@@ -13,7 +13,9 @@ export const styles = css`
     border-radius: var(--size-100);
     background-color: var(--color-primary);
     padding: var(--size-100);
-    margin: auto var(--size-100);
+    margin-top: var(--size-100);
+    width: calc(100vw - var(--size-400));
+    max-width: 600px;
   }
 
   ::backdrop {
