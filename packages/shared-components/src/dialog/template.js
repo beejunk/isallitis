@@ -10,10 +10,10 @@ export const TAG = tag`dialog`;
 export const styles = css`
   dialog {
     border: 1px solid var(--color-primary);
-    border-radius: calc(var(--base-size) * 2);
+    border-radius: var(--size-100);
     background-color: var(--color-primary);
-    font-size: var(--base-font-size);
-    padding: calc(var(--base-size) * 2);
+    padding: var(--size-100);
+    margin: auto var(--size-100);
   }
 
   ::backdrop {
@@ -65,7 +65,7 @@ export const styles = css`
  */
 export function shadowHTML() {
   return html`
-    <dialog>
+    <dialog closedby="any">
       ${Button.render({
         label: CircleXMark.render({ fill: "primary-on" }),
         variation: "icon",
