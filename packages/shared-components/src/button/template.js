@@ -1,4 +1,4 @@
-import { tag, html, css } from "../utils.js";
+import { tag, html, css, isValidAttribute } from "../utils.js";
 
 export const TAG = tag`button`;
 
@@ -37,26 +37,16 @@ const RADIUS_SIZES = {
 
 /**
  * @param {(string | null)} attr
- * @returns {attr is ButtonVariation}
  */
 export function isButtonVariation(attr) {
-  if (!attr) {
-    return false;
-  }
-
-  return attr in VARIATIONS;
+  return isValidAttribute(VARIATIONS, attr);
 }
 
 /**
  * @param {(string | null)} attr
- * @returns {attr is ButtonRadius}
  */
 export function isButtonRadius(attr) {
-  if (!attr) {
-    return false;
-  }
-
-  return attr in RADIUS_SIZES;
+  return isValidAttribute(RADIUS_SIZES, attr);
 }
 
 export const styles = css`
@@ -77,9 +67,11 @@ export const styles = css`
   }
 
   button.icon:not(.radius-round) {
-    // Assume background should be removed only if radius is not set.
-    // Consider if this should be a variation instead, e.g. "icon-no-bg"
-    background: none;
+    /*
+      Assume background should be removed only if radius is not set to round.
+      TODO: This should be handled with a variation.
+    */
+    background-color: transparent;
   }
 
   button.radius-round {
@@ -100,7 +92,7 @@ export const styles = css`
  * @param {Omit<ButtonTemplateProps, "label">} props
  * @returns {string}
  */
-export function template(props) {
+export function shadowHTML(props) {
   const variation = props.variation ?? "default";
   const radius = props.radius ?? "small";
 

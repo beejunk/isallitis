@@ -1,7 +1,7 @@
 import { CustomElement, createStyleSheet } from "../custom-element.js";
 import {
   styles,
-  template,
+  shadowHTML,
   isButtonVariation,
   TAG,
   isButtonRadius,
@@ -42,7 +42,7 @@ export class Button extends CustomElement {
   }
 
   render() {
-    return template({ variation: this.variation, radius: this.radius });
+    return shadowHTML({ variation: this.variation, radius: this.radius });
   }
 }
 
