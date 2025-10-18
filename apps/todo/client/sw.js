@@ -9,20 +9,16 @@ const STATIC_ASSET_CACHE = `static_asset_cache_${VERSION}`;
  * @type {Array<string>}
  */
 const STATIC_ASSETS = [
-  // HTML
+  // App assets
   "/",
 
-  // Images
-  "/favicon.png",
+  "/images/favicon.png",
 
-  // CSS
-  "/global.css",
-  "/todo.css",
+  "/styles/global.css",
 
-  // App
-  "/todo.js",
-  "/db.js",
-  "/register.js",
+  "/scripts/todo.js",
+  "/scripts/db.js",
+  "/scripts/register.js",
 
   // App dependencies
   "/shared-components/custom-element.js",
@@ -50,14 +46,12 @@ const STATIC_ASSETS = [
   "/shared-components/text-input/custom-element.js",
   "/shared-components/text-input/template.js",
 
-  // Vendors
-  "https://esm.sh/@preact/signals-core@1.11.0",
-  "https://esm.sh/@preact/signals-core@1.11.0/es2022/signals-core.mjs",
+  // Third-party dependencies
+  "/preact/signals-core/signals-core.mjs",
 ];
 
-// Cast the global object to `ServiceWorkerGlobalScope` since the TypeScript install
-// will not automatically identify that this code is running only in a service
-// worker environment.
+// Cast the global object to `ServiceWorkerGlobalScope` since TypeScript will not
+// automatically identify that this code is running in a service worker environment.
 const UNKNOWN_SCOPE = /** @type {unknown} */ (self);
 const GLOBAL_SCOPE = /** @type {ServiceWorkerGlobalScope} */ (UNKNOWN_SCOPE);
 
@@ -100,7 +94,7 @@ async function handleStaticAssetRequest(request) {
 }
 
 // -----------------------------------------------------------------------------
-// Service worker lifecycle utilities and event install.
+// Service worker lifecycle utilities and event handlers.
 // -----------------------------------------------------------------------------
 
 /**
