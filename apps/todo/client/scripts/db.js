@@ -1,24 +1,45 @@
+import * as v from "valibot";
+
 const NAME = "todo_db";
 
 const VERSION = 1;
 
 const TODOS = "todos";
 
-// ------
-// Models
-// ------
+// -------
+// Schemas
+// -------
+
+const ToDoStateSchema = v.union([v.literal("ACTIVE"), v.literal("COMPLETE")]);
 
 /**
- * @typedef {("ACTIVE" | "COMPLETE")} ToDoState
+ * @typedef {import("valibot").InferOutput<typeof ToDoStateSchema>} ToDoState
  */
 
+const ToDoSchema = v.object({
+  id: v.number(),
+  description: v.string(),
+  state: ToDoStateSchema,
+  type: v.literal("todo"),
+});
+
 /**
- * @typedef {Object} ToDo
- * @prop {number} id
- * @prop {string} description
- * @prop {ToDoState} state
- * @prop {"todo"} type
+ * @typedef {import("valibot").InferOutput<typeof ToDoSchema>} ToDo
  */
+
+const IncomingToDoSchema = v.omit(ToDoSchema, ["id"]);
+
+/**
+ * @typedef {import("valibot").InferOutput<typeof IncomingToDoSchema>} IncomingToDo
+ */
+
+const IDBRequestWithTodosArraySchema = v.object({
+  result: v.array(ToDoSchema),
+});
+
+const IDBRequestWithTodoSchema = v.object({
+  result: ToDoSchema,
+});
 
 /**
  * @param {Pick<ToDo, "description">} todo
@@ -94,37 +115,13 @@ function assertIDBRequestWithIDResult(target) {
   }
 }
 
-/**
- * @param {unknown} target
- * @returns {asserts target is IDBRequest<Array<ToDo>>}
- */
-function assertIDBRequestWithToDoArrayResult(target) {
-  assertIDBRequest(target);
-
-  if (!(target instanceof IDBRequest && Array.isArray(target.result))) {
-    throw new DBAssertionError("Array<ToDo>");
-  }
-}
-
-/**
- * @param {unknown} target
- * @returns {asserts target is IDBRequest<ToDo>}
- */
-function assertIDBRequestWithToDoResult(target) {
-  assertIDBRequest(target);
-
-  if (!(target instanceof IDBRequest && target.result.type === "todo")) {
-    throw new DBAssertionError("ToDo");
-  }
-}
-
 // -----
 // Utils
 // -----
 
 /**
  * Creates a wrapper for an IndexedDB event handler that abstracts away the boilerplate
- * of needing to catch and reject errors. Particular useful due to the need to run
+ * of needing to catch and reject errors. Useful due to the need to run
  * assertions against IndexedDB events in order to read event values in a type safe
  * manner.
  *
@@ -178,18 +175,19 @@ export async function getDB() {
 }
 
 /**
- * @param {Omit<ToDo, "id">} todo
+ * @param {IncomingToDo} todo
  * @returns {Promise<ToDo>}
  */
 export async function saveToDo(todo) {
   const db = await getDB();
 
   return new Promise((resolve, reject) => {
+    const parsedTodo = v.parse(IncomingToDoSchema, todo);
     const tryHandler = handlerFactory(reject);
     const transaction = db.transaction([TODOS], "readwrite");
 
     const store = transaction.objectStore(TODOS);
-    const request = store.add(todo);
+    const request = store.add(parsedTodo);
 
     transaction.onerror = (event) => {
       reject(new DBTransactionError(event));
@@ -213,6 +211,7 @@ export async function deleteToDo(key) {
     const transaction = db.transaction([TODOS], "readwrite");
 
     transaction.onerror = (event) => {
+      // TODO Make error class
       reject(new Error(`[TO_DO_TRANSACTION_ERROR] ${event}`));
     };
 
@@ -243,8 +242,8 @@ export async function getAllToDos() {
     const request = store.getAll();
 
     request.onsuccess = tryHandler((event) => {
-      assertIDBRequestWithToDoArrayResult(event.target);
-      resolve(event.target.result);
+      const { result } = v.parse(IDBRequestWithTodosArraySchema, event.target);
+      resolve(result);
     });
   });
 }
@@ -268,8 +267,8 @@ export async function getToDo(id) {
     };
 
     request.onsuccess = tryHandler((event) => {
-      assertIDBRequestWithToDoResult(event.target);
-      resolve(event.target.result);
+      const { result } = v.parse(IDBRequestWithTodoSchema, event.target);
+      resolve(result);
     });
   });
 }

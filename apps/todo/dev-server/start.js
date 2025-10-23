@@ -53,6 +53,12 @@ server.register(fastifyStatic, {
   decorateReply: false,
 });
 
+server.register(fastifyStatic, {
+  root: getDepPath(path.join("valibot", "dist")),
+  prefix: "/valibot",
+  decorateReply: false,
+});
+
 try {
   await server.listen({ port: PORT });
 } catch (err) {

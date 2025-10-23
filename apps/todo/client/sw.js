@@ -48,6 +48,7 @@ const STATIC_ASSETS = [
 
   // Third-party dependencies
   "/preact/signals-core/signals-core.mjs",
+  "/valibot/index.js",
 ];
 
 // Cast the global object to `ServiceWorkerGlobalScope` since TypeScript will not
