@@ -6,6 +6,8 @@ import "../circle-xmark/custom-element.js";
 
 const styleSheet = createStyleSheet(styles);
 
+const DIALOG_OPEN = "dialog_open";
+
 export class Dialog extends CustomElement {
   static styles = [styleSheet];
 
@@ -18,6 +20,15 @@ export class Dialog extends CustomElement {
     this.handleCancelEvent = this.handleCancelEvent.bind(this);
     this.handleCloseButtonClick = this.handleCloseButtonClick.bind(this);
     this.handleDialogClose = this.handleDialogClose.bind(this);
+  }
+
+  /**
+   * @param {() => void} handler
+   */
+  addDialogOpenListener(handler) {
+    this.addEventListener(DIALOG_OPEN, () => {
+      handler();
+    });
   }
 
   getDialog() {
@@ -89,12 +100,13 @@ export class Dialog extends CustomElement {
 
   showModal() {
     const dialog = this.getDialog();
-    // TODO Need to figure out why render won't autofocus.
     const closeButton = this.getCloseButton();
 
     closeButton.addEventListener("click", this.handleCloseButtonClick);
     dialog.addEventListener("cancel", this.handleCancelEvent);
     dialog.showModal();
+
+    this.dispatchEvent(new CustomEvent(DIALOG_OPEN));
   }
 }
 
