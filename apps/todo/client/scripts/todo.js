@@ -281,6 +281,7 @@ class TodoAddDialog extends CustomElement {
 
     this.handleCreateButtonClicked = this.handleCreateButtonClicked.bind(this);
     this.handleInputKeypress = this.handleInputKeypress.bind(this);
+    this.handleDialogOpen = this.handleDialogOpen.bind(this);
   }
 
   get createButton() {
@@ -306,6 +307,7 @@ class TodoAddDialog extends CustomElement {
 
     this.createButton.addClickEventListener(this.handleCreateButtonClicked);
     this.input.addEventListener("keydown", this.handleInputKeypress);
+    this.dialog.addDialogOpenListener(this.handleDialogOpen);
   }
 
   async createToDo() {
@@ -338,6 +340,10 @@ class TodoAddDialog extends CustomElement {
   handleCreateButtonClicked(event) {
     event.preventDefault();
     this.createToDo();
+  }
+
+  handleDialogOpen() {
+    this.input.focus();
   }
 
   render() {
