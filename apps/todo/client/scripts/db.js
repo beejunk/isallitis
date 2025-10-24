@@ -41,6 +41,12 @@ const IDBRequestWithTodoSchema = v.object({
   result: ToDoSchema,
 });
 
+const IDBRequestWithDBResultSchema = v.object({
+  result: v.instance(IDBDatabase),
+});
+
+const IDBRequestWithIDResultSchema = v.object({ result: v.number() });
+
 /**
  * @param {Pick<ToDo, "description">} todo
  * @returns {Omit<ToDo, "id">}
@@ -57,15 +63,6 @@ export function createTodo({ description }) {
 // Errors
 // ------
 
-class DBAssertionError extends Error {
-  /**
-   * @param {string} className
-   */
-  constructor(className) {
-    super(`Event target is not an instance of ${className}.`);
-  }
-}
-
 class DBTransactionError extends Error {
   /**
    * @param {Event} event
@@ -77,53 +74,14 @@ class DBTransactionError extends Error {
 
 class DBRequestError extends DBTransactionError {}
 
-// ---------------
-// Type assertions
-// ---------------
-
-/**
- * @param {unknown} target
- * @returns {asserts target is IDBRequest}
- */
-function assertIDBRequest(target) {
-  if (!(target instanceof IDBRequest)) {
-    throw new DBAssertionError("IDBRequest");
-  }
-}
-
-/**
- * @param {unknown }target
- * @returns {asserts target is IDBRequest<IDBDatabase>}
- */
-function assertIDBRequestWithDBResult(target) {
-  assertIDBRequest(target);
-
-  if (!(target.result instanceof IDBDatabase)) {
-    throw new DBAssertionError("IDBDatabase");
-  }
-}
-
-/**
- * @param {unknown} target
- * @returns {asserts target is IDBRequest<number>}
- */
-function assertIDBRequestWithIDResult(target) {
-  assertIDBRequest(target);
-
-  if (!(target instanceof IDBRequest && typeof target.result === "number")) {
-    throw new DBAssertionError("number");
-  }
-}
-
 // -----
 // Utils
 // -----
 
 /**
  * Creates a wrapper for an IndexedDB event handler that abstracts away the boilerplate
- * of needing to catch and reject errors. Useful due to the need to run
- * assertions against IndexedDB events in order to read event values in a type safe
- * manner.
+ * of needing to catch and reject errors. Useful due to the need to run assertions
+ * against IndexedDB events in order to read event values in a type safe manner.
  *
  * @param {(err: any) => void} reject
  * @returns {(handler: (e: Event) => void) => (e: Event) => void}
@@ -158,13 +116,15 @@ export async function getDB() {
     };
 
     request.onsuccess = tryHandler((event) => {
-      assertIDBRequestWithDBResult(event.target);
-      resolve(event.target.result);
+      const { result } = v.parse(IDBRequestWithDBResultSchema, event.target);
+      resolve(result);
     });
 
     request.onupgradeneeded = tryHandler((event) => {
-      assertIDBRequestWithDBResult(event.currentTarget);
-      const db = event.currentTarget.result;
+      const { result: db } = v.parse(
+        IDBRequestWithDBResultSchema,
+        event.target,
+      );
 
       db.createObjectStore(TODOS, {
         keyPath: "id",
@@ -194,8 +154,11 @@ export async function saveToDo(todo) {
     };
 
     request.onsuccess = tryHandler((event) => {
-      assertIDBRequestWithIDResult(event.target);
-      resolve({ ...todo, id: event.target.result });
+      const { result: id } = v.parse(
+        IDBRequestWithIDResultSchema,
+        event.target,
+      );
+      resolve({ ...todo, id });
     });
   });
 }
