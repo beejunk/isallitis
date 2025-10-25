@@ -11,13 +11,21 @@ function getTodoDistPath() {
   return path.join(getDistPath(), "todo");
 }
 
-function getTodoCodePath() {
-  const appCodeUrl = new URL(
-    path.join("..", "apps", "todo", "client"),
+function getTodoWorkspacePath() {
+  const todoWorkspaceUrl = new URL(
+    path.join("..", "apps", "todo"),
     import.meta.url,
   );
 
-  return appCodeUrl.pathname;
+  return todoWorkspaceUrl.pathname;
+}
+
+function getTodoCodePath() {
+  return path.join(getTodoWorkspacePath(), "client");
+}
+
+function getNodeModulesPath() {
+  return path.join(getTodoWorkspacePath(), "node_modules");
 }
 
 function getSharedComponentsCodePath() {
@@ -30,30 +38,29 @@ function getSharedComponentsCodePath() {
 }
 
 function getSignalsCorePath() {
-  const appCodeUrl = new URL(
-    path.join(
-      "..",
-      "node_modules",
-      ".pnpm",
-      "@preact+signals-core@1.11.0",
-      "node_modules",
-      "@preact",
-      "signals-core",
-      "dist",
-      "signals-core.mjs",
-    ),
-    import.meta.url,
+  return path.join(
+    getNodeModulesPath(),
+    "@preact",
+    "signals-core",
+    "dist",
+    "signals-core.mjs",
   );
-
-  return appCodeUrl.pathname;
-}
-
-function getSharedComponentsDistPath() {
-  return path.join(getTodoDistPath(), "shared-components");
 }
 
 function getSignalsCoreDistPath() {
   return path.join(getTodoDistPath(), "preact", "signals-core");
+}
+
+function getValibotPath() {
+  return path.join(getNodeModulesPath(), "valibot", "dist", "index.min.js");
+}
+
+function getValibotDistPath() {
+  return path.join(getTodoDistPath(), "valibot");
+}
+
+function getSharedComponentsDistPath() {
+  return path.join(getTodoDistPath(), "shared-components");
 }
 
 echo(chalk.blueBright("Packaging to-do application."));
@@ -81,8 +88,13 @@ echo("Copying third-party dependencies.");
 
 const signalsCorePath = getSignalsCorePath();
 const signalsCoreDistPath = getSignalsCoreDistPath();
+const valibotPath = getValibotPath();
+const valibotDistPath = getValibotDistPath();
+
 await $`mkdir -p ${signalsCoreDistPath}`;
+await $`mkdir -p ${valibotDistPath}`;
 await $`cp ${signalsCorePath} ${signalsCoreDistPath}`;
+await $`cp ${valibotPath} ${valibotDistPath}`;
 
 echo("Archiving files.");
 cd(distDir);
