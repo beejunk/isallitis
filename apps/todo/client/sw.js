@@ -1,4 +1,4 @@
-const VERSION = "v1.1.2";
+const VERSION = "v1.2.0";
 
 const STATIC_ASSET_CACHE = `static_asset_cache_${VERSION}`;
 
@@ -48,7 +48,7 @@ const STATIC_ASSETS = [
 
   // Third-party dependencies
   "/preact/signals-core/signals-core.mjs",
-  "/valibot/index.js",
+  "/valibot/index.min.js",
 ];
 
 // Cast the global object to `ServiceWorkerGlobalScope` since TypeScript will not
