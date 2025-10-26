@@ -57,7 +57,7 @@ const UNKNOWN_SCOPE = /** @type {unknown} */ (self);
 const GLOBAL_SCOPE = /** @type {ServiceWorkerGlobalScope} */ (UNKNOWN_SCOPE);
 
 // -----------------------------------------------------------------------------
-// Cache utils.
+// Utils.
 // -----------------------------------------------------------------------------
 
 async function getStaticAssetCache() {
@@ -92,6 +92,14 @@ async function handleStaticAssetRequest(request) {
   }
 
   return fetch(request);
+}
+
+/**
+ * @param {string} clientId
+ */
+async function postVersionMessageToClient(clientId) {
+  const client = await GLOBAL_SCOPE.clients.get(clientId);
+  client?.postMessage({ version: VERSION });
 }
 
 // -----------------------------------------------------------------------------
@@ -138,4 +146,13 @@ GLOBAL_SCOPE.addEventListener("activate", (activateEvent) => {
 
 GLOBAL_SCOPE.addEventListener("fetch", (event) => {
   event.respondWith(handleStaticAssetRequest(event.request));
+});
+
+GLOBAL_SCOPE.addEventListener("message", (event) => {
+  if (
+    event.source instanceof Client &&
+    event.data?.type === "VERSION_REQUESTED"
+  ) {
+    postVersionMessageToClient(event.source.id);
+  }
 });

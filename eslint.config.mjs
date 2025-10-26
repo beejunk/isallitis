@@ -7,7 +7,12 @@ export default [
   { ignores: ["**/vendors/**", "**/dist/**"] },
   {
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node, ...globals.mocha },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.mocha,
+        ...globals.serviceworker,
+      },
     },
   },
   pluginJs.configs.recommended,
