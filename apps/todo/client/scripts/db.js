@@ -1,10 +1,19 @@
 import * as v from "valibot";
 
-const NAME = "todo_db";
+// ------------------------
+// To-do database meta data
+// ------------------------
+
+const TODO_DB_NAME = "todo_db";
 
 const VERSION = 1;
 
+// --------------
+// Object stores.
+// --------------
+
 const TODOS = "todos";
+const TODO_TEMPLATES = "todo_templates";
 
 // -------
 // Schemas
@@ -16,11 +25,23 @@ const ToDoStateSchema = v.union([v.literal("ACTIVE"), v.literal("COMPLETE")]);
  * @typedef {import("valibot").InferOutput<typeof ToDoStateSchema>} ToDoState
  */
 
+const ToDoTemplateSchema = v.object({
+  id: v.number(),
+  name: v.string(),
+  description: v.string(),
+  type: v.literal("todo-template"),
+});
+
+/**
+ * @typedef {import("valibot").InferOutput<typeof ToDoTemplateSchema>} ToDoTemplate
+ */
+
 const ToDoSchema = v.object({
   id: v.number(),
   description: v.string(),
   state: ToDoStateSchema,
   type: v.literal("todo"),
+  templateId: v.nullish(v.number()),
 });
 
 /**
@@ -33,8 +54,18 @@ const IncomingToDoSchema = v.omit(ToDoSchema, ["id"]);
  * @typedef {import("valibot").InferOutput<typeof IncomingToDoSchema>} IncomingToDo
  */
 
+const IncomingToDoTemplateSchema = v.omit(ToDoTemplateSchema, ["id"]);
+
+/**
+ * @typedef {import("valibot").InferOutput<typeof IncomingToDoTemplateSchema>} IncomingToDoTemplate
+ */
+
 const IDBRequestWithTodosArraySchema = v.object({
   result: v.array(ToDoSchema),
+});
+
+const IDBRequestWithTodoTemplatesArraySchema = v.object({
+  result: v.array(ToDoTemplateSchema),
 });
 
 const IDBRequestWithTodoSchema = v.object({
@@ -56,6 +87,7 @@ export function createTodo({ description }) {
     type: "todo",
     description,
     state: "ACTIVE",
+    templateId: null,
   };
 }
 
@@ -106,7 +138,7 @@ function handlerFactory(reject) {
  * @returns {Promise<IDBDatabase>}
  */
 export async function getDB() {
-  const request = window.indexedDB.open(NAME, VERSION);
+  const request = window.indexedDB.open(TODO_DB_NAME, VERSION);
 
   return new Promise((resolve, reject) => {
     const tryHandler = handlerFactory(reject);
@@ -127,6 +159,11 @@ export async function getDB() {
       );
 
       db.createObjectStore(TODOS, {
+        keyPath: "id",
+        autoIncrement: true,
+      });
+
+      db.createObjectStore(TODO_TEMPLATES, {
         keyPath: "id",
         autoIncrement: true,
       });
@@ -159,6 +196,38 @@ export async function saveToDo(todo) {
         event.target,
       );
       resolve({ ...todo, id });
+    });
+  });
+}
+
+/**
+ * @param {IncomingToDoTemplate} template
+ * @returns {Promise<ToDoTemplate>}
+ */
+export async function saveToDoTemplate(template) {
+  const db = await getDB();
+
+  return new Promise((resolve, reject) => {
+    const parsedTemplate = v.parse(IncomingToDoTemplateSchema, template);
+    const tryHandler = handlerFactory(reject);
+    const transaction = db.transaction([TODO_TEMPLATES], "readwrite");
+
+    const store = transaction.objectStore(TODO_TEMPLATES);
+    const request = store.add(parsedTemplate);
+
+    transaction.onerror = (event) => {
+      reject(new DBTransactionError(event));
+    };
+
+    request.onsuccess = tryHandler((event) => {
+      const { result: id } = v.parse(
+        IDBRequestWithIDResultSchema,
+        event.target,
+      );
+      resolve({ ...template, id });
+      /**
+       * @returns {Promise<Array<ToDoTemplate>>}
+       */
     });
   });
 }
@@ -206,6 +275,33 @@ export async function getAllToDos() {
 
     request.onsuccess = tryHandler((event) => {
       const { result } = v.parse(IDBRequestWithTodosArraySchema, event.target);
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * @returns {Promise<Array<ToDoTemplate>>}
+ */
+export async function getAllToDoTemplates() {
+  const db = await getDB();
+
+  return new Promise((resolve, reject) => {
+    const tryHandler = handlerFactory(reject);
+    const transaction = db.transaction([TODO_TEMPLATES], "readonly");
+
+    transaction.onerror = (event) => {
+      reject(new DBTransactionError(event));
+    };
+
+    const store = transaction.objectStore(TODO_TEMPLATES);
+    const request = store.getAll();
+
+    request.onsuccess = tryHandler((event) => {
+      const { result } = v.parse(
+        IDBRequestWithTodoTemplatesArraySchema,
+        event.target,
+      );
       resolve(result);
     });
   });
