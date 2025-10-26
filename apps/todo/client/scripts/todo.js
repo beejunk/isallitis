@@ -366,10 +366,22 @@ class TodoAddDialog extends CustomElement {
 
 CustomElement.define(tag`todo-add-dialog`, TodoAddDialog);
 
-// TODO: This component needs cleaning up.
-// This is being implemented quickly to validate app installation processes.
+const todoAppVersionCSS = createStyleSheet(css`
+  :host {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+  }
+
+  p {
+    font-size: var(--text-s);
+  }
+`);
+
 class TodoAppVersion extends CustomElement {
-  #versionSignal = signal("");
+  static styles = [defaultSheet, todoAppVersionCSS];
+
+  #versionSignal = signal("v0.0.0-dev");
 
   get version() {
     return this.#versionSignal.value;
@@ -388,10 +400,10 @@ class TodoAppVersion extends CustomElement {
 
     effect(() => {
       const version = this.version;
-      const pEl = this.shadowRoot?.querySelector("p");
+      const versionEl = this.shadowRoot?.querySelector("p > em");
 
-      if (pEl) {
-        pEl.innerHTML = version;
+      if (versionEl) {
+        versionEl.innerHTML = version;
       }
     });
   }
@@ -409,7 +421,7 @@ class TodoAppVersion extends CustomElement {
   }
 
   render() {
-    return html`<p>${this.version}</p>`;
+    return html`<p><em>${this.version}</em></p>`;
   }
 }
 
