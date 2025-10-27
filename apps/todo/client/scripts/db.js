@@ -14,6 +14,7 @@ const VERSION = 1;
 
 const TODOS = "todos";
 const TODO_TEMPLATES = "todo_templates";
+const TODO_TEMPLATE_LISTS = "todo_template_lists";
 
 // -------
 // Schemas
@@ -60,16 +61,46 @@ const IncomingToDoTemplateSchema = v.omit(ToDoTemplateSchema, ["id"]);
  * @typedef {import("valibot").InferOutput<typeof IncomingToDoTemplateSchema>} IncomingToDoTemplate
  */
 
+const TodoTemplateListSchema = v.object({
+  id: v.number(),
+  name: v.string(),
+  description: v.string(),
+  type: v.literal("todo-template-list"),
+  templateIds: v.array(v.number()),
+});
+
+/**
+ * @typedef {import("valibot").InferOutput<typeof TodoTemplateListSchema>} TodoTemplateList
+ */
+
+const IncomingTodoTemplateListSchema = v.omit(TodoTemplateListSchema, ["id"]);
+
+/**
+ * @typedef {import("valibot").InferOutput<typeof IncomingTodoTemplateListSchema>} IncomingTodoTemplateList
+ */
+
+const IDBRequestWithTodoSchema = v.object({
+  result: ToDoSchema,
+});
+
 const IDBRequestWithTodosArraySchema = v.object({
   result: v.array(ToDoSchema),
 });
 
-const IDBRequestWithTodoTemplatesArraySchema = v.object({
-  result: v.array(ToDoTemplateSchema),
+const IDBRequestWithTodoTemplateSchema = v.object({
+  result: ToDoTemplateSchema,
 });
 
-const IDBRequestWithTodoSchema = v.object({
-  result: ToDoSchema,
+const IDBRequestWithTodoTemplateListSchema = v.object({
+  result: TodoTemplateListSchema,
+});
+
+const IDBRequestWithTodoTemplateListsArraySchema = v.object({
+  result: v.array(TodoTemplateListSchema),
+});
+
+const IDBRequestWithTodoTemplatesArraySchema = v.object({
+  result: v.array(ToDoTemplateSchema),
 });
 
 const IDBRequestWithDBResultSchema = v.object({
@@ -330,4 +361,148 @@ export async function getToDo(id) {
       resolve(result);
     });
   });
+}
+
+/**
+ * @param {IncomingTodoTemplateList} list
+ * @returns {Promise<TodoTemplateList>}
+ */
+export async function saveTodoTemplateList(list) {
+  const db = await getDB();
+
+  return new Promise((resolve, reject) => {
+    const parsedList = v.parse(IncomingTodoTemplateListSchema, list);
+    const tryHandler = handlerFactory(reject);
+    const transaction = db.transaction([TODO_TEMPLATE_LISTS], "readwrite");
+
+    const store = transaction.objectStore(TODO_TEMPLATE_LISTS);
+    const request = store.add(parsedList);
+
+    transaction.onerror = (event) => {
+      reject(new DBTransactionError(event));
+    };
+
+    request.onsuccess = tryHandler((event) => {
+      const { result: id } = v.parse(
+        IDBRequestWithIDResultSchema,
+        event.target,
+      );
+      resolve({ ...parsedList, id });
+    });
+  });
+}
+
+/**
+ * @param {number} id
+ * @returns {Promise<ToDoTemplate>}
+ */
+async function getTodoTemplate(id) {
+  const db = await getDB();
+
+  return new Promise((resolve, reject) => {
+    const tryHandler = handlerFactory(reject);
+    const transaction = db.transaction([TODO_TEMPLATES], "readonly");
+
+    const store = transaction.objectStore(TODO_TEMPLATES);
+    const request = store.get(id);
+
+    transaction.onerror = (event) => {
+      reject(new DBTransactionError(event));
+    };
+
+    request.onsuccess = tryHandler((event) => {
+      const { result } = v.parse(
+        IDBRequestWithTodoTemplateSchema,
+        event.target,
+      );
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * @returns {Promise<Array<TodoTemplateList>>}
+ */
+export async function getAllTodoTemplateLists() {
+  const db = await getDB();
+
+  return new Promise((resolve, reject) => {
+    const tryHandler = handlerFactory(reject);
+    const transaction = db.transaction([TODO_TEMPLATE_LISTS], "readonly");
+
+    transaction.onerror = (event) => {
+      reject(new DBTransactionError(event));
+    };
+
+    const store = transaction.objectStore(TODO_TEMPLATE_LISTS);
+    const request = store.getAll();
+
+    request.onsuccess = tryHandler((event) => {
+      const { result } = v.parse(
+        IDBRequestWithTodoTemplateListsArraySchema,
+        event.target,
+      );
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * @param {number} id
+ * @returns {Promise<TodoTemplateList>}
+ */
+export async function getTodoTemplateList(id) {
+  const db = await getDB();
+
+  return new Promise((resolve, reject) => {
+    const tryHandler = handlerFactory(reject);
+    const transaction = db.transaction([TODO_TEMPLATE_LISTS], "readonly");
+
+    const store = transaction.objectStore(TODO_TEMPLATE_LISTS);
+    const request = store.get(id);
+
+    transaction.onerror = (event) => {
+      reject(new DBTransactionError(event));
+    };
+
+    request.onsuccess = tryHandler((event) => {
+      const { result } = v.parse(
+        IDBRequestWithTodoTemplateListSchema,
+        event.target,
+      );
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * @param {number} id
+ * @returns {Promise<void>}
+ */
+export async function deleteTodoTemplateList(id) {
+  const db = await getDB();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction([TODO_TEMPLATE_LISTS], "readwrite");
+
+    transaction.onerror = (event) => {
+      reject(new DBTransactionError(event));
+    };
+
+    const store = transaction.objectStore(TODO_TEMPLATE_LISTS);
+    const request = store.delete(id);
+
+    request.onsuccess = () => {
+      resolve();
+    };
+  });
+}
+
+/**
+ * @param {number} key
+ * @returns {Promise<Array<ToDoTemplate>>}
+ */
+export async function getTemplateListTodos(key) {
+  const list = await getTodoTemplateList(key);
+  return Promise.all(list.templateIds.map((id) => getTodoTemplate(id)));
 }
