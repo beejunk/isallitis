@@ -497,7 +497,7 @@ const todoAppCSS = createStyleSheet(css`
 /**
  * Main ToDo app container component.
  */
-class TodoApp extends CustomElement {
+class TodoListLayout extends CustomElement {
   static styles = [defaultSheet, todoAppCSS];
 
   constructor() {
@@ -553,4 +553,4 @@ class TodoApp extends CustomElement {
   }
 }
 
-CustomElement.define(tag`todo-app`, TodoApp);
+CustomElement.define(tag`todo-list-layout`, TodoListLayout);
