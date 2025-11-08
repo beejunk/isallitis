@@ -427,6 +427,36 @@ class TodoAppVersion extends CustomElement {
 
 CustomElement.define(tag`todo-app-version`, TodoAppVersion);
 
+const todoNavCSS = createStyleSheet(css`
+  nav {
+    display: flex;
+    bottom: 0;
+    justify-content: flex-end;
+    position: sticky;
+    right: 0;
+    padding-bottom: var(--size-100);
+    padding-right: var(--size-100);
+  }
+`);
+
+class TodoNav extends CustomElement {
+  static styles = [defaultSheet, todoNavCSS];
+
+  get todoAddButton() {
+    return this.getCustomElement(TodoAddButton);
+  }
+
+  render() {
+    return html`
+      <nav>
+        <${TodoAddButton}></${TodoAddButton}>
+      </nav>
+    `;
+  }
+}
+
+CustomElement.define(tag`todo-nav`, TodoNav);
+
 const todoAppCSS = createStyleSheet(css`
   :host {
     display: flex;
@@ -455,8 +485,7 @@ const todoAppCSS = createStyleSheet(css`
     margin: 0;
   }
 
-  ${TodoAddButton} {
-    align-self: flex-end;
+  ${TodoNav} {
     bottom: 0;
     padding-bottom: var(--size-100);
     padding-right: var(--size-100);
@@ -477,16 +506,16 @@ class TodoApp extends CustomElement {
     this.handleAddTodoButtonClick = this.handleAddTodoButtonClick.bind(this);
   }
 
-  get todoAddButton() {
-    return this.getCustomElement(TodoAddButton);
-  }
-
   get todoList() {
     return this.getCustomElement(TodoList);
   }
 
   get todoAddDialog() {
     return this.getCustomElement(TodoAddDialog);
+  }
+
+  get todoNav() {
+    return this.getCustomElement(TodoNav);
   }
 
   async handleAddTodoButtonClick() {
@@ -500,7 +529,7 @@ class TodoApp extends CustomElement {
       await register();
     }
 
-    this.todoAddButton.button.addClickEventListener(
+    this.todoNav.todoAddButton.button.addClickEventListener(
       this.handleAddTodoButtonClick,
     );
   }
@@ -517,9 +546,9 @@ class TodoApp extends CustomElement {
         <${TodoList}></${TodoList}>
       </div>
 
-      <${TodoAddButton}></${TodoAddButton}>
-
       <${TodoAddDialog}></${TodoAddDialog}>
+      
+      <${TodoNav}></${TodoNav}>
     `;
   }
 }
