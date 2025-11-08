@@ -1,7 +1,9 @@
 :root {
   --base-size: 16px;
 
+  --size-25: 0.25em;
   --size-50: 0.5em;
+  --size-75: 0.75em;
   --size-100: 1em;
   --size-150: 1.5em;
   --size-200: 2em;
@@ -29,7 +31,7 @@
   --space-xl: var(--size-400);
   --space-xxl: var(--size-800);
 
-  --text-s: var(--size-50);
+  --text-s: var(--size-75);
   --text-m: var(--size-100);
   --text-l: var(--size-200);
   --text-xl: var(--size-300);
