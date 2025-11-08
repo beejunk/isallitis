@@ -11,13 +11,7 @@ import { PenToSquare } from "@isallitis/shared-components/pen-to-square/custom-e
 import { defaultSheet } from "@isallitis/shared-components/styles/style-sheets.js";
 import { tag, html, css } from "@isallitis/shared-components/utils.js";
 import { saveToDo, deleteToDo, createTodo, getAllToDos } from "./db.js";
-import { register } from "./register.js";
-
-/**
- * Enables the service worker. Set this to `false` to disable the service worker
- * as needed.
- */
-const ENABLE_SW = true;
+import { TodoAppLayout } from "./layout.js";
 
 /** @typedef {import("./db.js").ToDo} ToDo */
 
@@ -366,139 +360,11 @@ class TodoAddDialog extends CustomElement {
 
 CustomElement.define(tag`todo-add-dialog`, TodoAddDialog);
 
-const todoAppVersionCSS = createStyleSheet(css`
-  :host {
-    display: flex;
-    flex-grow: 1;
-    justify-content: flex-end;
-  }
-
-  p {
-    font-size: var(--text-s);
-  }
-`);
-
-class TodoAppVersion extends CustomElement {
-  static styles = [defaultSheet, todoAppVersionCSS];
-
-  #versionSignal = signal("v0.0.0-dev");
-
-  get version() {
-    return this.#versionSignal.value;
-  }
-
-  /**
-   * @param {string} verStr
-   */
-  set version(verStr) {
-    this.#versionSignal.value = verStr;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.requestAppVersion();
-
-    effect(() => {
-      const version = this.version;
-      const versionEl = this.shadowRoot?.querySelector("p > em");
-
-      if (versionEl) {
-        versionEl.innerHTML = version;
-      }
-    });
-  }
-
-  async requestAppVersion() {
-    const registration = await window.navigator.serviceWorker.ready;
-
-    window.navigator.serviceWorker.addEventListener("message", (event) => {
-      if (typeof event.data.version === "string") {
-        this.version = event.data.version;
-      }
-    });
-
-    registration.active?.postMessage({ type: "VERSION_REQUESTED" });
-  }
-
-  render() {
-    return html`<p><em>${this.version}</em></p>`;
-  }
-}
-
-CustomElement.define(tag`todo-app-version`, TodoAppVersion);
-
-const todoNavCSS = createStyleSheet(css`
-  nav {
-    display: flex;
-    bottom: 0;
-    justify-content: flex-end;
-    position: sticky;
-    right: 0;
-    padding-bottom: var(--size-100);
-    padding-right: var(--size-100);
-  }
-`);
-
-class TodoNav extends CustomElement {
-  static styles = [defaultSheet, todoNavCSS];
-
-  get todoAddButton() {
-    return this.getCustomElement(TodoAddButton);
-  }
-
-  render() {
-    return html`
-      <nav>
-        <${TodoAddButton}></${TodoAddButton}>
-      </nav>
-    `;
-  }
-}
-
-CustomElement.define(tag`todo-nav`, TodoNav);
-
-const todoAppCSS = createStyleSheet(css`
-  :host {
-    display: flex;
-    flex-direction: column;
-    gap: calc(var(--base-size) * 2);
-    align-content: center;
-    min-height: 100vh;
-  }
-
-  .content {
-    flex-grow: 1;
-    margin: 0 auto;
-    max-width: 600px;
-    width: 100%;
-  }
-
-  .content header {
-    align-items: center;
-    display: flex;
-    gap: 16px;
-    padding: 16px 0;
-  }
-
-  .content header h1,
-  .content header p {
-    margin: 0;
-  }
-
-  ${TodoNav} {
-    bottom: 0;
-    padding-bottom: var(--size-100);
-    padding-right: var(--size-100);
-    position: sticky;
-    right: 0;
-  }
-`);
-
 /**
- * Main ToDo app container component.
+ * Main ToDo list.
  */
-class TodoListLayout extends CustomElement {
-  static styles = [defaultSheet, todoAppCSS];
+class TodoListView extends CustomElement {
+  static styles = [defaultSheet];
 
   constructor() {
     super();
@@ -514,8 +380,8 @@ class TodoListLayout extends CustomElement {
     return this.getCustomElement(TodoAddDialog);
   }
 
-  get todoNav() {
-    return this.getCustomElement(TodoNav);
+  get todoAddButton() {
+    return this.getCustomElement(TodoAddButton);
   }
 
   async handleAddTodoButtonClick() {
@@ -525,32 +391,20 @@ class TodoListLayout extends CustomElement {
   async connectedCallback() {
     super.connectedCallback();
 
-    if (ENABLE_SW) {
-      await register();
-    }
-
-    this.todoNav.todoAddButton.button.addClickEventListener(
+    this.todoAddButton.button.addClickEventListener(
       this.handleAddTodoButtonClick,
     );
   }
 
   render() {
     return html`
-      <div class="content">
-        <header>
-          <h1>To-Do</h1>
-          <p><em>Is All It Is</em></p>
-          <${TodoAppVersion}></${TodoAppVersion}>
-        </header>
-
-        <${TodoList}></${TodoList}>
-      </div>
-
-      <${TodoAddDialog}></${TodoAddDialog}>
-      
-      <${TodoNav}></${TodoNav}>
+      <${TodoAppLayout}>
+        <${TodoList} slot="list"></${TodoList}>
+        <${TodoAddDialog} slot="dialog"></${TodoAddDialog}>
+        <${TodoAddButton} slot="add-button"></${TodoAddButton}>
+      </${TodoAppLayout}>
     `;
   }
 }
 
-CustomElement.define(tag`todo-list-layout`, TodoListLayout);
+CustomElement.define(tag`todo-list-view`, TodoListView);

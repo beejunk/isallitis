@@ -1,0 +1,184 @@
+import {
+  createStyleSheet,
+  CustomElement,
+} from "@isallitis/shared-components/custom-element.js";
+import { css, html, tag } from "@isallitis/shared-components/utils.js";
+import { defaultSheet } from "@isallitis/shared-components/styles/style-sheets.js";
+import { effect, signal } from "@preact/signals-core";
+import { register } from "./register.js";
+
+/**
+ * Enables the service worker. Set this to `false` during development so that
+ * assets are not cached.
+ */
+const ENABLE_SW = true;
+
+// ---------------------------------------
+// TodoNav - Navigation bar for all views.
+// ---------------------------------------
+
+const todoNavCSS = createStyleSheet(css`
+  nav {
+    display: flex;
+    bottom: 0;
+    justify-content: flex-end;
+    position: sticky;
+    right: 0;
+    padding-bottom: var(--size-100);
+    padding-right: var(--size-100);
+  }
+`);
+
+class TodoNav extends CustomElement {
+  static styles = [defaultSheet, todoNavCSS];
+
+  render() {
+    return html`
+      <nav>
+        <slot name="add-button"></slot>
+      </nav>
+    `;
+  }
+}
+
+CustomElement.define(tag`todo-nav`, TodoNav);
+
+// ---------------------------------------------------------------
+// TodoAppVersion - Display current version of the service-worker.
+// ---------------------------------------------------------------
+
+const todoAppVersionCSS = createStyleSheet(css`
+  :host {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+  }
+
+  p {
+    font-size: var(--text-s);
+  }
+`);
+
+class TodoAppVersion extends CustomElement {
+  static styles = [defaultSheet, todoAppVersionCSS];
+
+  #versionSignal = signal("v0.0.0-dev");
+
+  get version() {
+    return this.#versionSignal.value;
+  }
+
+  /**
+   * @param {string} verStr
+   */
+  set version(verStr) {
+    this.#versionSignal.value = verStr;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.requestAppVersion();
+
+    effect(() => {
+      const version = this.version;
+      const versionEl = this.shadowRoot?.querySelector("p > em");
+
+      if (versionEl) {
+        versionEl.innerHTML = version;
+      }
+    });
+  }
+
+  async requestAppVersion() {
+    const registration = await window.navigator.serviceWorker.ready;
+
+    window.navigator.serviceWorker.addEventListener("message", (event) => {
+      if (typeof event.data.version === "string") {
+        this.version = event.data.version;
+      }
+    });
+
+    registration.active?.postMessage({ type: "VERSION_REQUESTED" });
+  }
+
+  render() {
+    return html`<p><em>${this.version}</em></p>`;
+  }
+}
+
+CustomElement.define(tag`todo-app-version`, TodoAppVersion);
+
+// ------------------------------------------------
+// TodoAppLayout - Shared layout for all app views.
+// ------------------------------------------------
+
+const todoLayoutCSS = createStyleSheet(css`
+  :host {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--space-m));
+    min-height: 100vh;
+    margin: 0 auto;
+    max-width: 600px;
+    width: 100%;
+  }
+
+  #list {
+    flex-grow: 1;
+  }
+
+  header {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  header h1,
+  header p {
+    margin: 0;
+  }
+
+  ${TodoNav} {
+    bottom: 0;
+    position: sticky;
+    right: 0;
+  }
+`);
+
+export class TodoAppLayout extends CustomElement {
+  static styles = [defaultSheet, todoLayoutCSS];
+
+  async connectedCallback() {
+    super.connectedCallback();
+
+    if (ENABLE_SW) {
+      await register();
+    }
+  }
+
+  render() {
+    return html`
+      <header>
+        <h1>To-Do</h1>
+        <p><em>Is All It Is</em></p>
+        <${TodoAppVersion}></${TodoAppVersion}>
+      </header>
+        
+      <slot name="title"></slot>
+        
+      <div id="list">
+        <slot name="list"></slot>
+      </div>
+
+      <slot name="dialog"></slot>
+        
+      <${TodoNav}>
+        <slot slot="add-button" name="add-button"></slot>
+      </${TodoNav}>
+    `;
+  }
+}
+
+CustomElement.define(tag`todo-app-layout`, TodoAppLayout);

@@ -16,7 +16,8 @@ const STATIC_ASSETS = [
 
   "/styles/global.css",
 
-  "/scripts/todo.js",
+  "/scripts/layout.js",
+  "/scripts/todo-list.js",
   "/scripts/db.js",
   "/scripts/register.js",
 
