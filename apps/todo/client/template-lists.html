@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A To-Do App Is All It Is - Template Lists</title>
+
+    <link rel="icon" href="/images/favicon.png" type="image/png" />
+    <link rel="manifest" href="manifest.json" />
+
+    <link rel="stylesheet" href="/shared-components/styles/tokens.css" />
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "@isallitis/shared-components/": "/shared-components/",
+        "@preact/signals-core": "/preact/signals-core/signals-core.mjs",
+        "valibot": "/valibot/index.min.js"
+      }
+    }
+  </script>
+
+  <body>
+    <todo-template-lists-layout-is-all-it-is></todo-template-lists-layout-is-all-it-is>
+
+    <script src="/scripts/template-lists.js" type="module"></script>
+  </body>
+</html>

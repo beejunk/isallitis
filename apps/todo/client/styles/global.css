@@ -2,6 +2,4 @@ body {
   background-color: black;
   color: white;
   margin: 0;
-  padding-left: var(--size-100);
-  padding-right: var(--size-100);
 }

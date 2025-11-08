@@ -19,23 +19,57 @@ const ENABLE_SW = true;
 
 const todoNavCSS = createStyleSheet(css`
   nav {
+    align-items: center;
+    background-color: var(--color-primary-on);
+    border-top: dotted 2px var(--color-primary);
     display: flex;
-    bottom: 0;
+    gap: var(--space-m);
+    padding: var(--space-m);
+  }
+
+  #add-button {
+    display: flex;
+    flex-grow: 1;
     justify-content: flex-end;
-    position: sticky;
-    right: 0;
-    padding-bottom: var(--size-100);
-    padding-right: var(--size-100);
+  }
+
+  a {
+    border: 1px solid var(--color-primary);
+    border-radius: var(--space-s);
+    color: var(--color-primary);
+    font-size: var(--text-s);
+    padding: var(--space-s);
+    text-decoration: none;
+  }
+
+  a.active {
+    background-color: var(--color-primary);
+    color: var(--color-primary-on);
   }
 `);
 
 class TodoNav extends CustomElement {
   static styles = [defaultSheet, todoNavCSS];
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.setActiveLink();
+  }
+
+  setActiveLink() {
+    const { pathname } = window.location;
+    const activeLinkEl = this.getSelector(`a[href="${pathname}"]`);
+    activeLinkEl.classList.add("active");
+  }
+
   render() {
     return html`
       <nav>
-        <slot name="add-button"></slot>
+        <a href="/">To Do</a>
+        <a href="/template-lists.html">Templates</a>
+        <div id="add-button">
+          <slot name="add-button"></slot>
+        </div>
       </nav>
     `;
   }
@@ -115,11 +149,14 @@ CustomElement.define(tag`todo-app-version`, TodoAppVersion);
 const todoLayoutCSS = createStyleSheet(css`
   :host {
     align-content: center;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: calc(var(--space-m));
     min-height: 100vh;
     margin: 0 auto;
+    padding-left: var(--space-m);
+    padding-right: var(--space-m);
     max-width: 600px;
     width: 100%;
   }
@@ -142,6 +179,8 @@ const todoLayoutCSS = createStyleSheet(css`
 
   ${TodoNav} {
     bottom: 0;
+    margin-left: calc(-1 * var(--space-m));
+    margin-right: calc(-1 * var(--space-m));
     position: sticky;
     right: 0;
   }
