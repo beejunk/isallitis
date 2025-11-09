@@ -16,6 +16,8 @@
   },
   "devDependencies": {
     "@fastify/static": "catalog:",
-    "fastify": "catalog:"
+    "fastify": "catalog:",
+    "chai": "^5.2.0",
+    "mocha": "^11.7.1"
   }
 }

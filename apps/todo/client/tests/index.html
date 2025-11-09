@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A To-Do App Is All It Is - Tests</title>
+
+    <link rel="icon" href="/images/favicon.png" type="image/png" />
+    <link rel="manifest" href="../manifest.json" />
+
+    <link rel="stylesheet" href="/mocha/mocha.css" />
+  </head>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "@isallitis/shared-components/": "/shared-components/",
+        "@preact/signals-core": "/preact/signals-core/signals-core.mjs",
+        "valibot": "/valibot/index.min.js",
+
+        "chai": "/chai/chai.js"
+      }
+    }
+  </script>
+
+  <body>
+    <div id="mocha"></div>
+
+    <script src="/mocha/mocha.js"></script>
+    <script src="/tests/run-tests.js" type="module"></script>
+  </body>
+</html>

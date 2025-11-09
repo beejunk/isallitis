@@ -59,6 +59,22 @@ server.register(fastifyStatic, {
   decorateReply: false,
 });
 
+// ------------------
+// Test dependencies.
+// ------------------
+
+server.register(fastifyStatic, {
+  root: path.resolve("node_modules", "chai"),
+  prefix: "/chai",
+  decorateReply: false,
+});
+
+server.register(fastifyStatic, {
+  root: path.resolve("node_modules", "mocha"),
+  prefix: "/mocha",
+  decorateReply: false,
+});
+
 try {
   await server.listen({ port: PORT });
 } catch (err) {

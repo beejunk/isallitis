@@ -102,9 +102,15 @@ importers:
       '@fastify/static':
         specifier: 'catalog:'
         version: 8.2.0
+      chai:
+        specifier: ^5.2.0
+        version: 5.2.0
       fastify:
         specifier: 'catalog:'
         version: 5.4.0
+      mocha:
+        specifier: ^11.7.1
+        version: 11.7.1
 
   packages/shared-components:
     devDependencies:
