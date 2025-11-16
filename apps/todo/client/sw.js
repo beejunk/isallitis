@@ -20,6 +20,7 @@ const STATIC_ASSETS = [
   "/scripts/todo-list.js",
   "/scripts/db.js",
   "/scripts/register.js",
+  "/scripts/models.js",
 
   // App dependencies
   "/shared-components/custom-element.js",

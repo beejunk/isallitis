@@ -10,10 +10,10 @@ import { Dialog } from "@isallitis/shared-components/dialog/custom-element.js";
 import { PenToSquare } from "@isallitis/shared-components/pen-to-square/custom-element.js";
 import { defaultSheet } from "@isallitis/shared-components/styles/style-sheets.js";
 import { tag, html, css } from "@isallitis/shared-components/utils.js";
-import { saveToDo, deleteToDo, createTodo, getAllToDos } from "./db.js";
 import { TodoAppLayout } from "./layout.js";
+import { deleteTodo, getAllTodos, createTodo } from "./models.js";
 
-/** @typedef {import("./db.js").ToDo} ToDo */
+/** @typedef {import("./models.js").ToDo} ToDo */
 
 /**
  * @template T
@@ -103,7 +103,7 @@ class TodoCard extends CustomElement {
     if (todoId) {
       const nextToDos = todos.value.filter(({ id }) => id !== todoId);
 
-      await deleteToDo(todoId);
+      await deleteTodo(todoId);
       todos.value = nextToDos;
       this.remove();
     }
@@ -211,7 +211,7 @@ class TodoList extends CustomElement {
     // from this effect.
     effect(this.handleTodoListUpdate);
 
-    const allTodos = await getAllToDos();
+    const allTodos = await getAllTodos();
     todos.value = allTodos;
   }
 
@@ -305,11 +305,10 @@ class TodoAddDialog extends CustomElement {
   }
 
   async createToDo() {
-    // TODO Some kind of validation
     const description = this.input.value;
 
     try {
-      const newTodo = await saveToDo(createTodo({ description }));
+      const newTodo = await createTodo({ description });
       this.dialog.handleCloseButtonClick();
       this.input.value = "";
       todos.value = [...todos.value, newTodo];
