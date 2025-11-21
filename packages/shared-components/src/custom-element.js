@@ -144,6 +144,22 @@ export class CustomElement extends HTMLElement {
   }
 
   /**
+   * @template {HTMLElement} E
+   * @param {new (...args: any[]) => E} ElementClass
+   * @param {string} selector
+   * @returns {E}
+   */
+  getElement(ElementClass, selector) {
+    const shadowRoot = this.getShadowRoot();
+    const el =
+      this.querySelector(selector) ?? shadowRoot.querySelector(selector);
+
+    assertElementClass(el, ElementClass);
+
+    return el;
+  }
+
+  /**
    * The same as `querySelector`, but will also query the shadow root of the
    * element. Will throw if no element is found.
    *
