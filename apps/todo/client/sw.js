@@ -45,8 +45,8 @@ const STATIC_ASSETS = [
   "/shared-components/pen-to-square/custom-element.js",
   "/shared-components/pen-to-square/template.js",
 
-  "/shared-components/text-input/custom-element.js",
-  "/shared-components/text-input/template.js",
+  "/shared-components/text-nameInput/custom-element.js",
+  "/shared-components/text-nameInput/template.js",
 
   // Third-party dependencies
   "/preact/signals-core/signals-core.mjs",

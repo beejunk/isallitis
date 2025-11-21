@@ -13,13 +13,17 @@ import {
 // Todo
 // ----
 
-const TodoStateSchema = v.union([v.literal("ACTIVE"), v.literal("COMPLETE")]);
+const ACTIVE = "ACTIVE";
+
+const COMPLETE = "COMPLETE";
+
+const TodoStateSchema = v.enum({ ACTIVE, COMPLETE });
 
 /**
  * @typedef {import("valibot").InferOutput<typeof TodoStateSchema>} TodoState
  */
 
-const ToDoSchema = v.object({
+const TodoSchema = v.object({
   id: v.number(),
   description: v.string(),
   state: TodoStateSchema,
@@ -28,11 +32,11 @@ const ToDoSchema = v.object({
 });
 
 /**
- * @typedef {import("valibot").InferOutput<typeof ToDoSchema>} ToDo
+ * @typedef {import("valibot").InferOutput<typeof TodoSchema>} Todo
  */
 
 /**
- * @typedef {Omit<ToDo, "id" | "type" | "state">} IncomingTodo
+ * @typedef {Omit<Todo, "id" | "type" | "state">} IncomingTodo
  */
 
 /**
@@ -42,26 +46,26 @@ export async function createTodo(todo) {
   const newTodo = {
     ...todo,
     type: "todo",
-    state: "ACTIVE",
+    state: ACTIVE,
     templateId: null,
   };
 
-  return saveModel(TODOS, newTodo, v.omit(ToDoSchema, ["id"]));
+  return saveModel(TODOS, newTodo, v.omit(TodoSchema, ["id"]));
 }
 
 /**
  * @param {number} id
- * @returns {Promise<ToDo>}
+ * @returns {Promise<Todo>}
  */
 export async function getTodo(id) {
-  return readModel(TODOS, id, ToDoSchema);
+  return readModel(TODOS, id, TodoSchema);
 }
 
 /**
- * @returns {Promise<Array<ToDo>>}
+ * @returns {Promise<Array<Todo>>}
  */
 export async function getAllTodos() {
-  return readAllModels(TODOS, ToDoSchema);
+  return readAllModels(TODOS, TodoSchema);
 }
 
 /**
@@ -76,13 +80,18 @@ export async function deleteTodo(id) {
 // TodoTemplate
 // ------------
 
-const TodoTemplateSchema = v.object({
-  id: v.number(),
-  name: v.string(),
-  description: v.string(),
-  type: v.literal("todo-template"),
+const BaseTodoTemplateSchema = v.object({
   templateListId: v.number(),
+  type: v.literal("todo-template"),
 });
+
+const TodoTemplateSchema = v.omit(
+  v.object({
+    ...TodoSchema.entries,
+    ...BaseTodoTemplateSchema.entries,
+  }),
+  ["state"],
+);
 
 /**
  * @typedef {import("valibot").InferOutput<typeof TodoTemplateSchema>} TodoTemplate
@@ -184,7 +193,7 @@ export async function getTodoTemplateList(id) {
  * @returns {Promise<Array<TodoTemplateList>>}
  */
 export async function getAllTodoTemplateLists() {
-  return readAllModels(TODO_TEMPLATE_LISTS, TodoTemplateSchema);
+  return readAllModels(TODO_TEMPLATE_LISTS, TodoTemplateListSchema);
 }
 
 /**

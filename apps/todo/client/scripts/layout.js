@@ -2,7 +2,7 @@ import {
   createStyleSheet,
   CustomElement,
 } from "@isallitis/shared-components/custom-element.js";
-import { css, html, tag } from "@isallitis/shared-components/utils.js";
+import { css, html } from "@isallitis/shared-components/utils.js";
 import { defaultSheet } from "@isallitis/shared-components/styles/style-sheets.js";
 import { effect, signal } from "@preact/signals-core";
 import { register } from "./register.js";
@@ -11,11 +11,27 @@ import { register } from "./register.js";
  * Enables the service worker. Set this to `false` during development so that
  * assets are not cached.
  */
-const ENABLE_SW = true;
+const ENABLE_SW = false;
 
 // ---------------------------------------
 // TodoNav - Navigation bar for all views.
 // ---------------------------------------
+
+export const todoLinkCSS = createStyleSheet(css`
+  a {
+    border: 1px solid var(--color-primary);
+    border-radius: var(--space-s);
+    color: var(--color-primary);
+    font-size: var(--text-s);
+    padding: var(--space-s);
+    text-decoration: none;
+  }
+
+  a.active {
+    background-color: var(--color-primary);
+    color: var(--color-primary-on);
+  }
+`);
 
 const todoNavCSS = createStyleSheet(css`
   nav {
@@ -32,24 +48,10 @@ const todoNavCSS = createStyleSheet(css`
     flex-grow: 1;
     justify-content: flex-end;
   }
-
-  a {
-    border: 1px solid var(--color-primary);
-    border-radius: var(--space-s);
-    color: var(--color-primary);
-    font-size: var(--text-s);
-    padding: var(--space-s);
-    text-decoration: none;
-  }
-
-  a.active {
-    background-color: var(--color-primary);
-    color: var(--color-primary-on);
-  }
 `);
 
 class TodoNav extends CustomElement {
-  static styles = [defaultSheet, todoNavCSS];
+  static styles = [defaultSheet, todoNavCSS, todoLinkCSS];
 
   connectedCallback() {
     super.connectedCallback();
@@ -75,7 +77,7 @@ class TodoNav extends CustomElement {
   }
 }
 
-CustomElement.define(tag`todo-nav`, TodoNav);
+CustomElement.define("todo-nav", TodoNav);
 
 // ---------------------------------------------------------------
 // TodoAppVersion - Display current version of the service-worker.
@@ -140,7 +142,7 @@ class TodoAppVersion extends CustomElement {
   }
 }
 
-CustomElement.define(tag`todo-app-version`, TodoAppVersion);
+CustomElement.define("todo-app-version", TodoAppVersion);
 
 // ------------------------------------------------
 // TodoAppLayout - Shared layout for all app views.
@@ -220,4 +222,4 @@ export class TodoAppLayout extends CustomElement {
   }
 }
 
-CustomElement.define(tag`todo-app-layout`, TodoAppLayout);
+CustomElement.define("todo-app-layout", TodoAppLayout);

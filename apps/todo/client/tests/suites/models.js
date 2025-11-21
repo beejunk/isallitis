@@ -62,7 +62,6 @@ describe("models.js", () => {
      */
     async function createTestTemplate(templateListId) {
       return models.createTodoTemplate({
-        name: templateName,
         description: templateDescription,
         templateListId,
       });
@@ -75,7 +74,6 @@ describe("models.js", () => {
       await models.deleteTodoTemplate(newTemplate.id);
       await models.deleteTodoTemplateList(templateList.id);
 
-      expect(newTemplate.name).to.equal(templateName);
       expect(newTemplate.description).to.equal(templateDescription);
       expect(newTemplate.templateListId).to.equal(templateList.id);
       expect(newTemplate.type).to.equal("todo-template");
@@ -103,7 +101,6 @@ describe("models.js", () => {
       await models.deleteTodoTemplate(id);
       await models.deleteTodoTemplateList(templateList.id);
 
-      expect(newTemplate.name).to.equal(templateName);
       expect(newTemplate.description).to.equal(templateDescription);
       expect(newTemplate.templateListId).to.equal(templateList.id);
     });
