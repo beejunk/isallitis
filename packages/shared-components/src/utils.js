@@ -1,4 +1,4 @@
-export const SUFFIX = "is-all-it-is";
+export const SUFFIX = "it-is";
 
 /**
  * @param {TemplateStringsArray} strings

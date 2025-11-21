@@ -80,6 +80,9 @@
       "types": "./dist/utils.d.ts"
     }
   },
+  "dependencies": {
+    "valibot": "^1.1.0"
+  },
   "devDependencies": {
     "@fastify/static": "catalog:",
     "@testing-library/dom": "^10.4.0",
