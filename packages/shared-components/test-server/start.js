@@ -46,6 +46,16 @@ server.register(fastifyStatic, {
   prefix: "/",
 });
 
+// ------------
+// Dependencies
+// ------------
+
+server.register(fastifyStatic, {
+  root: path.resolve("node_modules", "valibot", "dist"),
+  prefix: "/valibot",
+  decorateReply: false,
+});
+
 // ------------------
 // Test dependencies.
 // ------------------

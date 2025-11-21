@@ -1,10 +1,12 @@
+import * as v from "valibot";
 import { CustomElement, createStyleSheet } from "../custom-element.js";
 import {
   styles,
   shadowHTML,
-  isButtonVariation,
   TAG,
-  isButtonRadius,
+  RadiusSizeSchema,
+  VariationSchema,
+  SizeSchema,
 } from "./template.js";
 import { radiusSheet } from "../styles/style-sheets.js";
 
@@ -14,23 +16,15 @@ export class Button extends CustomElement {
   static styles = [radiusSheet, styleSheet];
 
   get variation() {
-    const variation = this.getAttribute("variation");
-
-    if (isButtonVariation(variation)) {
-      return variation;
-    }
-
-    return null;
+    return v.parse(VariationSchema, this.getAttribute("variation"));
   }
 
   get radius() {
-    const radius = this.getAttribute("radius");
+    return v.parse(RadiusSizeSchema, this.getAttribute("radius"));
+  }
 
-    if (isButtonRadius(radius)) {
-      return radius;
-    }
-
-    return null;
+  get size() {
+    return v.parse(SizeSchema, this.getAttribute("size"));
   }
 
   /**
@@ -42,7 +36,11 @@ export class Button extends CustomElement {
   }
 
   render() {
-    return shadowHTML({ variation: this.variation, radius: this.radius });
+    return shadowHTML({
+      variation: this.variation,
+      radius: this.radius,
+      size: this.size,
+    });
   }
 }
 

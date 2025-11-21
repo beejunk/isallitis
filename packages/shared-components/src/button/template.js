@@ -1,53 +1,60 @@
-import { tag, html, css, isValidAttribute } from "../utils.js";
+import * as v from "valibot";
+import { tag, html, css } from "../utils.js";
 
 export const TAG = tag`button`;
 
-const VARIATIONS = {
-  /** @type {"default"} */
-  default: "default",
+const DEFAULT = "default";
+const ICON = "icon";
 
-  /** @type {"icon"} */
-  icon: "icon",
-};
+const SMALL = "small";
+const MEDIUM = "medium";
+const LARGE = "large";
+const ROUND = "round";
 
-const RADIUS_SIZES = {
-  /** @type {"small"} */
-  small: "small",
+const SM = "sm";
+const MD = "md";
+const LG = "lg";
 
-  /** @type {"medium"} */
-  medium: "medium",
+export const VariationSchema = v.nullish(
+  v.enum({
+    DEFAULT,
+    ICON,
+  }),
+  DEFAULT,
+);
 
-  /** @type {"large"} */
-  large: "large",
+export const RadiusSizeSchema = v.nullish(
+  v.enum({
+    SMALL,
+    MEDIUM,
+    LARGE,
+    ROUND,
+  }),
+  SMALL,
+);
 
-  /** @type {"round"} */
-  round: "round",
-};
+export const SizeSchema = v.nullish(
+  v.enum({
+    SM,
+    MD,
+    LG,
+  }),
+  MD,
+);
 
-/** @typedef {keyof typeof VARIATIONS} ButtonVariation */
+/** @typedef {import("valibot").InferInput<typeof VariationSchema>} ButtonVariation */
 
-/** @typedef {keyof typeof RADIUS_SIZES} ButtonRadius */
+/** @typedef {import("valibot").InferInput<typeof RadiusSizeSchema>} ButtonRadius */
+
+/** @typedef {import("valibot").InferInput<typeof SizeSchema>} ButtonSize */
 
 /**
  * @typedef {Object} ButtonTemplateProps
  * @prop {string} label
  * @prop {(ButtonVariation | null)} [variation="default"]
  * @prop {(ButtonRadius | null)} [radius="radius-small"]
+ * @prop {(ButtonSize | null)} [size="md"]
  */
-
-/**
- * @param {(string | null)} attr
- */
-export function isButtonVariation(attr) {
-  return isValidAttribute(VARIATIONS, attr);
-}
-
-/**
- * @param {(string | null)} attr
- */
-export function isButtonRadius(attr) {
-  return isValidAttribute(RADIUS_SIZES, attr);
-}
 
 export const styles = css`
   :host {
@@ -60,6 +67,10 @@ export const styles = css`
     background-color: var(--color-primary);
     display: inline-block;
     font-size: var(--text-m);
+  }
+
+  button.btn-sm {
+    font-size: var(--text-s);
   }
 
   button:not(.icon) {
@@ -95,9 +106,10 @@ export const styles = css`
 export function shadowHTML(props) {
   const variation = props.variation ?? "default";
   const radius = props.radius ?? "small";
+  const size = props.size ?? "md";
 
   return html`
-    <button class="${variation} radius-${radius}">
+    <button class="${variation} radius-${radius} btn-${size}">
       <slot></slot>
     </button>
   `;
