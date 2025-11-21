@@ -11,7 +11,7 @@ import { register } from "./register.js";
  * Enables the service worker. Set this to `false` during development so that
  * assets are not cached.
  */
-const ENABLE_SW = false;
+const ENABLE_SW = true;
 
 // ---------------------------------------
 // TodoNav - Navigation bar for all views.
